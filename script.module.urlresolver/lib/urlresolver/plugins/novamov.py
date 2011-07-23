@@ -26,10 +26,19 @@ class NovamovResolver(Plugin, UrlResolver):
     name = "novamov"
 
     def get_media_url(self, web_url):
+        #find key
         response = urllib2.urlopen(web_url)
         html = response.read()
-        flv_url = re.search('flashvars.file="(.+?)"', html).group(1)
-        return flv_url
+        filename, filekey = re.search('flashvars.file="(.+?)".+?' + 
+                                      'flashvars.filekey="(.+?)"', 
+                                      html, re.DOTALL).groups()
+        #get stream url from api
+        api = 'http://www.novamov.com/api/player.api.php?key=%s&file=%s' % \
+              (filekey, filename)
+        response = urllib2.urlopen(api)
+        html = response.read()
+        stream_url = re.search('url=(.+?)&title', html).group(1)
+        return stream_url
         
     def valid_url(self, web_url):
         return re.match('http:\/\/(?:www.)?novamov.com\/video\/' + 
