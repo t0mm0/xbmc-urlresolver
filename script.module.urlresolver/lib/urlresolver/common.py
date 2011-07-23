@@ -26,7 +26,7 @@ except:
     
 if is_xbmc:
     addon = xbmcaddon.Addon(id='script.module.urlresolver')
-    plugin_path = addon.getAddonInfo('path')
+    plugin_path = os.path.join(addon.getAddonInfo('path'), 'lib', 'urlresolver')
     profile_path = addon.getAddonInfo('profile')
 else:
     plugin_path = os.path.dirname(__file__)
