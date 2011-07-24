@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+<category label="novamov">
+<setting id="novamov_priority" type="number" label="Priority" default="100"/>
+</category>
+<category label="megaupload">
+<setting id="megaupload_priority" type="number" label="Priority" default="100"/>
+<setting id="megaupload_login" type="bool" label="login" default="false"/>
+<setting id="megaupload_username" enable="eq(-1,true)" type="text" label="username" default=""/>
+<setting id="megaupload_password" enable="eq(-2,true)" type="text" label="password" option="hidden" default=""/>
+</category>
+<category label="putlocker">
+<setting id="putlocker_priority" type="number" label="Priority" default="100"/>
+</category>
+<category label="seeon.tv">
+<setting id="seeon.tv_priority" type="number" label="Priority" default="100"/>
+</category>
+</settings>

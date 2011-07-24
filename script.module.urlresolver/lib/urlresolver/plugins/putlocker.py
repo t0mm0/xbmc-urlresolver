@@ -20,12 +20,17 @@ import cookielib
 import re
 import urllib, urllib2
 from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class PutlockerResolver(Plugin, UrlResolver):
-    implements = [UrlResolver]
+class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "putlocker"
 
+    def __init__(self):
+        p = self.get_setting('priority') or 100
+        self.priority = int(p)
+    
     def get_media_url(self, web_url):
         cj = cookielib.LWPCookieJar()
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
@@ -52,7 +57,4 @@ class PutlockerResolver(Plugin, UrlResolver):
     def valid_url(self, web_url):
         return re.match('http:\/\/(?:www.)?putlocker.com\/file\/' + 
                         '(?:[0-9A-F]+)(?:\/.+)?', web_url)
-    
-    def login_required(self):
-        return False
 

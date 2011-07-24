@@ -22,31 +22,71 @@ import re
 import urllib2
 
 from lib import _megaupload
+from urlresolver.countdown import countdown
 from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import SiteAuth
+from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 from urlresolver import common
+import xbmc
 
-class MegaUploadResolver(Plugin, UrlResolver):
-    implements = [UrlResolver]
+class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
+    implements = [UrlResolver, SiteAuth, PluginSettings]
     name = "megaupload"
     profile_path = common.profile_path    
     cookie_file = os.path.join(profile_path, '%s.cookies' % name)
-    
+
+    def __init__(self):
+        p = self.get_setting('priority') or 100
+        self.priority = int(p)
+        try:
+            os.makedirs(os.path.dirname(self.cookie_file))
+        except OSError:
+            pass
+
+
+    #UrlResolver methods
     def get_media_url(self, web_url):
         media_url = _megaupload.resolveURL(web_url, self.cookie_file)
-        #TODO: do some waiting depending on self.login_type
         print 'login type: %s' % self.login_type
-        return media_url[0]
+        ok = True
+        if self.login_type == 'free':
+            ok = countdown(25, title='megaupload',
+                           text='loading video from free account')
+        elif not self.login_type:
+            ok = countdown(45, title='megaupload',
+                           text='loading video with no account')
+        print ok
+        if ok:
+            return media_url[0]
+        else:
+            return False
         
     def valid_url(self, web_url):
         return re.match('http:\/\/(?:www.)?megaupload.com\/\?d=' + 
                         '(?:[0-9A-Z]+)(?:\/.+)?', web_url)
     
-    def login_required(self):
-        return 'optional'
-        
-    def login(self, username=None, password=None):
-        self.username = username
-        self.password = password
-        self.login_type = _megaupload.doLogin('regular', self.cookie_file, username, password)
+    #SiteAuth methods
+    def login(self):
+        self.login_type = None
+        if self.get_setting('login') == 'true':
+            self.login_type = _megaupload.doLogin('regular', self.cookie_file, 
+                                                  self.get_setting('username'), 
+                                                  self.get_setting('password'))
+        #there must be a better way of doing this
+        #xbmc freezes if you load the countdown dialog too quickly 
+        xbmc.sleep(1000)
 
+    #PluginSettings methods
+    def get_settings_xml(self):
+        xml = '<category label="%s">\n' % self.name
+        xml += '<setting id="%s_priority" ' % self.name
+        xml += 'type="number" label="Priority" default="100"/>\n'
+        xml += '<setting id="%s_login" ' % self.name
+        xml += 'type="bool" label="login" default="false"/>\n'
+        xml += '<setting id="%s_username" enable="eq(-1,true)" ' % self.name
+        xml += 'type="text" label="username" default=""/>\n'
+        xml += '<setting id="%s_password" enable="eq(-2,true)" ' % self.name
+        xml += 'type="text" label="password" option="hidden" default=""/>\n'
+        xml += '</category>\n'
+        return xml

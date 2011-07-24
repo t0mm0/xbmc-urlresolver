@@ -19,11 +19,16 @@
 import re
 import urllib2
 from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class NovamovResolver(Plugin, UrlResolver):
-    implements = [UrlResolver]
+class NovamovResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "novamov"
+
+    def __init__(self):
+        p = self.get_setting('priority') or 100
+        self.priority = int(p)
 
     def get_media_url(self, web_url):
         #find key

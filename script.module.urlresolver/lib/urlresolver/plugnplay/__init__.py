@@ -53,8 +53,8 @@ class PluginMeta(type):
       for interface in attrs['implements']:
         man.add_implementor(interface, new_class_instance)
         print 'registering plugin: %s (%s), as: %s (P=%d)' % \
-                   (new_class.name, new_class.__name__, interface.name, 
-                    new_class.priority)
+                   (new_class.name, new_class.__name__, interface.__name__, 
+                    new_class_instance.priority)
 
     return new_class
 

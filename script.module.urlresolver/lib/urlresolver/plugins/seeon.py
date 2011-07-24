@@ -2,11 +2,16 @@ import random
 import re
 import urllib2
 from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class SeeonResolver(Plugin, UrlResolver):
-    implements = [UrlResolver]
+class SeeonResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "seeon.tv"
+
+    def __init__(self):
+        p = self.get_setting('priority') or 100
+        self.priority = int(p)
 
     def get_media_url(self, web_url):
         response = urllib2.urlopen(web_url)
@@ -22,6 +27,3 @@ class SeeonResolver(Plugin, UrlResolver):
         return re.match('http:\/\/(?:www.)?seeon.tv\/view\/(?:\d+)(?:\/.+)?',
                         web_url)
     
-    def login_required(self):
-        return False
-

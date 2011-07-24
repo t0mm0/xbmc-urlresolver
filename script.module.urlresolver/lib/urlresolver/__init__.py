@@ -20,6 +20,8 @@ import os
 import common
 import plugnplay
 from plugnplay.interfaces import UrlResolver
+from plugnplay.interfaces import PluginSettings
+from plugnplay.interfaces import SiteAuth
 
 #load all available plugins
 plugins = os.path.join(common.plugin_path, 'plugins')
@@ -31,7 +33,28 @@ def resolve(web_url, username=None, password=None):
     for imp in UrlResolver.implementors():
         if imp.valid_url(web_url):
             print 'resolving using %s plugin' % imp.name
-            if imp.login_required():
-                imp.login(username, password)
+            if SiteAuth in imp.implements:
+                print 'logging in'
+                imp.login()
             return imp.get_media_url(web_url)
     return False
+    
+def display_settings():
+    update_settings_xml()
+    common.addon.openSettings()
+        
+def update_settings_xml():
+    try:
+        f = open(common.settings_file, 'w')
+        try:
+            f.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
+            f.write('<settings>\n')    
+            for imp in PluginSettings.implementors():
+                f.write(imp.get_settings_xml())
+            f.write('</settings>')
+        finally:
+            f.close
+    except IOError:
+        print 'error writing ' + common.settings_file
+
+update_settings_xml()

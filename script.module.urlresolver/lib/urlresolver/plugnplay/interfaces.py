@@ -21,34 +21,28 @@ from urlresolver import common
 from urlresolver.plugnplay import Interface
 import sys
 
-def _functionId(obj, nFramesUp):
+def _function_id(obj, nFramesUp):
 	""" Create a string naming the function n frames up on the stack. """
 	fr = sys._getframe(nFramesUp+1)
 	co = fr.f_code
 	return "%s.%s" % (obj.__class__, co.co_name)
 
-def notImplemented(obj=None):
+def not_implemented(obj=None):
 	""" Use this instead of 'pass' for the body of abstract methods. """
-	raise Exception("Unimplemented abstract method: %s" % _functionId(obj, 1))
+	raise Exception("Unimplemented abstract method: %s" % _function_id(obj, 1))
 
 
 class UrlResolver(Interface):
-    name = 'UrlResolver'
+    name = 'override_me'
     priority = 100
     profile_path = common.profile_path
     
     def get_media_url(self, web_url):
-        notImplemented(self)
+        not_implemented(self)
     
     def valid_url(self, web_url):
-        notImplemented(self)
+        not_implemented(self)
     
-    def login_required(self):
-        notImplemented(self)
-    
-    def login(self, username, password):
-        notImplemented(self)
-
     def get_media_urls(self, web_urls):
         ret_val = []
         for web_url in web_urls:
@@ -65,4 +59,19 @@ class UrlResolver(Interface):
                 ret_val.append(web_url)
         return
 
+class SiteAuth(Interface):
+    def login(self, username, password):
+        not_implemented(self)
 
+class PluginSettings(Interface):
+    def get_settings_xml(self):
+        xml = '<category label="%s">\n' % self.name
+        xml += '<setting id="%s_priority" ' % self.name
+        xml += 'type="number" label="Priority" default="100"/>\n'
+        xml += '</category>\n'
+        return xml 
+        
+    def get_setting(self, key):
+        value = common.addon.getSetting('%s_%s' % (self.name, key))
+        return value
+    

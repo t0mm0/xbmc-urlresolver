@@ -16,18 +16,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import os
-try:
-    import xbmc, xbmcaddon, xbmcgui, xbmcplugin
-    is_xbmc = True
-except:
-    is_xbmc = False
-    print 'not running on xbmc'
-    
-if is_xbmc:
-    addon = xbmcaddon.Addon(id='script.module.urlresolver')
-    plugin_path = os.path.join(addon.getAddonInfo('path'), 'lib', 'urlresolver')
-    profile_path = addon.getAddonInfo('profile')
-else:
-    plugin_path = os.path.dirname(__file__)
-    profile_path = plugin_path
+import os    
+import xbmc, xbmcaddon, xbmcgui, xbmcplugin
+
+addon = xbmcaddon.Addon(id='script.module.urlresolver')
+addon_path = addon.getAddonInfo('path')
+plugin_path = os.path.join(addon_path, 'lib', 'urlresolver')
+profile_path = addon.getAddonInfo('profile')
+settings_file = os.path.join(addon_path, 'resources', 'settings.xml')
+
