@@ -28,17 +28,32 @@ plugins = os.path.join(common.plugin_path, 'plugins')
 plugnplay.set_plugin_dirs(plugins)
 plugnplay.load_plugins()
 
-def resolve(web_url, username=None, password=None):
+def resolve(web_url):
     """Resolve a web page to a media stream."""
-    for imp in UrlResolver.implementors():
-        if imp.valid_url(web_url):
-            print 'resolving using %s plugin' % imp.name
-            if SiteAuth in imp.implements:
-                print 'logging in'
-                imp.login()
-            return imp.get_media_url(web_url)
+    imp = find_resolver(web_url)
+    if imp:
+        print 'resolving using %s plugin' % imp.name
+        if SiteAuth in imp.implements:
+            print 'logging in'
+            imp.login()
+        return imp.get_media_url(web_url)
     return False
     
+def filter_urls(urls):
+    ret = []
+    for url in urls:
+        imp = find_resolver(url)
+        if imp:
+            ret.append(url)
+    return ret
+        
+def find_resolver(web_url):
+    for imp in UrlResolver.implementors():
+        if imp.valid_url(web_url):
+            return imp
+    return False
+    
+        
 def display_settings():
     update_settings_xml()
     common.addon.openSettings()
