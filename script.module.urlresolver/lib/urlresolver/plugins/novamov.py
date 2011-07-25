@@ -48,7 +48,4 @@ class NovamovResolver(Plugin, UrlResolver, PluginSettings):
     def valid_url(self, web_url):
         return re.match('http:\/\/(?:www.)?novamov.com\/video\/' + 
                         '(?:[0-9a-zA-Z]+)(?:\/.+)?', web_url)
-    
-    def login_required(self):
-        return False
 
