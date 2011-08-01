@@ -38,6 +38,7 @@ class TubeplusResolver(Plugin, UrlResolver):
             host_urls.append(s.group(1)) 
         
         #only keep urls we have resolver plugins for
+        print host_urls
         filtered_urls = urlresolver.filter_urls(host_urls)
         print filtered_urls
         
@@ -58,6 +59,6 @@ class TubeplusResolver(Plugin, UrlResolver):
             return urlresolver.resolve(filtered_urls[index])
                     
     def valid_url(self, web_url):
-        return re.match('http:\/\/tubeplus.me\/player\/' + 
+        return re.match('http:\/\/(?:www.)?tubeplus.me\/player\/' + 
                         '\d+\/.+?(?:\/.+)?', web_url)
 

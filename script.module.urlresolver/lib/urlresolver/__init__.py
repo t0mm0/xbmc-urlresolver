@@ -60,6 +60,11 @@ def display_settings():
         
 def update_settings_xml():
     try:
+        try:
+            os.makedirs(os.path.dirname(common.settings_file))
+        except OSError:
+            pass
+
         f = open(common.settings_file, 'w')
         try:
             f.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
