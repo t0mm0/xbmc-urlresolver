@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.t0mm0.test" version="0.1.0" name="t0mm0 test addon" provider-name="t0mm0">
+    <requires>
+        <import addon="xbmc.python" version="1.0"/>
+        <import addon="script.module.urlresolver" version="0.0.1"/>
+        <import addon="script.module.t0mm0.common" version="0.0.1"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>Test Addon for urlresolver (and t0mm0.common)</summary>
+        <description>This plugin is written to test/demo the features of script.module.urlresolver and script.module.t0mm0.common</description>
+        <platform>all</platform>
+    </extension>
+</addon>
+
