@@ -60,5 +60,5 @@ class TubeplusResolver(Plugin, UrlResolver):
                     
     def valid_url(self, web_url):
         return re.match('http:\/\/(?:www.)?tubeplus.me\/player\/' + 
-                        '\d+\/.+?(?:\/.+)?', web_url)
+                        '\d+(?:\/.+)?', web_url)
 
