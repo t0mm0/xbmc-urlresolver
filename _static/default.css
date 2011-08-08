@@ -16,14 +16,14 @@
 body {
     font-family: sans-serif;
     font-size: 100%;
-    background-color: #11303d;
+    background-color: #455274;
     color: #000;
     margin: 0;
     padding: 0;
 }
 
 div.document {
-    background-color: #1c4e63;
+    background-color: #364666;
 }
 
 div.documentwrapper {
@@ -55,7 +55,7 @@ div.footer a {
 }
 
 div.related {
-    background-color: #133f52;
+    background-color: #455274;
     line-height: 30px;
     color: #ffffff;
 }
@@ -104,11 +104,11 @@ div.sphinxsidebar ul {
 }
 
 div.sphinxsidebar a {
-    color: #98dbcc;
+    color: #df8225;
 }
 
 div.sphinxsidebar input {
-    border: 1px solid #98dbcc;
+    border: 1px solid #df8225;
     font-family: sans-serif;
     font-size: 1em;
 }
@@ -117,12 +117,12 @@ div.sphinxsidebar input {
 /* -- hyperlink styles ------------------------------------------------------ */
 
 a {
-    color: #355f7c;
+    color: #df8225;
     text-decoration: none;
 }
 
 a:visited {
-    color: #355f7c;
+    color: #85c227;
     text-decoration: none;
 }
 
@@ -143,7 +143,7 @@ div.body h6 {
     font-family: 'Trebuchet MS', sans-serif;
     background-color: #f2f2f2;
     font-weight: normal;
-    color: #20435c;
+    color: #364666;
     border-bottom: 1px solid #ccc;
     margin: 20px -20px 10px -20px;
     padding: 3px 0 3px 10px;
