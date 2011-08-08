@@ -373,7 +373,7 @@ class Addon:
             
         .. seealso::
             
-            :meth:`get_music_playlist`, :meth:`get_music_playlist`
+            :meth:`get_music_playlist`, :meth:`get_video_playlist`
             
         Args:
             pl_type (int): The type of playlist to get.
