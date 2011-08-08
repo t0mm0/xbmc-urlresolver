@@ -171,7 +171,7 @@ class Addon:
                       total_items=0, is_folder=True):
         title = self.unescape(title)
         url = self.build_plugin_url(url_queries)
-        self.log_notice(u'adding dir: %s - %s' % (title, url))
+        self.log_debug(u'adding dir: %s - %s' % (title, url))
         listitem = xbmcgui.ListItem(title, iconImage=img, 
                                     thumbnailImage=img)
         if not fanart:

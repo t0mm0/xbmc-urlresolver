@@ -16,9 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import cookielib
 import re
-import urllib, urllib2
+from t0mm0.common.net import Net
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
@@ -30,27 +29,21 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
+        self.net = Net()
     
     def get_media_url(self, web_url):
-        cj = cookielib.LWPCookieJar()
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-        
         #find session_hash
-        response = opener.open(web_url)
-        html = response.read()
+        html = self.net.http_GET(web_url)
         session_hash = re.search('value="([0-9a-f]+?)" name="hash"', 
                                  html).group(1)
 
         #post session_hash
-        response = opener.open(web_url, 
-                               urllib.urlencode({'hash': session_hash,
-                                                 'confirm': 
-                                                   'Continue as Free User'}))
+        self.net.http_POST(web_url, data={'hash': session_hash, 
+                                          'confirm': 'Continue as Free User'})
         
         #find download link
         xml_url = web_url.replace('/file/', '/get_file.php?stream=')
-        response = opener.open(xml_url)
-        html = response.read()
+        html = self.net.http_GET(xml_url)
         flv_url = re.search('url="(.+?)"', html).group(1)
         return flv_url
         

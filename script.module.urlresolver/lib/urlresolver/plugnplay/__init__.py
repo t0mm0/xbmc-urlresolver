@@ -20,7 +20,7 @@
 from glob import glob
 from os.path import join, basename
 import sys
-
+from urlresolver import common
 from manager import *
 
 __version__ = "0.1"
@@ -52,9 +52,9 @@ class PluginMeta(type):
     if attrs.has_key('implements'):
       for interface in attrs['implements']:
         man.add_implementor(interface, new_class_instance)
-        print 'registering plugin: %s (%s), as: %s (P=%d)' % \
-                   (new_class.name, new_class.__name__, interface.__name__, 
-                    new_class_instance.priority)
+        common.addon.log_debug('registering plugin: %s (%s), as: %s (P=%d)' % \
+                       (new_class.name, new_class.__name__, interface.__name__, 
+                        new_class_instance.priority))
 
     return new_class
 
@@ -64,6 +64,7 @@ class Plugin(object):
 
 def set_plugin_dirs(*dirs):
   for d in dirs:
+    common.addon.log_debug('adding plugin dir: %s' % d)
     plugin_dirs.append(d)
   
 def load_plugins():

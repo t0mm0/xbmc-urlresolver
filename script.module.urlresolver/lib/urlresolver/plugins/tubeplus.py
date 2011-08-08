@@ -17,7 +17,7 @@
 """
 
 import re
-import urllib2
+from t0mm0.common.net import Net
 import urlresolver
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay import Plugin
@@ -26,11 +26,13 @@ import xbmcgui
 class TubeplusResolver(Plugin, UrlResolver):
     implements = [UrlResolver]
     name = "tubeplus.me"
+    
+    def __init__(self):
+        self.net = Net()
 
     def get_media_url(self, web_url):
         #get list
-        response = urllib2.urlopen(web_url)
-        html = response.read()
+        html = self.net.http_GET(web_url)
         r = '"none" href="(.+?)"'
         host_urls = []
         regex = re.finditer(r, html, re.DOTALL)
@@ -38,9 +40,7 @@ class TubeplusResolver(Plugin, UrlResolver):
             host_urls.append(s.group(1)) 
         
         #only keep urls we have resolver plugins for
-        print host_urls
         filtered_urls = urlresolver.filter_urls(host_urls)
-        print filtered_urls
         
         l = len(filtered_urls)
         

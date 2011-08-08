@@ -1,6 +1,6 @@
 import random
 import re
-import urllib2
+from t0mm0.common.net import Net
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
@@ -12,10 +12,10 @@ class SeeonResolver(Plugin, UrlResolver, PluginSettings):
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
+        self.net = Net()
 
     def get_media_url(self, web_url):
-        response = urllib2.urlopen(web_url)
-        html = response.read()
+        html = self.net.http_GET(web_url)
         swf_url, play = re.search('data="(.+?)".+?file=(.+?)\.flv', 
                                   html, re.DOTALL).groups()
         rtmp = 'rtmp://live%d.seeon.tv/edge' % (random.randint(1, 10)) 

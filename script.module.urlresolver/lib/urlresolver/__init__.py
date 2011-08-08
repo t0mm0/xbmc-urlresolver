@@ -31,9 +31,9 @@ def resolve(web_url):
     """Resolve a web page to a media stream."""
     imp = find_resolver(web_url)
     if imp:
-        print 'resolving using %s plugin' % imp.name
+        common.addon.log_notice('resolving using %s plugin' % imp.name)
         if SiteAuth in imp.implements:
-            print 'logging in'
+            common.addon.log_debug('logging in')
             imp.login()
         return imp.get_media_url(web_url)
     return False
@@ -74,6 +74,6 @@ def update_settings_xml():
         finally:
             f.close
     except IOError:
-        print 'error writing ' + common.settings_file
+        common.addon.log_error('error writing ' + common.settings_file)
 
 update_settings_xml()

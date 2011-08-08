@@ -48,7 +48,7 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
     #UrlResolver methods
     def get_media_url(self, web_url):
         media_url = _megaupload.resolveURL(web_url, self.cookie_file)
-        print 'login type: %s' % self.login_type
+        common.addon.log_debug('login type: %s' % self.login_type)
         ok = True
         if self.login_type == 'free':
             ok = countdown(25, title='megaupload',
@@ -56,7 +56,6 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
         elif not self.login_type:
             ok = countdown(45, title='megaupload',
                            text='loading video with no account')
-        print ok
         if ok:
             return media_url[0]
         else:

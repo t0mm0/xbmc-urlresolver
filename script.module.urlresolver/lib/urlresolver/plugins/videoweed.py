@@ -17,7 +17,7 @@
 """
 
 import re
-import urllib2
+from t0mm0.common.net import Net
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
@@ -29,11 +29,11 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
+        self.net = Net()
 
     def get_media_url(self, web_url):
         #grab stream address
-        response = urllib2.urlopen(web_url)
-        html = response.read()
+        html = self.net.http_GET(web_url)
         stream_url = re.search('flashvars.file="(.+?)"', html).group(1)
         return stream_url
         
