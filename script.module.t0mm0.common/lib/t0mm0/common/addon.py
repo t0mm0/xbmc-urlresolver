@@ -90,10 +90,10 @@ class Addon:
     def get_version(self):    
         return self.addon.getAddonInfo('version')
             
-    def get_setting(setting):
+    def get_setting(self, setting):
         return self.addon.getSetting(setting)
         
-    def get_string(string_id):
+    def get_string(self, string_id):
         return self.addon.getLocalizedString(string_id)   
 
     def parse_query(self, query, defaults={'mode': 'main'}):
