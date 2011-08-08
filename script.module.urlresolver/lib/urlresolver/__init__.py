@@ -24,8 +24,7 @@ from plugnplay.interfaces import PluginSettings
 from plugnplay.interfaces import SiteAuth
 
 #load all available plugins
-plugins = os.path.join(common.plugin_path, 'plugins')
-plugnplay.set_plugin_dirs(plugins)
+plugnplay.set_plugin_dirs(common.plugins_path)
 plugnplay.load_plugins()
 
 def resolve(web_url):

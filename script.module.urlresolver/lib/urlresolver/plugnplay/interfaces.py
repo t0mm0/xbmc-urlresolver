@@ -72,6 +72,6 @@ class PluginSettings(Interface):
         return xml 
         
     def get_setting(self, key):
-        value = common.addon.getSetting('%s_%s' % (self.name, key))
+        value = common.addon.get_setting('%s_%s' % (self.name, key))
         return value
     

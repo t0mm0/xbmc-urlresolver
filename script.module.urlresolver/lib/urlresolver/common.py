@@ -17,11 +17,15 @@
 """
 
 import os    
-import xbmc, xbmcaddon, xbmcgui, xbmcplugin
+from t0mm0.common.addon import Addon
+import xbmc
+import xbmcaddon
+import xbmcgui
+import xbmcplugin
 
-addon = xbmcaddon.Addon(id='script.module.urlresolver')
-addon_path = addon.getAddonInfo('path')
-plugin_path = os.path.join(addon_path, 'lib', 'urlresolver')
-profile_path = addon.getAddonInfo('profile')
+addon = Addon('script.module.urlresolver')
+addon_path = addon.get_path()
+plugins_path = os.path.join(addon_path, 'lib', 'urlresolver', 'plugins')
+profile_path = addon.get_profile()
 settings_file = os.path.join(addon_path, 'resources', 'settings.xml')
 

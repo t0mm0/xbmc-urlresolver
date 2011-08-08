@@ -2,6 +2,7 @@
 <addon id="script.module.urlresolver" name="urlresolver" version="0.0.1" provider-name="t0mm0 (inspired by unbehagan, anarchintosh)">
   <requires>
     <import addon="xbmc.python" version="1.0" />
+    <import addon="script.module.t0mm0.common" version="0.0.1"/>
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.addon.metadata">
