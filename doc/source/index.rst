@@ -11,6 +11,7 @@ Contents:
 .. toctree::
     :maxdepth: 2
     
+    tutorials/index
     t0mm0.common/index
     
 Indices and tables
