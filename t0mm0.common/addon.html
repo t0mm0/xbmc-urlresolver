@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>t0mm0.common.addon.Addon &mdash; XBMC Helper Modules v0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="XBMC Helper Modules v0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module Documentation" href="index.html" />
+    <link rel="next" title="t0mm0.common.net.Net" href="net.html" />
+    <link rel="prev" title="Module Documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="net.html" title="t0mm0.common.net.Net"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Module Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module Documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-t0mm0.common.addon.Addon">
+<span id="t0mm0-common-addon-addon"></span><h1><a class="reference internal" href="#module-t0mm0.common.addon.Addon"><tt class="xref py py-mod docutils literal"><span class="pre">t0mm0.common.addon.Addon</span></tt></a><a class="headerlink" href="#module-t0mm0.common.addon.Addon" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="t0mm0.common.addon.Addon">
+<em class="property">class </em><tt class="descclassname">t0mm0.common.addon.</tt><tt class="descname">Addon</tt><big>(</big><em>addon_id</em>, <em>argv=None</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class provides a lot of code that is used across many XBMC addons
+in the hope that it will simplify some of the common tasks an addon needs
+to perform.</p>
+<p>Mostly this is achieved by providing a wrapper around commonly used parts
+of <tt class="xref py py-mod docutils literal"><span class="pre">xbmc</span></tt>, <tt class="xref py py-mod docutils literal"><span class="pre">xbmcaddon</span></tt>, <tt class="xref py py-mod docutils literal"><span class="pre">xbmcgui</span></tt> and <tt class="xref py py-mod docutils literal"><span class="pre">xbmcplugin</span></tt>.</p>
+<p>You probably want to have exactly one instance of this class in your addon
+which you can call from anywhere in your code.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">t0mm0.common.addon</span> <span class="kn">import</span> <span class="n">Addon</span>
+<span class="n">addon</span> <span class="o">=</span> <span class="n">Addon</span><span class="p">(</span><span class="s">&#39;my.plugin.id&#39;</span><span class="p">,</span> <span class="n">argv</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>addon_id (str): Your addon&#8217;s id (eg. &#8216;plugin.video.t0mm0.test&#8217;).</dd>
+<dt>Kwargs:</dt>
+<dd>argv (list): List of arguments passed to your addon if applicable
+(eg. sys.argv).</dd>
+</dl>
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.add_directory">
+<tt class="descname">add_directory</tt><big>(</big><em>queries</em>, <em>title</em>, <em>img=''</em>, <em>fanart=''</em>, <em>total_items=0</em>, <em>is_folder=True</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.add_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a directory to the list of items to be displayed by XBMC.</p>
+<p>When selected by the user, directory will call the addon with the 
+query values contained in <cite>queries</cite>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">queries (dict): A set of keys/values to be sent to the addon when 
+the user selects this item.</p>
+<p class="last">title (str): The name to be displayed for this entry.</p>
+</dd>
+<dt>Kwargs:</dt>
+<dd><p class="first">img (str): A URL to an image file to be used as an icon for this
+entry.</p>
+<p>fanart (str): A URL to a fanart image for this entry.</p>
+<p>total_items (int): Total number of items to be added in this list.
+If supplied it enables XBMC to show a progress bar as the list of
+items is being built.</p>
+<p class="last">is_folder (bool): if <tt class="xref docutils literal"><span class="pre">True</span></tt> (default), when the user selects this 
+item XBMC will expect the plugin to add another set of items to 
+display. If <tt class="xref docutils literal"><span class="pre">False</span></tt>, the &#8216;Loading Directory&#8217; message will not be
+displayed by XBMC (useful if you want a directory item to do 
+something like pop up a dialog).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.add_item">
+<tt class="descname">add_item</tt><big>(</big><em>play</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em>, <em>item_type='video'</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.add_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds an item to the list of entries to be displayed in XBMC or to a 
+playlist.</p>
+<p>Use this method when you want users to be able to select this item to
+start playback of a media file. You can either pass the direct URL to
+the media file (in which case you must also set <tt class="docutils literal"><span class="pre">resolved=True</span></tt>) or
+some other string that will be passed as the &#8216;play&#8217; query and can be  
+used by the addon to resolve to a real media URL.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#t0mm0.common.addon.Addon.add_music_item" title="t0mm0.common.addon.Addon.add_music_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_music_item()</span></tt></a>, <a class="reference internal" href="#t0mm0.common.addon.Addon.add_video_item" title="t0mm0.common.addon.Addon.add_video_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_video_item()</span></tt></a>, 
+<a class="reference internal" href="#t0mm0.common.addon.Addon.add_directory" title="t0mm0.common.addon.Addon.add_directory"><tt class="xref py py-meth docutils literal"><span class="pre">add_directory()</span></tt></a></p>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">play (str): The string to be sent to the plugin when the user 
+plays this entry, or (if <tt class="docutils literal"><span class="pre">resolved=True</span></tt>) a URL to the media to be
+played.</p>
+<p class="last">infolabels (dict): A dictionary of information about this media 
+(see the <a class="reference external" href="http://wiki.xbmc.org/?title=InfoLabels">XBMC Wiki InfoLabels entry</a>).</p>
+</dd>
+<dt>Kwargs:</dt>
+<dd><p class="first">img (str): A URL to an image file to be used as an icon for this
+entry.</p>
+<p>fanart (str): A URL to a fanart image for this entry.</p>
+<p>resolved (bool): If <tt class="xref docutils literal"><span class="pre">False</span></tt> (default), <cite>play</cite> will be sent as a 
+query to the addon when the item is played. If <tt class="xref docutils literal"><span class="pre">False</span></tt>, <cite>play</cite> 
+will be treated as a URL to the media item.</p>
+<p>total_items (int): Total number of items to be added in this list.
+If supplied it enables XBMC to show a progress bar as the list of
+items is being built.</p>
+<p>playlist (playlist object): If <tt class="xref docutils literal"><span class="pre">False</span></tt> (default), the item will 
+be added to the list of entries to be displayed in this directory. 
+If a playlist object is passed (see <a class="reference internal" href="#t0mm0.common.addon.Addon.get_playlist" title="t0mm0.common.addon.Addon.get_playlist"><tt class="xref py py-meth docutils literal"><span class="pre">get_playlist()</span></tt></a>) then 
+the item will be added to the playlist instead</p>
+<p class="last">item_type (str): The type of item to add (eg. &#8216;music&#8217;, &#8216;video&#8217; or
+&#8216;pictures&#8217;)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.add_music_item">
+<tt class="descname">add_music_item</tt><big>(</big><em>play</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.add_music_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_music_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to add a music item to the directory list or a 
+playlist.</p>
+<p>See <a class="reference internal" href="#t0mm0.common.addon.Addon.add_item" title="t0mm0.common.addon.Addon.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a> for full infomation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.add_video_item">
+<tt class="descname">add_video_item</tt><big>(</big><em>play</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.add_video_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_video_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to add a video item to the directory list or a 
+playlist.</p>
+<p>See <a class="reference internal" href="#t0mm0.common.addon.Addon.add_item" title="t0mm0.common.addon.Addon.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a> for full infomation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.build_plugin_url">
+<tt class="descname">build_plugin_url</tt><big>(</big><em>queries</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.build_plugin_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.build_plugin_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <tt class="docutils literal"><span class="pre">plugin://</span></tt> URL which can be used to call the addon with 
+the specified queries.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">addon</span><span class="o">.</span><span class="n">build_plugin_url</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;basic&#39;</span><span class="p">})</span>
+<span class="go">&#39;plugin://your.plugin.id/?name=test&amp;type=basic&#39;</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>queries (dict): A dctionary of keys/values to be added to the 
+<tt class="docutils literal"><span class="pre">plugin://</span></tt> URL.</dd>
+<dt>Retuns:</dt>
+<dd>A string containing a fully formed <tt class="docutils literal"><span class="pre">plugin://</span></tt> URL.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.decode">
+<tt class="descname">decode</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regular expression to convert entities such as <tt class="docutils literal"><span class="pre">&amp;#044</span></tt> to the correct
+characters. It is called by <a class="reference internal" href="#t0mm0.common.addon.Addon.unescape" title="t0mm0.common.addon.Addon.unescape"><tt class="xref py py-meth docutils literal"><span class="pre">unescape()</span></tt></a> and so it is not required
+to call it directly.</p>
+<p>This method was found <a class="reference external" href="http://stackoverflow.com/questions/1208916/decoding-html-entities-with-python/1208931#1208931">on the web</a></p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>data (str): String to be cleaned.</dd>
+<dt>Returns:</dt>
+<dd>Cleaned string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.end_of_directory">
+<tt class="descname">end_of_directory</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.end_of_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.end_of_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tell XBMC that we have finished adding items to this directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_author">
+<tt class="descname">get_author</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_author"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_author" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon author as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_changelog">
+<tt class="descname">get_changelog</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_changelog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_changelog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon changelog.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_description">
+<tt class="descname">get_description</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon description as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_disclaimer">
+<tt class="descname">get_disclaimer</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_disclaimer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_disclaimer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon disclaimer as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_fanart">
+<tt class="descname">get_fanart</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_fanart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_fanart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full path to the addon fanart.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_icon">
+<tt class="descname">get_icon</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_icon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full path to the addon icon.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_id">
+<tt class="descname">get_id</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon id as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_music_playlist">
+<tt class="descname">get_music_playlist</tt><big>(</big><em>new=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_music_playlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_music_playlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to return a music <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#t0mm0.common.addon.Addon.get_playlist" title="t0mm0.common.addon.Addon.get_playlist"><tt class="xref py py-meth docutils literal"><span class="pre">get_playlist()</span></tt></a></p>
+</div>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd>new (bool): If <tt class="xref docutils literal"><span class="pre">False</span></tt> (default), get the current music 
+<tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object. If <tt class="xref docutils literal"><span class="pre">True</span></tt> then return a new blank
+music <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt>.</dd>
+<dt>Returns:</dt>
+<dd>A <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_name">
+<tt class="descname">get_name</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon name as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_path">
+<tt class="descname">get_path</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full path to the addon directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_playlist">
+<tt class="descname">get_playlist</tt><big>(</big><em>pl_type</em>, <em>new=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_playlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_playlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object of the specified type.</p>
+<p>The available playlist types are defined in the <tt class="xref py py-mod docutils literal"><span class="pre">xbmc</span></tt> module and 
+are currently as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">xbmc</span><span class="o">.</span><span class="n">PLAYLIST_MUSIC</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">PLAYLIST_VIDEO</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#t0mm0.common.addon.Addon.get_music_playlist" title="t0mm0.common.addon.Addon.get_music_playlist"><tt class="xref py py-meth docutils literal"><span class="pre">get_music_playlist()</span></tt></a>, <a class="reference internal" href="#t0mm0.common.addon.Addon.get_music_playlist" title="t0mm0.common.addon.Addon.get_music_playlist"><tt class="xref py py-meth docutils literal"><span class="pre">get_music_playlist()</span></tt></a></p>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">pl_type (int): The type of playlist to get.</p>
+<p class="last">new (bool): If <tt class="xref docutils literal"><span class="pre">False</span></tt> (default), get the current 
+<tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object of the type specified. If <tt class="xref docutils literal"><span class="pre">True</span></tt> 
+then return a new blank <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt>.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>A <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_profile">
+<tt class="descname">get_profile</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full path to the addon profile directory 
+(useful for storing files needed by the addon such as cookies).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_setting">
+<tt class="descname">get_setting</tt><big>(</big><em>setting</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_setting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an addon setting. Settings must be defined in your addon&#8217;s
+<tt class="docutils literal"><span class="pre">resources/settings.xml</span></tt> file.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>setting (str): Name of the setting to be retrieved.</dd>
+<dt>Returns:</dt>
+<dd>str containing the requested setting.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_stars">
+<tt class="descname">get_stars</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_stars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_stars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of stars for this addon.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_string">
+<tt class="descname">get_string</tt><big>(</big><em>string_id</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a localized string. Strings must be defined in your addon&#8217;s
+<tt class="docutils literal"><span class="pre">resources/language/[lang_name]/strings.xml</span></tt> file.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>string_id (int): id of the translated string to retrieve.</dd>
+<dt>Returns:</dt>
+<dd>str containing the localized requested string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_summary">
+<tt class="descname">get_summary</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon summary as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_type">
+<tt class="descname">get_type</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon summary as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt> 
+(eg. xbmc.python.pluginsource).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_version">
+<tt class="descname">get_version</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the addon version as defined in <tt class="docutils literal"><span class="pre">addon.xml</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.get_video_playlist">
+<tt class="descname">get_video_playlist</tt><big>(</big><em>new=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.get_video_playlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.get_video_playlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to return a video <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#t0mm0.common.addon.Addon.get_playlist" title="t0mm0.common.addon.Addon.get_playlist"><tt class="xref py py-meth docutils literal"><span class="pre">get_playlist()</span></tt></a></p>
+</div>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd>new (bool): If <tt class="xref docutils literal"><span class="pre">False</span></tt> (default), get the current video 
+<tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object. If <tt class="xref docutils literal"><span class="pre">True</span></tt> then return a new blank
+video <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt>.</dd>
+<dt>Returns:</dt>
+<dd>A <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playlist</span></tt> object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.log">
+<tt class="descname">log</tt><big>(</big><em>msg</em>, <em>level=2</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a string to the XBMC log file. The addon name is inserted into 
+the beginning of the message automatically to help you find relevent 
+messages in the log file.</p>
+<p>The available log levels are defined in the <tt class="xref py py-mod docutils literal"><span class="pre">xbmc</span></tt> module and are
+currently as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">xbmc</span><span class="o">.</span><span class="n">LOGDEBUG</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGERROR</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGFATAL</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGINFO</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGNONE</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGNOTICE</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGSEVERE</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">xbmc</span><span class="o">.</span><span class="n">LOGWARNING</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>msg (str or unicode): The message to be written to the log file.</dd>
+<dt>Kwargs:</dt>
+<dd>level (int): The XBMC log level to write at.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.log_debug">
+<tt class="descname">log_debug</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.log_debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.log_debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to write to the XBMC log file at the 
+<tt class="docutils literal"><span class="pre">xbmc.LOGDEBUG</span></tt> error level. Use this when you want to print out lots 
+of detailed information that is only usefull for debugging. This will 
+show up in the log only when debugging is enabled in the XBMC settings,
+and will be prefixed with &#8216;DEBUG:&#8217;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.log_error">
+<tt class="descname">log_error</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.log_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.log_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to write to the XBMC log file at the 
+<tt class="docutils literal"><span class="pre">xbmc.LOGERROR</span></tt> error level. Use when something has gone wrong in
+your addon code. This will show up in the log prefixed with &#8216;ERROR:&#8217;
+whether you have debugging switched on or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.log_notice">
+<tt class="descname">log_notice</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.log_notice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.log_notice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to write to the XBMC log file at the 
+<tt class="docutils literal"><span class="pre">xbmc.LOGNOTICE</span></tt> error level. Use for general log messages. This will
+show up in the log prefixed with &#8216;NOTICE:&#8217; whether you have debugging 
+switched on or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.parse_query">
+<tt class="descname">parse_query</tt><big>(</big><em>query</em>, <em>defaults={'mode': 'main'}</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.parse_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.parse_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a query string as used in a URL or passed to your addon by XBMC.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">addon</span><span class="o">.</span><span class="n">parse_query</span><span class="p">(</span><span class="s">&#39;name=test&amp;type=basic&#39;</span><span class="p">)</span>
+<span class="go">{&#39;mode&#39;: &#39;main&#39;, &#39;name&#39;: &#39;test&#39;, &#39;type&#39;: &#39;basic&#39;} </span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>query (str): A query string.</dd>
+<dt>Kwargs:</dt>
+<dd>defaults (dict): A dictionary containing key/value pairs parsed 
+from the query string. If a key is repeated in the query string
+its value will be a list containing all of that keys values.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.resolve_url">
+<tt class="descname">resolve_url</tt><big>(</big><em>stream_url</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.resolve_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.resolve_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tell XBMC that you have resolved a URL (or not!).</p>
+<p>This method should be called as follows:</p>
+<ol class="arabic simple">
+<li>The user selects a list item that has previously had <tt class="docutils literal"><span class="pre">isPlayable</span></tt>
+set (this is true for items added with <a class="reference internal" href="#t0mm0.common.addon.Addon.add_item" title="t0mm0.common.addon.Addon.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a>, 
+<a class="reference internal" href="#t0mm0.common.addon.Addon.add_music_item" title="t0mm0.common.addon.Addon.add_music_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_music_item()</span></tt></a> or <a class="reference internal" href="#t0mm0.common.addon.Addon.add_music_item" title="t0mm0.common.addon.Addon.add_music_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_music_item()</span></tt></a>)</li>
+<li>Your code resolves the item requested by the user to a media URL</li>
+<li>Your addon calls this method with the resolved URL</li>
+</ol>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>stream_url (str or <tt class="xref docutils literal"><span class="pre">False</span></tt>): If a string, tell XBMC that the 
+media URL ha been successfully resolved to stream_url. If <tt class="xref docutils literal"><span class="pre">False</span></tt> 
+or an empty string tell XBMC the resolving failed and pop up an 
+error messsage.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.show_error_dialog">
+<tt class="descname">show_error_dialog</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.show_error_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.show_error_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to show an XBMC dialog box with a single OK button
+and also write the message to the log file at the ERROR log level.</p>
+<p>The title of the dialog will be the addon&#8217;s name with the prefix 
+&#8216;Error: &#8216;.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Don&#8217;t forget that <cite>msg</cite> must be a list of strings and not just a 
+string even if you only want to display a single line!</p>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>msg (list of strings): The message to be displayed in the dialog. 
+Only the first 3 list items will be displayed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.show_ok_dialog">
+<tt class="descname">show_ok_dialog</tt><big>(</big><em>msg</em>, <em>title=None</em>, <em>is_error=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.show_ok_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.show_ok_dialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display an XBMC dialog with a message and a single &#8216;OK&#8217; button. The 
+message is also written to the XBMC log file at the appropriate log
+level.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Don&#8217;t forget that <cite>msg</cite> must be a list of strings and not just a 
+string even if you only want to display a single line!</p>
+</div>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">addon</span><span class="o">.</span><span class="n">show_ok_dialog</span><span class="p">([</span><span class="s">&#39;My message&#39;</span><span class="p">],</span> <span class="s">&#39;My Addon&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>msg (list of strings): The message to be displayed in the dialog. 
+Only the first 3 list items will be displayed.</dd>
+<dt>Kwargs:</dt>
+<dd><p class="first">title (str): String to be displayed as the title of the dialog box.
+Defaults to the addon name.</p>
+<p class="last">is_error (bool): If <tt class="xref docutils literal"><span class="pre">True</span></tt>, the log message will be written at 
+the ERROR log level, otherwise NOTICE will be used.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.unescape">
+<tt class="descname">unescape</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.unescape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.unescape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes HTML entities in a string.</p>
+<p>You can add more entities to the <tt class="docutils literal"><span class="pre">rep</span></tt> dictionary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>text (str): String to be cleaned.</dd>
+<dt>Returns:</dt>
+<dd>Cleaned string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.unescape_dict">
+<tt class="descname">unescape_dict</tt><big>(</big><em>d</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/addon.html#Addon.unescape_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.unescape_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls <a class="reference internal" href="#t0mm0.common.addon.Addon.unescape" title="t0mm0.common.addon.Addon.unescape"><tt class="xref py py-meth docutils literal"><span class="pre">unescape()</span></tt></a> on all values in a dictionary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>d (dict): A dictionary containing string values</dd>
+<dt>Returns:</dt>
+<dd>A dictionary with HTML entities removed from the values.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Module Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="net.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">t0mm0.common.net.Net</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/t0mm0.common/addon.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="net.html" title="t0mm0.common.net.Net"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Module Documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, t0mm0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>
