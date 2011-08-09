@@ -3,4 +3,5 @@
 ******************
 
 .. automodule:: urlresolver
+    :members:
 

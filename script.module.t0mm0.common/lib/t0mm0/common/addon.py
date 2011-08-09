@@ -334,6 +334,10 @@ class Addon:
         self.show_ok_dialog(msg, 'Error: %s' % self.get_name(), True)
 
 
+    def show_settings(self):
+        '''Shows the settings dialog for this addon.'''
+        self.addon.openSettings()
+
     def resolve_url(self, stream_url):
         '''
         Tell XBMC that you have resolved a URL (or not!).
