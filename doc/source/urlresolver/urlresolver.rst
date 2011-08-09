@@ -1,0 +1,6 @@
+******************
+:mod:`urlresolver`
+******************
+
+.. automodule:: urlresolver
+

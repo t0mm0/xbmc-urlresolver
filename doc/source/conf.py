@@ -18,6 +18,7 @@ import sys, os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../../script.module.t0mm0.common/lib'))
+sys.path.insert(0, os.path.abspath('../../script.module.urlresolver/lib'))
 sys.path.insert(0, os.path.abspath('./stubs'))
 
 # -- General configuration -----------------------------------------------------

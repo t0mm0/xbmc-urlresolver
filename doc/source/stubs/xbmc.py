@@ -23,3 +23,6 @@ __package__ = None
 __platform__ = 'XBOX'
 __version__ = '1.3'
 abortRequested = False
+
+def log(msg, level=0):
+    pass
