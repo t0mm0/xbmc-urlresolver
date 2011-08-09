@@ -15,7 +15,7 @@ class SeeonResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
     def get_media_url(self, web_url):
-        html = self.net.http_GET(web_url)
+        html = self.net.http_GET(web_url).content
         swf_url, play = re.search('data="(.+?)".+?file=(.+?)\.flv', 
                                   html, re.DOTALL).groups()
         rtmp = 'rtmp://live%d.seeon.tv/edge' % (random.randint(1, 10)) 

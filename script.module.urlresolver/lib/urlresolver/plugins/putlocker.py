@@ -33,17 +33,17 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
     
     def get_media_url(self, web_url):
         #find session_hash
-        html = self.net.http_GET(web_url)
+        html = self.net.http_GET(web_url).content
         session_hash = re.search('value="([0-9a-f]+?)" name="hash"', 
                                  html).group(1)
 
         #post session_hash
-        self.net.http_POST(web_url, data={'hash': session_hash, 
+        self.net.http_POST(web_url, form_data={'hash': session_hash, 
                                           'confirm': 'Continue as Free User'})
         
         #find download link
         xml_url = web_url.replace('/file/', '/get_file.php?stream=')
-        html = self.net.http_GET(xml_url)
+        html = self.net.http_GET(xml_url).content
         flv_url = re.search('url="(.+?)"', html).group(1)
         return flv_url
         

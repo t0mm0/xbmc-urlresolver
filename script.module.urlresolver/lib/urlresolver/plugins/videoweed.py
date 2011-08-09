@@ -33,7 +33,7 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
 
     def get_media_url(self, web_url):
         #grab stream address
-        html = self.net.http_GET(web_url)
+        html = self.net.http_GET(web_url).content
         stream_url = re.search('flashvars.file="(.+?)"', html).group(1)
         return stream_url
         

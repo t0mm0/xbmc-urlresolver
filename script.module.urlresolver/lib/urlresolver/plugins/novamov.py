@@ -33,14 +33,14 @@ class NovamovResolver(Plugin, UrlResolver, PluginSettings):
 
     def get_media_url(self, web_url):
         #find key
-        html = self.net.http_GET(web_url)
+        html = self.net.http_GET(web_url).content
         filename, filekey = re.search('flashvars.file="(.+?)".+?' + 
                                       'flashvars.filekey="(.+?)"', 
                                       html, re.DOTALL).groups()
         #get stream url from api
         api = 'http://www.novamov.com/api/player.api.php?key=%s&file=%s' % \
               (filekey, filename)
-        html = self.net.http_GET(api)
+        html = self.net.http_GET(api).content
         stream_url = re.search('url=(.+?)&title', html).group(1)
         return stream_url
         

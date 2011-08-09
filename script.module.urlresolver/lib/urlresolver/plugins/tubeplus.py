@@ -32,7 +32,7 @@ class TubeplusResolver(Plugin, UrlResolver):
 
     def get_media_url(self, web_url):
         #get list
-        html = self.net.http_GET(web_url)
+        html = self.net.http_GET(web_url).content
         r = '"none" href="(.+?)"'
         host_urls = []
         regex = re.finditer(r, html, re.DOTALL)
