@@ -7,3 +7,6 @@
 .. autoclass:: t0mm0.common.net.Net
    :members:
 
+.. autoclass:: t0mm0.common.net.HttpResponse
+   :members:
+

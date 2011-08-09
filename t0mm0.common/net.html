@@ -54,7 +54,179 @@
 <dl class="class">
 <dt id="t0mm0.common.net.Net">
 <em class="property">class </em><tt class="descclassname">t0mm0.common.net.</tt><tt class="descname">Net</tt><big>(</big><em>cookie_file=''</em>, <em>proxy=''</em>, <em>user_agent=''</em>, <em>http_debug=False</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This class wraps <a class="reference external" href="http://docs.python.org/library/urllib2.html#module-urllib2" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">urllib2</span></tt></a> and provides an easy way to make http
+requests while taking care of cookies, proxies, gzip compression and 
+character encoding.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">t0mm0.common.net</span> <span class="kn">import</span> <span class="n">Net</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">http_GET</span><span class="p">(</span><span class="s">&#39;http://xbmc.org&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd><p class="first">cookie_file (str): Full path to a file to be used to load and save
+cookies to.</p>
+<p>proxy (str): Proxy setting (eg. 
+<tt class="docutils literal"><span class="pre">'http://user:pass&#64;example.com:1234'</span></tt>)</p>
+<p>user_agent (str): String to use as the User Agent header. If not 
+supplied the class will use a default user agent (chrome)</p>
+<p class="last">http_debug (bool): Set <tt class="xref docutils literal"><span class="pre">True</span></tt> to have HTTP header info written to
+the XBMC log for all requests.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="t0mm0.common.net.Net.get_cookies">
+<tt class="descname">get_cookies</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.get_cookies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.get_cookies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns A dictionary containing all cookie information by domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.get_proxy">
+<tt class="descname">get_proxy</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.get_proxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.get_proxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns string containing proxy details.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.get_user_agent">
+<tt class="descname">get_user_agent</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.get_user_agent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.get_user_agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns user agent string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.http_GET">
+<tt class="descname">http_GET</tt><big>(</big><em>url</em>, <em>headers={}</em>, <em>compression=True</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.http_GET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.http_GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an HTTP GET request.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>url (str): The URL to GET.</dd>
+<dt>Kwargs:</dt>
+<dd><p class="first">headers (dict): A dictionary describing any headers you would like
+to add to the request. (eg. <tt class="docutils literal"><span class="pre">{'X-Test':</span> <span class="pre">'testing'}</span></tt>)</p>
+<p class="last">compression (bool): If <tt class="xref docutils literal"><span class="pre">True</span></tt> (default), try to use gzip 
+compression.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>An <a class="reference internal" href="#t0mm0.common.net.HttpResponse" title="t0mm0.common.net.HttpResponse"><tt class="xref py py-class docutils literal"><span class="pre">HttpResponse</span></tt></a> object containing headers and other 
+meta-information about the page and the page content.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.http_HEAD">
+<tt class="descname">http_HEAD</tt><big>(</big><em>url</em>, <em>headers={}</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.http_HEAD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.http_HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an HTTP HEAD request.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>url (str): The URL to GET.</dd>
+<dt>Kwargs:</dt>
+<dd>headers (dict): A dictionary describing any headers you would like
+to add to the request. (eg. <tt class="docutils literal"><span class="pre">{'X-Test':</span> <span class="pre">'testing'}</span></tt>)</dd>
+<dt>Returns:</dt>
+<dd>An <a class="reference internal" href="#t0mm0.common.net.HttpResponse" title="t0mm0.common.net.HttpResponse"><tt class="xref py py-class docutils literal"><span class="pre">HttpResponse</span></tt></a> object containing headers and other 
+meta-information about the page.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.http_POST">
+<tt class="descname">http_POST</tt><big>(</big><em>url</em>, <em>form_data</em>, <em>headers={}</em>, <em>compression=True</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.http_POST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.http_POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an HTTP POST request.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">url (str): The URL to POST.</p>
+<p class="last">form_data (dict): A dictionary of form data to POST.</p>
+</dd>
+<dt>Kwargs:</dt>
+<dd><p class="first">headers (dict): A dictionary describing any headers you would like
+to add to the request. (eg. <tt class="docutils literal"><span class="pre">{'X-Test':</span> <span class="pre">'testing'}</span></tt>)</p>
+<p class="last">compression (bool): If <tt class="xref docutils literal"><span class="pre">True</span></tt> (default), try to use gzip 
+compression.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>An <a class="reference internal" href="#t0mm0.common.net.HttpResponse" title="t0mm0.common.net.HttpResponse"><tt class="xref py py-class docutils literal"><span class="pre">HttpResponse</span></tt></a> object containing headers and other 
+meta-information about the page and the page content.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.save_cookies">
+<tt class="descname">save_cookies</tt><big>(</big><em>cookie_file</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.save_cookies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.save_cookies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves cookies to a file.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>cookie_file (str): Full path to a file to save cookies to.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.set_cookies">
+<tt class="descname">set_cookies</tt><big>(</big><em>cookie_file</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.set_cookies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.set_cookies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the cookie file and try to load cookies from it if it exists.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>cookie_file (str): Full path to a file to be used to load and save
+cookies to.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.set_proxy">
+<tt class="descname">set_proxy</tt><big>(</big><em>proxy</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.set_proxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.set_proxy" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Args:</dt>
+<dd>proxy (str): Proxy setting (eg. 
+<tt class="docutils literal"><span class="pre">'http://user:pass&#64;example.com:1234'</span></tt>)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.Net.set_user_agent">
+<tt class="descname">set_user_agent</tt><big>(</big><em>user_agent</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#Net.set_user_agent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.Net.set_user_agent" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Args:</dt>
+<dd>user_agent (str): String to use as the User Agent header.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="t0mm0.common.net.HttpResponse">
+<em class="property">class </em><tt class="descclassname">t0mm0.common.net.</tt><tt class="descname">HttpResponse</tt><big>(</big><em>response</em><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#HttpResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.HttpResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a resoponse from an HTTP request.</p>
+<p>The content is examined and every attempt is made to properly encode it to
+Unicode.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#t0mm0.common.net.Net.http_GET" title="t0mm0.common.net.Net.http_GET"><tt class="xref py py-meth docutils literal"><span class="pre">Net.http_GET()</span></tt></a>, <a class="reference internal" href="#t0mm0.common.net.Net.http_HEAD" title="t0mm0.common.net.Net.http_HEAD"><tt class="xref py py-meth docutils literal"><span class="pre">Net.http_HEAD()</span></tt></a> and <a class="reference internal" href="#t0mm0.common.net.Net.http_POST" title="t0mm0.common.net.Net.http_POST"><tt class="xref py py-meth docutils literal"><span class="pre">Net.http_POST()</span></tt></a> </p>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>response (<a class="reference external" href="http://docs.python.org/library/mimetools.html#mimetools.Message" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">mimetools.Message</span></tt></a>): The object returned by a call
+to <a class="reference external" href="http://docs.python.org/library/urllib2.html#urllib2.urlopen" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">urllib2.urlopen</span></tt></a>.</dd>
+</dl>
+<dl class="attribute">
+<dt id="t0mm0.common.net.HttpResponse.content">
+<tt class="descname">content</tt><a class="headerlink" href="#t0mm0.common.net.HttpResponse.content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unicode encoded string containing the body of the reposne.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.HttpResponse.get_headers">
+<tt class="descname">get_headers</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#HttpResponse.get_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.HttpResponse.get_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a List of headers returned by the server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.net.HttpResponse.get_url">
+<tt class="descname">get_url</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/t0mm0/common/net.html#HttpResponse.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.net.HttpResponse.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the URL of the resource retrieved, commonly used to determine if 
+a redirect was followed.</p>
+</dd></dl>
+
+</dd></dl>
 
 </div>
 
