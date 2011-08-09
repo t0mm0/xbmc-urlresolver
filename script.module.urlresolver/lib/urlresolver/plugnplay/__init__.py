@@ -75,6 +75,5 @@ def load_plugins():
     #Remove ".py" for proper importing
     modules = [basename(f[:-3]) for f in py_files]
     for mod_name in modules:
-      imported_module = __import__(mod_name, globals=globals(),
-                                   locals=locals())
+      imported_module = __import__(mod_name, globals(), locals())
       sys.modules[mod_name] = imported_module
