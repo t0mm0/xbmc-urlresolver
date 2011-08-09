@@ -9,15 +9,9 @@ Welcome to XBMC Helper Modules's documentation!
 Contents:
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     
     tutorials/index
-    t0mm0.common/index
+    moduledocs
     
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 

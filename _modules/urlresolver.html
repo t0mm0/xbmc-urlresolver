@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>urlresolver &mdash; XBMC Helper Modules v0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="XBMC Helper Modules v0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for urlresolver</h1><div class="highlight"><pre>
+<span class="c">#    urlresolver XBMC Addon</span>
+<span class="c">#    Copyright (C) 2011 t0mm0</span>
+<span class="c">#</span>
+<span class="c">#    This program is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    This program is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This module provides the main API for accessing the urlresolver features.</span>
+
+<span class="sd">For most cases you probably want to use :func:`urlresolver.resolve`.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">common</span>
+<span class="kn">import</span> <span class="nn">plugnplay</span>
+<span class="kn">from</span> <span class="nn">plugnplay.interfaces</span> <span class="kn">import</span> <span class="n">UrlResolver</span>
+<span class="kn">from</span> <span class="nn">plugnplay.interfaces</span> <span class="kn">import</span> <span class="n">PluginSettings</span>
+<span class="kn">from</span> <span class="nn">plugnplay.interfaces</span> <span class="kn">import</span> <span class="n">SiteAuth</span>
+
+<span class="c">#load all available plugins</span>
+<span class="n">plugnplay</span><span class="o">.</span><span class="n">set_plugin_dirs</span><span class="p">(</span><span class="n">common</span><span class="o">.</span><span class="n">plugins_path</span><span class="p">)</span>
+<span class="n">plugnplay</span><span class="o">.</span><span class="n">load_plugins</span><span class="p">()</span>
+
+<div class="viewcode-block" id="resolve"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.resolve">[docs]</a><span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resolve a web page to a media stream.</span>
+<span class="sd">    </span>
+<span class="sd">    It is usually as simple as::</span>
+<span class="sd">        </span>
+<span class="sd">        import urlresolver</span>
+<span class="sd">        media_url = urlresolver.resolve(web_url) </span>
+<span class="sd">        </span>
+<span class="sd">    where ``web_url`` is the address of a web page which is associated with a </span>
+<span class="sd">    media file and ``media_url`` is the direct URL to the media. </span>
+
+<span class="sd">    Behind the scenes, :mod:`urlresolver` will check each of the available </span>
+<span class="sd">    resolver plugins to see if they accept the ``web_url`` in priority order </span>
+<span class="sd">    (lowest priotity number first). When it finds a plugin willing to resolve </span>
+<span class="sd">    the URL, it passes the ``web_url`` to the plugin and returns the direct URL </span>
+<span class="sd">    to the media file, or ``False`` if it was not possible to resolve.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        web_url (str): A URL to a web page associated with a piece of media</span>
+<span class="sd">        content.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        If the ``web_url`` could be resolved, a string containing the direct </span>
+<span class="sd">        URL to the media file, if not, returns ``False``.    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">imp</span> <span class="o">=</span> <span class="n">find_resolver</span><span class="p">(</span><span class="n">web_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">imp</span><span class="p">:</span>
+        <span class="n">common</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">log_notice</span><span class="p">(</span><span class="s">&#39;resolving using </span><span class="si">%s</span><span class="s"> plugin&#39;</span> <span class="o">%</span> <span class="n">imp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">SiteAuth</span> <span class="ow">in</span> <span class="n">imp</span><span class="o">.</span><span class="n">implements</span><span class="p">:</span>
+            <span class="n">common</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">log_debug</span><span class="p">(</span><span class="s">&#39;logging in&#39;</span><span class="p">)</span>
+            <span class="n">imp</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">imp</span><span class="o">.</span><span class="n">get_media_url</span><span class="p">(</span><span class="n">web_url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">False</span>
+    </div>
+<div class="viewcode-block" id="filter_urls"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.filter_urls">[docs]</a><span class="k">def</span> <span class="nf">filter_urls</span><span class="p">(</span><span class="n">urls</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Takes a list of URLs to web pages that are thought to be associated with </span>
+<span class="sd">    media content. If no resolver plugins exist to resolve a URL to a link to a</span>
+<span class="sd">    media file it is removed from the list.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        urls (list of str): A list of URLs thought to be associated with media</span>
+<span class="sd">        content.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        The same list of URLs but with any that can&#39;t be resolved by a resolver </span>
+<span class="sd">        plugin removed.</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">:</span>
+        <span class="n">imp</span> <span class="o">=</span> <span class="n">find_resolver</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">imp</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+        </div>
+<div class="viewcode-block" id="find_resolver"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.find_resolver">[docs]</a><span class="k">def</span> <span class="nf">find_resolver</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Finds the first resolver that says it can resolve the given URL to a media </span>
+<span class="sd">    file. Note that it might not actually be able to, but it advertises the</span>
+<span class="sd">    fact that it can.</span>
+<span class="sd">    </span>
+<span class="sd">    .. note::</span>
+<span class="sd">    </span>
+<span class="sd">        You probably won&#39;t need to access this function for normal usage - just</span>
+<span class="sd">        use :func:`urlresolver.resolve`.</span>
+<span class="sd">        </span>
+<span class="sd">    Args:</span>
+<span class="sd">        web_url (str): A URL to a web page associated with a piece of media</span>
+<span class="sd">        content.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        An instance of a class that implements </span>
+<span class="sd">        :class:`urlresolver.plugnplay.interfaces.UrlResolver` and advertises</span>
+<span class="sd">        that it can resolve the given ``web_url``.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">UrlResolver</span><span class="o">.</span><span class="n">implementors</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">imp</span><span class="o">.</span><span class="n">valid_url</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">imp</span>
+    <span class="k">return</span> <span class="bp">False</span>
+    
+        </div>
+<div class="viewcode-block" id="display_settings"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.display_settings">[docs]</a><span class="k">def</span> <span class="nf">display_settings</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Opens the settings dialog for :mod:`urlresolver` and its plugins.</span>
+<span class="sd">    </span>
+<span class="sd">    This can be called from your addon to provide access to global </span>
+<span class="sd">    :mod:`urlresolver` settings. Each resolver plugin is also capable of </span>
+<span class="sd">    exposing settings.</span>
+<span class="sd">    </span>
+<span class="sd">    .. note::</span>
+<span class="sd">    </span>
+<span class="sd">        All changes made to these setting by the user are global and will </span>
+<span class="sd">        affect any addon that uses :mod:`urlresolver` and its plugins.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_update_settings_xml</span><span class="p">()</span>
+    <span class="n">common</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">show_settings</span><span class="p">()</span>
+        </div>
+<span class="k">def</span> <span class="nf">_update_settings_xml</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This function writes a new ``resources/settings.xml`` file which contains</span>
+<span class="sd">    all settings for this addon and its plugins.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">common</span><span class="o">.</span><span class="n">settings_file</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">common</span><span class="o">.</span><span class="n">settings_file</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;&lt;settings&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>    
+            <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">PluginSettings</span><span class="o">.</span><span class="n">implementors</span><span class="p">():</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">imp</span><span class="o">.</span><span class="n">get_settings_xml</span><span class="p">())</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;&lt;/settings&gt;&#39;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span>
+    <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+        <span class="n">common</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">log_error</span><span class="p">(</span><span class="s">&#39;error writing &#39;</span> <span class="o">+</span> <span class="n">common</span><span class="o">.</span><span class="n">settings_file</span><span class="p">)</span>
+
+<span class="c">#make sure settings.xml is up to date</span>
+<span class="n">_update_settings_xml</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, t0mm0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

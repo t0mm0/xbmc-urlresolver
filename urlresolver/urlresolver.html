@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>urlresolver &mdash; XBMC Helper Modules v0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="XBMC Helper Modules v0.1.0 documentation" href="../index.html" />
+    <link rel="up" title="script.module.urlresolver Documentation" href="index.html" />
+    <link rel="next" title="urlresolver.plugnplay.interfaces" href="interfaces.html" />
+    <link rel="prev" title="script.module.urlresolver Documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="interfaces.html" title="urlresolver.plugnplay.interfaces"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="script.module.urlresolver Documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../moduledocs.html" >Module documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">script.module.urlresolver Documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-urlresolver">
+<span id="urlresolver"></span><h1><a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a><a class="headerlink" href="#module-urlresolver" title="Permalink to this headline">¶</a></h1>
+<p>This module provides the main API for accessing the urlresolver features.</p>
+<p>For most cases you probably want to use <a class="reference internal" href="#urlresolver.resolve" title="urlresolver.resolve"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.resolve()</span></tt></a>.</p>
+<dl class="function">
+<dt id="urlresolver.display_settings">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">display_settings</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/urlresolver.html#display_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.display_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the settings dialog for <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
+<p>This can be called from your addon to provide access to global 
+<a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> settings. Each resolver plugin is also capable of 
+exposing settings.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All changes made to these setting by the user are global and will 
+affect any addon that uses <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="urlresolver.filter_urls">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">filter_urls</tt><big>(</big><em>urls</em><big>)</big><a class="reference internal" href="../_modules/urlresolver.html#filter_urls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.filter_urls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of URLs to web pages that are thought to be associated with 
+media content. If no resolver plugins exist to resolve a URL to a link to a
+media file it is removed from the list.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>urls (list of str): A list of URLs thought to be associated with media
+content.</dd>
+<dt>Returns:</dt>
+<dd>The same list of URLs but with any that can&#8217;t be resolved by a resolver 
+plugin removed.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="urlresolver.find_resolver">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">find_resolver</tt><big>(</big><em>web_url</em><big>)</big><a class="reference internal" href="../_modules/urlresolver.html#find_resolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.find_resolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the first resolver that says it can resolve the given URL to a media 
+file. Note that it might not actually be able to, but it advertises the
+fact that it can.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You probably won&#8217;t need to access this function for normal usage - just
+use <a class="reference internal" href="#urlresolver.resolve" title="urlresolver.resolve"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.resolve()</span></tt></a>.</p>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>web_url (str): A URL to a web page associated with a piece of media
+content.</dd>
+<dt>Returns:</dt>
+<dd>An instance of a class that implements 
+<tt class="xref py py-class docutils literal"><span class="pre">urlresolver.plugnplay.interfaces.UrlResolver</span></tt> and advertises
+that it can resolve the given <tt class="docutils literal"><span class="pre">web_url</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="urlresolver.resolve">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">resolve</tt><big>(</big><em>web_url</em><big>)</big><a class="reference internal" href="../_modules/urlresolver.html#resolve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.resolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolve a web page to a media stream.</p>
+<p>It is usually as simple as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">urlresolver</span>
+<span class="n">media_url</span> <span class="o">=</span> <span class="n">urlresolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">web_url</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">web_url</span></tt> is the address of a web page which is associated with a 
+media file and <tt class="docutils literal"><span class="pre">media_url</span></tt> is the direct URL to the media.</p>
+<p>Behind the scenes, <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> will check each of the available 
+resolver plugins to see if they accept the <tt class="docutils literal"><span class="pre">web_url</span></tt> in priority order 
+(lowest priotity number first). When it finds a plugin willing to resolve 
+the URL, it passes the <tt class="docutils literal"><span class="pre">web_url</span></tt> to the plugin and returns the direct URL 
+to the media file, or <tt class="xref docutils literal"><span class="pre">False</span></tt> if it was not possible to resolve.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>web_url (str): A URL to a web page associated with a piece of media
+content.</dd>
+<dt>Returns:</dt>
+<dd>If the <tt class="docutils literal"><span class="pre">web_url</span></tt> could be resolved, a string containing the direct 
+URL to the media file, if not, returns <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">script.module.urlresolver Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="interfaces.html"
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">urlresolver.plugnplay.interfaces</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/urlresolver/urlresolver.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="interfaces.html" title="urlresolver.plugnplay.interfaces"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="script.module.urlresolver Documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../moduledocs.html" >Module documentation</a> &raquo;</li>
+          <li><a href="index.html" >script.module.urlresolver Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, t0mm0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>
