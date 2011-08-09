@@ -60,7 +60,7 @@ elif mode == 'tv':
         letter = addon.queries.get('letter', False)
         if letter:
             url = 'http://tubeplus.me/browse/tv-shows/All_Genres/%s/' % letter
-            html = net.http_GET(url)
+            html = net.http_GET(url).content
             r = '<div class="list_item.+?src="(.+?)".+?<a class="plot".+?' + \
                 'href="(.+?)".+?<b>(.+?)<\/b>.+?<\/b>(.+?)<'
             regex = re.finditer(r, html, re.DOTALL)
@@ -85,7 +85,7 @@ elif mode == 'tv':
 
 elif mode == 'series':
     url = addon.queries['url']
-    html = net.http_GET(url)
+    html = net.http_GET(url).content
     r = 'javascript:show_season\("(\d+?)","(.+?)"\)'
     regex = re.finditer(r, html, re.DOTALL)
     for s in regex:
