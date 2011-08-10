@@ -52,18 +52,234 @@
             
   <div class="section" id="module-urlresolver.plugnplay.interfaces">
 <span id="urlresolver-plugnplay-interfaces"></span><h1><a class="reference internal" href="#module-urlresolver.plugnplay.interfaces"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver.plugnplay.interfaces</span></tt></a><a class="headerlink" href="#module-urlresolver.plugnplay.interfaces" title="Permalink to this headline">¶</a></h1>
-<p>urlresolver XBMC Addon
-Copyright (C) 2011 t0mm0</p>
-<p>This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.</p>
-<p>You should have received a copy of the GNU General Public License
-along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<p>This module defines several interfaces that you can implement when writing 
+your URL resolving plugin.</p>
+<ul class="simple">
+<li><a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver" title="urlresolver.plugnplay.interfaces.UrlResolver"><tt class="xref py py-class docutils literal"><span class="pre">UrlResolver</span></tt></a>: Resolves URLs. All plugins should implement this.</li>
+<li><a class="reference internal" href="#urlresolver.plugnplay.interfaces.SiteAuth" title="urlresolver.plugnplay.interfaces.SiteAuth"><tt class="xref py py-class docutils literal"><span class="pre">SiteAuth</span></tt></a>: Handles logging in to the file hoster.</li>
+<li><a class="reference internal" href="#urlresolver.plugnplay.interfaces.PluginSettings" title="urlresolver.plugnplay.interfaces.PluginSettings"><tt class="xref py py-class docutils literal"><span class="pre">PluginSettings</span></tt></a>: Allows a plugin to save and retrieve settings.</li>
+</ul>
+<p>Interfaces you wish to implement must be included in the inheritance list of
+you class definition, as well as added to the <tt class="docutils literal"><span class="pre">implements</span></tt> attribute of your
+class.</p>
+<p>For example, if you want to implement all the available interfaces, your plugin 
+should be defined as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyPluginResolver</span><span class="p">(</span><span class="n">Plugin</span><span class="p">,</span> <span class="n">UrlResolver</span><span class="p">,</span> <span class="n">SiteAuth</span><span class="p">,</span> <span class="n">PluginSettings</span><span class="p">):</span>
+    <span class="n">implements</span> <span class="o">=</span> <span class="p">[</span><span class="n">UrlResolver</span><span class="p">,</span> <span class="n">SiteAuth</span><span class="p">,</span> <span class="n">PluginSettings</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="urlresolver.plugnplay.interfaces.not_implemented">
+<tt class="descclassname">urlresolver.plugnplay.interfaces.</tt><tt class="descname">not_implemented</tt><big>(</big><em>obj=None</em><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#not_implemented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.not_implemented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this instead of <tt class="docutils literal"><span class="pre">pass</span></tt> for the body of abstract methods.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver">
+<em class="property">class </em><tt class="descclassname">urlresolver.plugnplay.interfaces.</tt><tt class="descname">UrlResolver</tt><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#UrlResolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your plugin needs to implement the abstract methods in this interface if
+it wants to be able to resolve URLs (which is probably all plugins!)</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You <strong>MUST</strong> override <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url" title="urlresolver.plugnplay.interfaces.UrlResolver.get_media_url"><tt class="xref py py-meth docutils literal"><span class="pre">get_media_url()</span></tt></a> and <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.valid_url" title="urlresolver.plugnplay.interfaces.UrlResolver.valid_url"><tt class="xref py py-meth docutils literal"><span class="pre">valid_url()</span></tt></a> as 
+well as <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.name" title="urlresolver.plugnplay.interfaces.UrlResolver.name"><tt class="xref py py-attr docutils literal"><span class="pre">name</span></tt></a>.</p>
+</div>
+<p>There are also a couple of utlity methods which you should probably not 
+override.</p>
+<dl class="attribute">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver.name">
+<tt class="descname">name</tt><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>(str) A human readable name for your plugin.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver.priority">
+<tt class="descname">priority</tt><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver.priority" title="Permalink to this definition">¶</a></dt>
+<dd><p>(int) The order in which plugins will be tried. Lower numbers are tried
+first.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver.get_media_url">
+<tt class="descname">get_media_url</tt><big>(</big><em>web_url</em><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#UrlResolver.get_media_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>The part of your plugin that does the actual resolving. You must 
+implement this method.</p>
+<p>Ths method will be passed the URL ofa web page associated with a media
+file. It will only get called if your plugin&#8217;s <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.valid_url" title="urlresolver.plugnplay.interfaces.UrlResolver.valid_url"><tt class="xref py py-meth docutils literal"><span class="pre">valid_url()</span></tt></a> method
+has returned <tt class="xref docutils literal"><span class="pre">True</span></tt> so it will definitely be a URL for the file host
+(or hosts) your plugin is capable of resolving (assuming you implemented
+<a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.valid_url" title="urlresolver.plugnplay.interfaces.UrlResolver.valid_url"><tt class="xref py py-meth docutils literal"><span class="pre">valid_url()</span></tt></a> correctly!)</p>
+<p>The URL you return must be something that is playable by XBMC.</p>
+<p>If for any reason you cannot resolve the URL (eg. the file has been 
+removed) then return <tt class="xref docutils literal"><span class="pre">False</span></tt> instead.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>web_url (str): A URL to a web page associated with a piece of media
+content.</dd>
+<dt>Returns:</dt>
+<dd>If the <tt class="docutils literal"><span class="pre">web_url</span></tt> could be resolved, a string containing the direct 
+URL to the media file, if not, returns <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver.valid_url">
+<tt class="descname">valid_url</tt><big>(</big><em>web_url</em><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#UrlResolver.valid_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver.valid_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether this plugin is capable of resolving this URL. You must 
+implement this method.</p>
+<p>The usual way of implementing this will be using a regular expression
+which returns <tt class="xref docutils literal"><span class="pre">True</span></tt> if the URL matches the pattern (or patterns)
+used by the file host your plugin can resolve URLs for.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>web_url (str): A URL to a web page associated with a piece of media
+content.</dd>
+<dt>Returns:</dt>
+<dd><tt class="xref docutils literal"><span class="pre">True</span></tt> if this plugin thinks it can resolve the <tt class="docutils literal"><span class="pre">web_url</span></tt>, 
+otherwise <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver.get_media_urls">
+<tt class="descname">get_media_urls</tt><big>(</big><em>web_urls</em><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#UrlResolver.get_media_urls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver.get_media_urls" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not override this method!</p>
+</div>
+<p>Calls <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url" title="urlresolver.plugnplay.interfaces.UrlResolver.get_media_url"><tt class="xref py py-meth docutils literal"><span class="pre">get_media_url()</span></tt></a> on each URL in a list. May not be very
+useful!</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>web_urls (str): A list of URLs to web pages associated with media
+content.</dd>
+<dt>Returns:</dt>
+<dd>A list of results - if the <tt class="docutils literal"><span class="pre">web_url</span></tt> could be resolved, a string 
+containing the direct URL to the media file, if not, returns 
+<tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.UrlResolver.filter_urls">
+<tt class="descname">filter_urls</tt><big>(</big><em>web_urls</em><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#UrlResolver.filter_urls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.UrlResolver.filter_urls" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not override this method!</p>
+</div>
+<p>Calls <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url" title="urlresolver.plugnplay.interfaces.UrlResolver.get_media_url"><tt class="xref py py-meth docutils literal"><span class="pre">get_media_url()</span></tt></a> on each URL in a list. May not be very
+useful!</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>web_urls (str): A list of URLs to web pages associated with media
+content.</dd>
+<dt>Returns:</dt>
+<dd>A list of results - <tt class="xref docutils literal"><span class="pre">True</span></tt> if this plugin thinks it can resolve 
+the <tt class="docutils literal"><span class="pre">web_url</span></tt>, otherwise <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="urlresolver.plugnplay.interfaces.SiteAuth">
+<em class="property">class </em><tt class="descclassname">urlresolver.plugnplay.interfaces.</tt><tt class="descname">SiteAuth</tt><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#SiteAuth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.SiteAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your plugin should implement this interface if the file hoster you are 
+resolving URLs for requires authentication. You may also implement it if
+the file hoster supports authentication but doesn&#8217;t require it.</p>
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.SiteAuth.login">
+<tt class="descname">login</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#SiteAuth.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.SiteAuth.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method should perform the login to the file host site. This will 
+normally involve posting credentials (stored in your plugin&#8217;s settings)
+to a web page which will set cookies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="urlresolver.plugnplay.interfaces.PluginSettings">
+<em class="property">class </em><tt class="descclassname">urlresolver.plugnplay.interfaces.</tt><tt class="descname">PluginSettings</tt><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#PluginSettings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.PluginSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Your plugin needs to implement this interface if your plugin needs to store
+settings.</p>
+<p>Plugin settings are global. This means that the user only needs to set your 
+plugin settings (such as username and password) once and they will be 
+available when your plugin is called from any XBMC addon.</p>
+<p>Addons can display all <a class="reference internal" href="urlresolver.html#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> settings including those of all
+available plugins by calling <tt class="xref py py-func docutils literal"><span class="pre">urlresolver.show_settings()</span></tt>.</p>
+<p>If you only want a &#8216;priority&#8217; setting for your plugin, all you need to do
+is add this interface to he classes your plugin inherits from and to the 
+<tt class="docutils literal"><span class="pre">implements</span></tt> attribute without overriding anything.</p>
+<p>To do this your class should begin:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyPluginResolver</span><span class="p">(</span><span class="n">Plugin</span><span class="p">,</span> <span class="n">UrlResolver</span><span class="p">,</span> <span class="n">PluginSettings</span><span class="p">):</span>
+    <span class="n">implements</span> <span class="o">=</span> <span class="p">[</span><span class="n">UrlResolver</span><span class="p">,</span> <span class="n">PluginSettings</span><span class="p">]</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;myplugin&quot;</span>
+</pre></div>
+</div>
+<p>If you want custom settings you mut override <a class="reference internal" href="#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml" title="urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml"><tt class="xref py py-meth docutils literal"><span class="pre">get_settings_xml()</span></tt></a>.</p>
+<p>You should never override <a class="reference internal" href="#urlresolver.plugnplay.interfaces.PluginSettings.get_setting" title="urlresolver.plugnplay.interfaces.PluginSettings.get_setting"><tt class="xref py py-meth docutils literal"><span class="pre">get_setting()</span></tt></a>.</p>
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml">
+<tt class="descname">get_settings_xml</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#PluginSettings.get_settings_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method should return XML which describes the settings you would 
+like for your plugin. You should make sure that the <tt class="docutils literal"><span class="pre">id</span></tt> starts
+with your plugins class name (which can be found using 
+<tt class="xref py py-attr docutils literal"><span class="pre">self.__class__.__name__</span></tt>) followed by an underscore.</p>
+<p>For example, the following is the code included in the default 
+implementation and adds a priority setting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">xml</span> <span class="o">=</span> <span class="s">&#39;&lt;setting id=&quot;</span><span class="si">%s</span><span class="s">_priority&quot; &#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+<span class="n">xml</span> <span class="o">+=</span> <span class="s">&#39;type=&quot;number&quot; label=&quot;Priority&quot; default=&quot;100&quot;/&gt;</span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="k">return</span> <span class="n">xml</span> 
+</pre></div>
+</div>
+<p>Although of course you know the name of your plugin(!) so you can just 
+write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">xml</span> <span class="o">=</span> <span class="s">&#39;&lt;setting id=&quot;MyPlugin_priority&quot; &#39;</span>
+<span class="n">xml</span> <span class="o">+=</span> <span class="s">&#39;type=&quot;number&quot; label=&quot;Priority&quot; default=&quot;100&quot;/&gt;</span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="k">return</span> <span class="n">xml</span> 
+</pre></div>
+</div>
+<p>The settings category will be your plugin&#8217;s <a class="reference internal" href="#urlresolver.plugnplay.interfaces.UrlResolver.name" title="urlresolver.plugnplay.interfaces.UrlResolver.name"><tt class="xref py py-attr docutils literal"><span class="pre">UrlResolver.name</span></tt></a>.</p>
+<p>I would link to some documentation of <tt class="docutils literal"><span class="pre">resources/settings.xml</span></tt> but
+I can&#8217;t find any. Suggestions welcome!</p>
+<p>Override this method if you want your plugin to have more settings than
+just &#8216;priority&#8217;. If you do and still want the priority setting you 
+should include the priority code as above in your method.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A string containing XML which would be valid in 
+<tt class="docutils literal"><span class="pre">resources/settings.xml</span></tt></dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.plugnplay.interfaces.PluginSettings.get_setting">
+<tt class="descname">get_setting</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="../_modules/urlresolver/plugnplay/interfaces.html#PluginSettings.get_setting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.plugnplay.interfaces.PluginSettings.get_setting" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not override this method!</p>
+</div>
+<p>Gets a setting that you have previously defined by overriding the 
+<a class="reference internal" href="#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml" title="urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml"><tt class="xref py py-meth docutils literal"><span class="pre">get_settings_xml()</span></tt></a> method.</p>
+<p>When requesting a setting using this method, you should not include
+the <tt class="docutils literal"><span class="pre">MyPlugin_</span></tt> prefix of the setting id you defined in 
+<a class="reference internal" href="#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml" title="urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml"><tt class="xref py py-meth docutils literal"><span class="pre">get_settings_xml()</span></tt></a>.</p>
+<p>For example, if you defined a setting with an id of 
+<tt class="docutils literal"><span class="pre">MyPlugin_username</span></tt>, you would get the setting from your plugin 
+using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>key (str): The name of the setting to retrieve (without the prefix).</dd>
+<dt>Returns:</dt>
+<dd>A string containing the value stored for the requested setting.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

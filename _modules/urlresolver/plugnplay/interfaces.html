@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>urlresolver.plugnplay.interfaces &mdash; XBMC Helper Modules v0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="XBMC Helper Modules v0.1.0 documentation" href="../../../index.html" />
+    <link rel="up" title="urlresolver" href="../../urlresolver.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../urlresolver.html" accesskey="U">urlresolver</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for urlresolver.plugnplay.interfaces</h1><div class="highlight"><pre>
+<span class="c">#    urlresolver XBMC Addon</span>
+<span class="c">#    Copyright (C) 2011 t0mm0</span>
+<span class="c">#</span>
+<span class="c">#    This program is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    This program is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">This module defines several interfaces that you can implement when writing </span>
+<span class="sd">your URL resolving plugin.</span>
+
+<span class="sd">* :class:`UrlResolver`: Resolves URLs. All plugins should implement this.</span>
+<span class="sd">* :class:`SiteAuth`: Handles logging in to the file hoster.</span>
+<span class="sd">* :class:`PluginSettings`: Allows a plugin to save and retrieve settings.</span>
+
+<span class="sd">Interfaces you wish to implement must be included in the inheritance list of</span>
+<span class="sd">you class definition, as well as added to the ``implements`` attribute of your</span>
+<span class="sd">class.</span>
+
+<span class="sd">For example, if you want to implement all the available interfaces, your plugin </span>
+<span class="sd">should be defined as follows::</span>
+
+<span class="sd">        class MyPluginResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):</span>
+<span class="sd">            implements = [UrlResolver, SiteAuth, PluginSettings]</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">urlresolver</span>
+<span class="kn">from</span> <span class="nn">urlresolver</span> <span class="kn">import</span> <span class="n">common</span>
+<span class="kn">from</span> <span class="nn">urlresolver.plugnplay</span> <span class="kn">import</span> <span class="n">Interface</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">def</span> <span class="nf">_function_id</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">nFramesUp</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create a string naming the function n frames up on the stack.&#39;&#39;&#39;</span>
+	<span class="n">fr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">_getframe</span><span class="p">(</span><span class="n">nFramesUp</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">co</span> <span class="o">=</span> <span class="n">fr</span><span class="o">.</span><span class="n">f_code</span>
+	<span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="not_implemented"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.not_implemented">[docs]</a><span class="k">def</span> <span class="nf">not_implemented</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Use this instead of ``pass`` for the body of abstract methods.&#39;&#39;&#39;</span>
+	<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Unimplemented abstract method: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">_function_id</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="UrlResolver"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver">[docs]</a><span class="k">class</span> <span class="nc">UrlResolver</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Your plugin needs to implement the abstract methods in this interface if</span>
+<span class="sd">    it wants to be able to resolve URLs (which is probably all plugins!)</span>
+<span class="sd">    </span>
+<span class="sd">    .. note:: </span>
+<span class="sd">    </span>
+<span class="sd">        You **MUST** override :meth:`get_media_url` and :meth:`valid_url` as </span>
+<span class="sd">        well as :attr:`name`.</span>
+<span class="sd">    </span>
+<span class="sd">    There are also a couple of utlity methods which you should probably not </span>
+<span class="sd">    override.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;override_me&#39;</span>
+    <span class="sd">&#39;&#39;&#39;(str) A human readable name for your plugin.&#39;&#39;&#39;</span>
+
+    <span class="n">priority</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    (int) The order in which plugins will be tried. Lower numbers are tried </span>
+<span class="sd">    first.</span>
+<span class="sd">    &#39;&#39;&#39;</span>    
+    
+    
+<div class="viewcode-block" id="UrlResolver.get_media_url"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_url</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        The part of your plugin that does the actual resolving. You must </span>
+<span class="sd">        implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        Ths method will be passed the URL ofa web page associated with a media</span>
+<span class="sd">        file. It will only get called if your plugin&#39;s :meth:`valid_url` method</span>
+<span class="sd">        has returned ``True`` so it will definitely be a URL for the file host</span>
+<span class="sd">        (or hosts) your plugin is capable of resolving (assuming you implemented</span>
+<span class="sd">        :meth:`valid_url` correctly!)</span>
+<span class="sd">        </span>
+<span class="sd">        The URL you return must be something that is playable by XBMC.</span>
+<span class="sd">        </span>
+<span class="sd">        If for any reason you cannot resolve the URL (eg. the file has been </span>
+<span class="sd">        removed) then return ``False`` instead.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            web_url (str): A URL to a web page associated with a piece of media</span>
+<span class="sd">            content.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            If the ``web_url`` could be resolved, a string containing the direct </span>
+<span class="sd">            URL to the media file, if not, returns ``False``.    </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">not_implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+</div>
+<div class="viewcode-block" id="UrlResolver.valid_url"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.valid_url">[docs]</a>    <span class="k">def</span> <span class="nf">valid_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_url</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Determine whether this plugin is capable of resolving this URL. You must </span>
+<span class="sd">        implement this method.</span>
+<span class="sd">        </span>
+<span class="sd">        The usual way of implementing this will be using a regular expression</span>
+<span class="sd">        which returns ``True`` if the URL matches the pattern (or patterns)</span>
+<span class="sd">        used by the file host your plugin can resolve URLs for. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            web_url (str): A URL to a web page associated with a piece of media</span>
+<span class="sd">            content.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``True`` if this plugin thinks it can resolve the ``web_url``, </span>
+<span class="sd">            otherwise ``False``.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">not_implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+</div>
+<div class="viewcode-block" id="UrlResolver.get_media_urls"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.get_media_urls">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_urls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        .. warning::</span>
+<span class="sd">        </span>
+<span class="sd">            Do not override this method!</span>
+<span class="sd">            </span>
+<span class="sd">        Calls :meth:`get_media_url` on each URL in a list. May not be very</span>
+<span class="sd">        useful!</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            web_urls (str): A list of URLs to web pages associated with media</span>
+<span class="sd">            content.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of results - if the ``web_url`` could be resolved, a string </span>
+<span class="sd">            containing the direct URL to the media file, if not, returns </span>
+<span class="sd">            ``False``.    </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ret_val</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">web_url</span> <span class="ow">in</span> <span class="n">web_urls</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_media_url</span><span class="p">(</span><span class="n">web_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+                <span class="n">ret_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret_val</span>
+    
+</div>
+<div class="viewcode-block" id="UrlResolver.filter_urls"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.filter_urls">[docs]</a>    <span class="k">def</span> <span class="nf">filter_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_urls</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        .. warning::</span>
+<span class="sd">        </span>
+<span class="sd">            Do not override this method!</span>
+<span class="sd">            </span>
+<span class="sd">        Calls :meth:`get_media_url` on each URL in a list. May not be very</span>
+<span class="sd">        useful!</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            web_urls (str): A list of URLs to web pages associated with media</span>
+<span class="sd">            content.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of results - ``True`` if this plugin thinks it can resolve </span>
+<span class="sd">            the ``web_url``, otherwise ``False``.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">ret_val</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">web_url</span> <span class="ow">in</span> <span class="n">web_urls</span><span class="p">:</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_url</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="n">ret_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">web_url</span><span class="p">)</span>
+        <span class="k">return</span>
+
+
+</div></div>
+<div class="viewcode-block" id="SiteAuth"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.SiteAuth">[docs]</a><span class="k">class</span> <span class="nc">SiteAuth</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Your plugin should implement this interface if the file hoster you are </span>
+<span class="sd">    resolving URLs for requires authentication. You may also implement it if</span>
+<span class="sd">    the file hoster supports authentication but doesn&#39;t require it.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="SiteAuth.login"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.SiteAuth.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This method should perform the login to the file host site. This will </span>
+<span class="sd">        normally involve posting credentials (stored in your plugin&#39;s settings)</span>
+<span class="sd">        to a web page which will set cookies. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">not_implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+</div></div>
+<div class="viewcode-block" id="PluginSettings"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings">[docs]</a><span class="k">class</span> <span class="nc">PluginSettings</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Your plugin needs to implement this interface if your plugin needs to store</span>
+<span class="sd">    settings. </span>
+<span class="sd">    </span>
+<span class="sd">    Plugin settings are global. This means that the user only needs to set your </span>
+<span class="sd">    plugin settings (such as username and password) once and they will be </span>
+<span class="sd">    available when your plugin is called from any XBMC addon.</span>
+<span class="sd">    </span>
+<span class="sd">    Addons can display all :mod:`urlresolver` settings including those of all</span>
+<span class="sd">    available plugins by calling :func:`urlresolver.show_settings`.</span>
+<span class="sd">    </span>
+<span class="sd">    If you only want a &#39;priority&#39; setting for your plugin, all you need to do</span>
+<span class="sd">    is add this interface to he classes your plugin inherits from and to the </span>
+<span class="sd">    ``implements`` attribute without overriding anything.</span>
+<span class="sd">    </span>
+<span class="sd">    To do this your class should begin::</span>
+<span class="sd">    </span>
+<span class="sd">        class MyPluginResolver(Plugin, UrlResolver, PluginSettings):</span>
+<span class="sd">            implements = [UrlResolver, PluginSettings]</span>
+<span class="sd">            name = &quot;myplugin&quot;</span>
+
+<span class="sd">    If you want custom settings you mut override :meth:`get_settings_xml`.</span>
+<span class="sd">    </span>
+<span class="sd">    You should never override :meth:`get_setting`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+<div class="viewcode-block" id="PluginSettings.get_settings_xml"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This method should return XML which describes the settings you would </span>
+<span class="sd">        like for your plugin. You should make sure that the ``id`` starts</span>
+<span class="sd">        with your plugins class name (which can be found using </span>
+<span class="sd">        :attr:`self.__class__.__name__`) followed by an underscore.</span>
+<span class="sd">        </span>
+<span class="sd">        For example, the following is the code included in the default </span>
+<span class="sd">        implementation and adds a priority setting::</span>
+<span class="sd">        </span>
+<span class="sd">            xml = &#39;&lt;setting id=&quot;%s_priority&quot; &#39; % self.__class__.__name__</span>
+<span class="sd">            xml += &#39;type=&quot;number&quot; label=&quot;Priority&quot; default=&quot;100&quot;/&gt;\\n&#39;</span>
+<span class="sd">            return xml </span>
+<span class="sd">            </span>
+<span class="sd">        Although of course you know the name of your plugin(!) so you can just </span>
+<span class="sd">        write::</span>
+<span class="sd">        </span>
+<span class="sd">            xml = &#39;&lt;setting id=&quot;MyPlugin_priority&quot; &#39;</span>
+<span class="sd">            xml += &#39;type=&quot;number&quot; label=&quot;Priority&quot; default=&quot;100&quot;/&gt;\\n&#39;</span>
+<span class="sd">            return xml </span>
+
+<span class="sd">        The settings category will be your plugin&#39;s :attr:`UrlResolver.name`.</span>
+<span class="sd">        </span>
+<span class="sd">        I would link to some documentation of ``resources/settings.xml`` but</span>
+<span class="sd">        I can&#39;t find any. Suggestions welcome!</span>
+<span class="sd">        </span>
+<span class="sd">        Override this method if you want your plugin to have more settings than</span>
+<span class="sd">        just &#39;priority&#39;. If you do and still want the priority setting you </span>
+<span class="sd">        should include the priority code as above in your method.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A string containing XML which would be valid in </span>
+<span class="sd">            ``resources/settings.xml``</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="s">&#39;&lt;setting id=&quot;</span><span class="si">%s</span><span class="s">_priority&quot; &#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="n">xml</span> <span class="o">+=</span> <span class="s">&#39;type=&quot;number&quot; label=&quot;Priority&quot; default=&quot;100&quot;/&gt;</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="k">return</span> <span class="n">xml</span> 
+        
+    </div>
+<div class="viewcode-block" id="PluginSettings.get_setting"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_setting">[docs]</a>    <span class="k">def</span> <span class="nf">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        .. warning::</span>
+<span class="sd">        </span>
+<span class="sd">            Do not override this method!</span>
+<span class="sd">            </span>
+<span class="sd">        Gets a setting that you have previously defined by overriding the </span>
+<span class="sd">        :meth:`get_settings_xml` method.</span>
+<span class="sd">        </span>
+<span class="sd">        When requesting a setting using this method, you should not include</span>
+<span class="sd">        the ``MyPlugin_`` prefix of the setting id you defined in </span>
+<span class="sd">        :meth:`get_settings_xml`.</span>
+<span class="sd">        </span>
+<span class="sd">        For example, if you defined a setting with an id of </span>
+<span class="sd">        ``MyPlugin_username``, you would get the setting from your plugin </span>
+<span class="sd">        using::</span>
+<span class="sd">        </span>
+<span class="sd">            self.get_setting(&#39;username&#39;)</span>
+<span class="sd">            </span>
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): The name of the setting to retrieve (without the prefix).</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A string containing the value stored for the requested setting.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> 
+                                                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">value</span>
+    </div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../../urlresolver.html" >urlresolver</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, t0mm0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>
