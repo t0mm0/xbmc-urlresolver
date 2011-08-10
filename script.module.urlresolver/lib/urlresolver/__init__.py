@@ -146,7 +146,9 @@ def _update_settings_xml():
             f.write('<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n')
             f.write('<settings>\n')    
             for imp in PluginSettings.implementors():
+                f.write('<category label="%s">\n' % imp.name)
                 f.write(imp.get_settings_xml())
+                f.write('</category>\n')
             f.write('</settings>')
         finally:
             f.close

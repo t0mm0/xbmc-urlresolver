@@ -78,14 +78,12 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
 
     #PluginSettings methods
     def get_settings_xml(self):
-        xml = '<category label="%s">\n' % self.name
-        xml += '<setting id="%s_priority" ' % self.name
+        xml = '<setting id="MegaUploadResolver_priority" '
         xml += 'type="number" label="Priority" default="100"/>\n'
-        xml += '<setting id="%s_login" ' % self.name
+        xml += '<setting id="MegaUploadResolver_login" '
         xml += 'type="bool" label="login" default="false"/>\n'
-        xml += '<setting id="%s_username" enable="eq(-1,true)" ' % self.name
+        xml += '<setting id="MegaUploadResolver_username" enable="eq(-1,true)" '
         xml += 'type="text" label="username" default=""/>\n'
-        xml += '<setting id="%s_password" enable="eq(-2,true)" ' % self.name
+        xml += '<setting id="MegaUploadResolver_password" enable="eq(-2,true)" '
         xml += 'type="text" label="password" option="hidden" default=""/>\n'
-        xml += '</category>\n'
         return xml
