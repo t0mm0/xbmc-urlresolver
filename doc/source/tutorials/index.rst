@@ -6,5 +6,5 @@ Tutorials
     :maxdepth: 2
     
     addon
-    resolverplugin
+    resolverplugin/index
 
