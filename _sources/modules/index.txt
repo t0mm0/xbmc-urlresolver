@@ -1,8 +1,6 @@
 Module documentation
 ====================
 
-Contents:
-
 .. toctree::
     :maxdepth: 2
     

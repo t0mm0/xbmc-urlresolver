@@ -79,7 +79,7 @@
 <span class="n">plugnplay</span><span class="o">.</span><span class="n">set_plugin_dirs</span><span class="p">(</span><span class="n">common</span><span class="o">.</span><span class="n">plugins_path</span><span class="p">)</span>
 <span class="n">plugnplay</span><span class="o">.</span><span class="n">load_plugins</span><span class="p">()</span>
 
-<div class="viewcode-block" id="resolve"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.resolve">[docs]</a><span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
+<div class="viewcode-block" id="resolve"><a class="viewcode-back" href="../modules/urlresolver/urlresolver.html#urlresolver.resolve">[docs]</a><span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resolve a web page to a media stream.</span>
 <span class="sd">    </span>
@@ -114,7 +114,7 @@
         <span class="k">return</span> <span class="n">imp</span><span class="o">.</span><span class="n">get_media_url</span><span class="p">(</span><span class="n">web_url</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">False</span>
     </div>
-<div class="viewcode-block" id="filter_urls"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.filter_urls">[docs]</a><span class="k">def</span> <span class="nf">filter_urls</span><span class="p">(</span><span class="n">urls</span><span class="p">):</span>
+<div class="viewcode-block" id="filter_urls"><a class="viewcode-back" href="../modules/urlresolver/urlresolver.html#urlresolver.filter_urls">[docs]</a><span class="k">def</span> <span class="nf">filter_urls</span><span class="p">(</span><span class="n">urls</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Takes a list of URLs to web pages that are thought to be associated with </span>
 <span class="sd">    media content. If no resolver plugins exist to resolve a URL to a link to a</span>
@@ -136,7 +136,7 @@
             <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ret</span>
         </div>
-<div class="viewcode-block" id="find_resolver"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.find_resolver">[docs]</a><span class="k">def</span> <span class="nf">find_resolver</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
+<div class="viewcode-block" id="find_resolver"><a class="viewcode-back" href="../modules/urlresolver/urlresolver.html#urlresolver.find_resolver">[docs]</a><span class="k">def</span> <span class="nf">find_resolver</span><span class="p">(</span><span class="n">web_url</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Finds the first resolver that says it can resolve the given URL to a media </span>
 <span class="sd">    file. Note that it might not actually be able to, but it advertises the</span>
@@ -162,7 +162,7 @@
     <span class="k">return</span> <span class="bp">False</span>
     
         </div>
-<div class="viewcode-block" id="display_settings"><a class="viewcode-back" href="../urlresolver/urlresolver.html#urlresolver.display_settings">[docs]</a><span class="k">def</span> <span class="nf">display_settings</span><span class="p">():</span>
+<div class="viewcode-block" id="display_settings"><a class="viewcode-back" href="../modules/urlresolver/urlresolver.html#urlresolver.display_settings">[docs]</a><span class="k">def</span> <span class="nf">display_settings</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Opens the settings dialog for :mod:`urlresolver` and its plugins.</span>
 <span class="sd">    </span>

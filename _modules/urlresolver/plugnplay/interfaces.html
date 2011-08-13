@@ -95,12 +95,12 @@
 	<span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="n">co</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="not_implemented"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.not_implemented">[docs]</a><span class="k">def</span> <span class="nf">not_implemented</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="not_implemented"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.not_implemented">[docs]</a><span class="k">def</span> <span class="nf">not_implemented</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 	<span class="sd">&#39;&#39;&#39;Use this instead of ``pass`` for the body of abstract methods.&#39;&#39;&#39;</span>
 	<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Unimplemented abstract method: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">_function_id</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="UrlResolver"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver">[docs]</a><span class="k">class</span> <span class="nc">UrlResolver</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+<div class="viewcode-block" id="UrlResolver"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver">[docs]</a><span class="k">class</span> <span class="nc">UrlResolver</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Your plugin needs to implement the abstract methods in this interface if</span>
 <span class="sd">    it wants to be able to resolve URLs (which is probably all plugins!)</span>
@@ -124,7 +124,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>    
     
     
-<div class="viewcode-block" id="UrlResolver.get_media_url"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_url</span><span class="p">):</span>
+<div class="viewcode-block" id="UrlResolver.get_media_url"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.get_media_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_url</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        The part of your plugin that does the actual resolving. You must </span>
 <span class="sd">        implement this method.</span>
@@ -151,7 +151,7 @@
         <span class="n">not_implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
     
 </div>
-<div class="viewcode-block" id="UrlResolver.valid_url"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.valid_url">[docs]</a>    <span class="k">def</span> <span class="nf">valid_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_url</span><span class="p">):</span>
+<div class="viewcode-block" id="UrlResolver.valid_url"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.valid_url">[docs]</a>    <span class="k">def</span> <span class="nf">valid_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_url</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Determine whether this plugin is capable of resolving this URL. You must </span>
 <span class="sd">        implement this method.</span>
@@ -171,7 +171,7 @@
         <span class="n">not_implemented</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
     
 </div>
-<div class="viewcode-block" id="UrlResolver.get_media_urls"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.get_media_urls">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_urls</span><span class="p">):</span>
+<div class="viewcode-block" id="UrlResolver.get_media_urls"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.get_media_urls">[docs]</a>    <span class="k">def</span> <span class="nf">get_media_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_urls</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        .. warning::</span>
 <span class="sd">        </span>
@@ -197,7 +197,7 @@
         <span class="k">return</span> <span class="n">ret_val</span>
     
 </div>
-<div class="viewcode-block" id="UrlResolver.filter_urls"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.filter_urls">[docs]</a>    <span class="k">def</span> <span class="nf">filter_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_urls</span><span class="p">):</span>
+<div class="viewcode-block" id="UrlResolver.filter_urls"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver.filter_urls">[docs]</a>    <span class="k">def</span> <span class="nf">filter_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">web_urls</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        .. warning::</span>
 <span class="sd">        </span>
@@ -223,7 +223,7 @@
 
 
 </div></div>
-<div class="viewcode-block" id="SiteAuth"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.SiteAuth">[docs]</a><span class="k">class</span> <span class="nc">SiteAuth</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+<div class="viewcode-block" id="SiteAuth"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.SiteAuth">[docs]</a><span class="k">class</span> <span class="nc">SiteAuth</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Your plugin should implement this interface if the file hoster you are </span>
 <span class="sd">    resolving URLs for requires authentication. You may also implement it if</span>
@@ -231,7 +231,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
 
-<div class="viewcode-block" id="SiteAuth.login"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.SiteAuth.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SiteAuth.login"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.SiteAuth.login">[docs]</a>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This method should perform the login to the file host site. This will </span>
 <span class="sd">        normally involve posting credentials (stored in your plugin&#39;s settings)</span>
@@ -241,7 +241,7 @@
 
 
 </div></div>
-<div class="viewcode-block" id="PluginSettings"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings">[docs]</a><span class="k">class</span> <span class="nc">PluginSettings</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginSettings"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings">[docs]</a><span class="k">class</span> <span class="nc">PluginSettings</span><span class="p">(</span><span class="n">Interface</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Your plugin needs to implement this interface if your plugin needs to store</span>
 <span class="sd">    settings. </span>
@@ -268,7 +268,7 @@
 <span class="sd">    You should never override :meth:`get_setting`.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
-<div class="viewcode-block" id="PluginSettings.get_settings_xml"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginSettings.get_settings_xml"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_settings_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        This method should return XML which describes the settings you would </span>
 <span class="sd">        like for your plugin. You should make sure that the ``id`` starts</span>
@@ -307,7 +307,7 @@
         <span class="k">return</span> <span class="n">xml</span> 
         
     </div>
-<div class="viewcode-block" id="PluginSettings.get_setting"><a class="viewcode-back" href="../../../urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_setting">[docs]</a>    <span class="k">def</span> <span class="nf">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="PluginSettings.get_setting"><a class="viewcode-back" href="../../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_setting">[docs]</a>    <span class="k">def</span> <span class="nf">get_setting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        .. warning::</span>
 <span class="sd">        </span>

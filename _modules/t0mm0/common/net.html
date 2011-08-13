@@ -76,7 +76,7 @@
     <span class="k">def</span> <span class="nf">get_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;HEAD&#39;</span>
 
-<div class="viewcode-block" id="Net"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net">[docs]</a><span class="k">class</span> <span class="nc">Net</span><span class="p">:</span>
+<div class="viewcode-block" id="Net"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net">[docs]</a><span class="k">class</span> <span class="nc">Net</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This class wraps :mod:`urllib2` and provides an easy way to make http</span>
 <span class="sd">    requests while taking care of cookies, proxies, gzip compression and </span>
@@ -123,7 +123,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_opener</span><span class="p">()</span>
         
     
-<div class="viewcode-block" id="Net.set_cookies"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.set_cookies">[docs]</a>    <span class="k">def</span> <span class="nf">set_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookie_file</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.set_cookies"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.set_cookies">[docs]</a>    <span class="k">def</span> <span class="nf">set_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookie_file</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Set the cookie file and try to load cookies from it if it exists.</span>
 <span class="sd">        </span>
@@ -139,12 +139,12 @@
             <span class="k">return</span> <span class="bp">False</span>
         
     </div>
-<div class="viewcode-block" id="Net.get_cookies"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.get_cookies">[docs]</a>    <span class="k">def</span> <span class="nf">get_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.get_cookies"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.get_cookies">[docs]</a>    <span class="k">def</span> <span class="nf">get_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns A dictionary containing all cookie information by domain.&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cj</span><span class="o">.</span><span class="n">_cookies</span>
 
 </div>
-<div class="viewcode-block" id="Net.save_cookies"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.save_cookies">[docs]</a>    <span class="k">def</span> <span class="nf">save_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookie_file</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.save_cookies"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.save_cookies">[docs]</a>    <span class="k">def</span> <span class="nf">save_cookies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cookie_file</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Saves cookies to a file.</span>
 <span class="sd">        </span>
@@ -154,7 +154,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_cj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cookie_file</span><span class="p">,</span> <span class="n">ignore_discard</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>        
 
         </div>
-<div class="viewcode-block" id="Net.set_proxy"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.set_proxy">[docs]</a>    <span class="k">def</span> <span class="nf">set_proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.set_proxy"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.set_proxy">[docs]</a>    <span class="k">def</span> <span class="nf">set_proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxy</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            proxy (str): Proxy setting (eg. </span>
@@ -164,12 +164,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_opener</span><span class="p">()</span>
 
         </div>
-<div class="viewcode-block" id="Net.get_proxy"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.get_proxy">[docs]</a>    <span class="k">def</span> <span class="nf">get_proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.get_proxy"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.get_proxy">[docs]</a>    <span class="k">def</span> <span class="nf">get_proxy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns string containing proxy details.&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxy</span>
         
         </div>
-<div class="viewcode-block" id="Net.set_user_agent"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.set_user_agent">[docs]</a>    <span class="k">def</span> <span class="nf">set_user_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.set_user_agent"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.set_user_agent">[docs]</a>    <span class="k">def</span> <span class="nf">set_user_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_agent</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            user_agent (str): String to use as the User Agent header.</span>
@@ -177,7 +177,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_agent</span> <span class="o">=</span> <span class="n">user_agent</span>
 
         </div>
-<div class="viewcode-block" id="Net.get_user_agent"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.get_user_agent">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.get_user_agent"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.get_user_agent">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Returns user agent string.&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_agent</span>
 
@@ -206,7 +206,7 @@
         <span class="n">urllib2</span><span class="o">.</span><span class="n">install_opener</span><span class="p">(</span><span class="n">opener</span><span class="p">)</span>
         
 
-<div class="viewcode-block" id="Net.http_GET"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.http_GET">[docs]</a>    <span class="k">def</span> <span class="nf">http_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{},</span> <span class="n">compression</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.http_GET"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.http_GET">[docs]</a>    <span class="k">def</span> <span class="nf">http_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{},</span> <span class="n">compression</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Perform an HTTP GET request.</span>
 <span class="sd">        </span>
@@ -227,7 +227,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span>
         
 </div>
-<div class="viewcode-block" id="Net.http_POST"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.http_POST">[docs]</a>    <span class="k">def</span> <span class="nf">http_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{},</span> <span class="n">compression</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Net.http_POST"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.http_POST">[docs]</a>    <span class="k">def</span> <span class="nf">http_POST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">form_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{},</span> <span class="n">compression</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Perform an HTTP POST request.</span>
 <span class="sd">        </span>
@@ -251,7 +251,7 @@
                            <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span>
 
     </div>
-<div class="viewcode-block" id="Net.http_HEAD"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.Net.http_HEAD">[docs]</a>    <span class="k">def</span> <span class="nf">http_HEAD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{}):</span>
+<div class="viewcode-block" id="Net.http_HEAD"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.Net.http_HEAD">[docs]</a>    <span class="k">def</span> <span class="nf">http_HEAD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{}):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Perform an HTTP HEAD request.</span>
 <span class="sd">        </span>
@@ -310,7 +310,7 @@
 
 
 </div>
-<div class="viewcode-block" id="HttpResponse"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.HttpResponse">[docs]</a><span class="k">class</span> <span class="nc">HttpResponse</span><span class="p">:</span>
+<div class="viewcode-block" id="HttpResponse"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.HttpResponse">[docs]</a><span class="k">class</span> <span class="nc">HttpResponse</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This class represents a resoponse from an HTTP request.</span>
 <span class="sd">    </span>
@@ -359,12 +359,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">html</span>
     
     
-<div class="viewcode-block" id="HttpResponse.get_headers"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.HttpResponse.get_headers">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers</span><span class="p">():</span>
+<div class="viewcode-block" id="HttpResponse.get_headers"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.HttpResponse.get_headers">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers</span><span class="p">():</span>
         <span class="sd">&#39;&#39;&#39;Returns a List of headers returned by the server.&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="o">.</span><span class="n">headers</span>
     
         </div>
-<div class="viewcode-block" id="HttpResponse.get_url"><a class="viewcode-back" href="../../../t0mm0.common/net.html#t0mm0.common.net.HttpResponse.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="HttpResponse.get_url"><a class="viewcode-back" href="../../../modules/t0mm0.common/net.html#t0mm0.common.net.HttpResponse.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Return the URL of the resource retrieved, commonly used to determine if </span>
 <span class="sd">        a redirect was followed.</span>
