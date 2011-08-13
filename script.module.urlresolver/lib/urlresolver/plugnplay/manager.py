@@ -34,10 +34,6 @@ class Manager(object):
             self.iface_implementors[interface].insert(index, 
                                                       implementor_instance)
             return
-        elif implementor_instance.priority > item.priority:
-            self.iface_implementors[interface].insert(index + 1, 
-                                                      implementor_instance)
-            return
     self.iface_implementors[interface].append(implementor_instance)
 
   def implementors(self, interface):
