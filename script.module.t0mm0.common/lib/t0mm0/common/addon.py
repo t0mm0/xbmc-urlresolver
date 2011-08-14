@@ -361,7 +361,7 @@ class Addon:
             xbmcplugin.setResolvedUrl(self.handle, True, 
                                       xbmcgui.ListItem(path=stream_url))
         else:
-            self.show_error_dialog([self.get_string(30001)])
+            self.show_error_dialog(['sorry, failed to resolve URL :('])
             xbmcplugin.setResolvedUrl(self.handle, False, xbmcgui.ListItem())
 
     
