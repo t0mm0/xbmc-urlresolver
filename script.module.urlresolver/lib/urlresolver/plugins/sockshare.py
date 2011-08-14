@@ -27,6 +27,5 @@ class SockshareResolver(PutlockerResolver):
     name = "sockshare"
 
     def valid_url(self, web_url):
-        return re.match('http:\/\/(?:www.)?sockshare.com\/file\/' + 
-                        '(?:[0-9A-F]+)(?:\/.+)?', web_url)
+        return re.match('http://(www.)?sockshare.com/file/[0-9A-F]+', web_url)
 
