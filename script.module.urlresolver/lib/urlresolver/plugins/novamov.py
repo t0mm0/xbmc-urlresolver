@@ -18,6 +18,8 @@
 
 import re
 from t0mm0.common.net import Net
+import urllib2
+from urlresolver import common
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
@@ -33,18 +35,41 @@ class NovamovResolver(Plugin, UrlResolver, PluginSettings):
 
     def get_media_url(self, web_url):
         #find key
-        html = self.net.http_GET(web_url).content
-        filename, filekey = re.search('flashvars.file="(.+?)".+?' + 
-                                      'flashvars.filekey="(.+?)"', 
-                                      html, re.DOTALL).groups()
+        try:
+            html = self.net.http_GET(web_url).content
+        except urllib2.URLError, e:
+            common.addon.log_error('novamov: got http error %d fetching %s' %
+                                    (e.code, web_url))
+            return False
+
+        r = re.search('flashvars.file="(.+?)".+?flashvars.filekey="(.+?)"', 
+                      html, re.DOTALL)
+        if r:
+            filename, filekey = r.groups()
+        else:
+            common.addon.log_error('novamov: filename and filekey not found')
+            return False
+        
         #get stream url from api
         api = 'http://www.novamov.com/api/player.api.php?key=%s&file=%s' % \
               (filekey, filename)
-        html = self.net.http_GET(api).content
-        stream_url = re.search('url=(.+?)&title', html).group(1)
+        try:
+            html = self.net.http_GET(api).content
+        except urllib2.URLError, e:
+            common.addon.log_error('novamov: got http error %d fetching %s' %
+                                    (e.code, api))
+            return False
+
+        r = re.search('url=(.+?)&title', html)
+        if r:
+            stream_url = r.group(1)
+        else:
+            common.addon.log_error('novamov: stream url not found')
+            return False
+            
         return stream_url
         
     def valid_url(self, web_url):
-        return re.match('http:\/\/(?:www.)?novamov.com\/video\/' + 
-                        '(?:[0-9a-zA-Z]+)(?:\/.+)?', web_url)
+        return re.match('http://(www.)?novamov.com/video/(?:[0-9a-zA-Z]+)', 
+                        web_url)
 
