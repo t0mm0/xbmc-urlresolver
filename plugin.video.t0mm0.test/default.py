@@ -39,22 +39,24 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
-    addon.add_video_item('http://www.putlocker.com/file/DFE7599AE064911A', 
-                         {'title': 'putlocker'})
-    addon.add_video_item('http://www.novamov.com/video/kdshwq2cj6vxv', 
-                         {'title': 'novamov'})
-    addon.add_video_item('http://seeon.tv/view/14451', 
-                         {'title': 'seeon.tv'})
     addon.add_video_item('http://www.megaupload.com/?d=TQPQJM5H', 
                          {'title': 'megaupload'})
+    addon.add_video_item('http://www.novamov.com/video/kdshwq2cj6vxv', 
+                         {'title': 'novamov'})
+    addon.add_video_item('http://www.putlocker.com/file/DFE7599AE064911A', 
+                         {'title': 'putlocker'})
+    addon.add_video_item('http://seeon.tv/view/14451', 
+                         {'title': 'seeon.tv'})
     addon.add_video_item('http://www.sockshare.com/file/541433EA7B32FB39', 
                          {'title': 'sockshare'})
-    addon.add_video_item('http://www.videoweed.es/file/crirmdz3tj116', 
-                         {'title': 'videoweed'})
-    addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
-                         {'title': 'videobb'})
     addon.add_video_item('http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/', 
                          {'title': 'tubeplus'})
+    addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
+                         {'title': 'videobb'})
+    addon.add_video_item('http://www.videoweed.es/file/crirmdz3tj116', 
+                         {'title': 'videoweed'})
+    addon.add_video_item('http://www.youtube.com/watch?v=Q3VJOl_XeGs', 
+                         {'title': 'youtube'})
 
 elif mode == 'tv':
     browse = addon.queries.get('browse', False)
