@@ -62,8 +62,8 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
             return False
         
     def valid_url(self, web_url):
-        return re.match('http:\/\/(?:www.)?megaupload.com\/\?d=' + 
-                        '(?:[0-9A-Z]+)(?:\/.+)?', web_url)
+        return re.match('http://(www.)?megaupload.com/\?d=' + 
+                        '([0-9A-Z]+)', web_url)
     
     #SiteAuth methods
     def login(self):
@@ -78,8 +78,7 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
 
     #PluginSettings methods
     def get_settings_xml(self):
-        xml = '<setting id="MegaUploadResolver_priority" '
-        xml += 'type="number" label="Priority" default="100"/>\n'
+        xml = PluginSettings.get_settings_xml(self)
         xml += '<setting id="MegaUploadResolver_login" '
         xml += 'type="bool" label="login" default="false"/>\n'
         xml += '<setting id="MegaUploadResolver_username" enable="eq(-1,true)" '
