@@ -41,6 +41,8 @@ elif mode == 'resolver_settings':
 elif mode == 'test':
     addon.add_video_item('http://www.megaupload.com/?d=TQPQJM5H', 
                          {'title': 'megaupload'})
+    addon.add_video_item('http://www.megavideo.com/?v=LYWNYM1J', 
+                         {'title': 'megavideo'})
     addon.add_video_item('http://www.novamov.com/video/kdshwq2cj6vxv', 
                          {'title': 'novamov'})
     addon.add_video_item('http://www.putlocker.com/file/DFE7599AE064911A', 
