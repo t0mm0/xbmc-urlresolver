@@ -75,6 +75,6 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
         return flv_url
         
     def valid_url(self, web_url):
-        return re.match('http://(www.)?putlocker.com/file/(?:[0-9A-F]+)', 
+        return re.match('http://(www.)?putlocker.com/(file|embed)/[0-9A-F]+', 
                         web_url)
 
