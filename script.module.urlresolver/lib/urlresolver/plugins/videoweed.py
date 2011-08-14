@@ -18,6 +18,8 @@
 
 import re
 from t0mm0.common.net import Net
+import urllib2
+from urlresolver import common
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
@@ -33,11 +35,23 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
 
     def get_media_url(self, web_url):
         #grab stream address
-        html = self.net.http_GET(web_url).content
-        stream_url = re.search('flashvars.file="(.+?)"', html).group(1)
+        try:
+            html = self.net.http_GET(web_url).content
+        except urllib2.URLError, e:
+            common.addon.log_error('videoweed: got http error %d fetching %s' %
+                                    (e.code, web_url))
+            return False
+        
+        r = re.search('flashvars.file="(.+?)"', html)
+        if r:
+            stream_url = r.group(1)
+        else:
+            common.addon.log_error('videoweed: stream url not found')
+            return False
+        
         return stream_url
         
     def valid_url(self, web_url):
-        return re.match('http:\/\/(?:www.)?videoweed.(?:es|com)\/file\/' + 
-                        '(?:[0-9a-z]+)(?:\/.+)?', web_url)
+        return re.match('http://(www.)?videoweed.(es|com)/file/[0-9a-z]+', 
+                        web_url)
 
