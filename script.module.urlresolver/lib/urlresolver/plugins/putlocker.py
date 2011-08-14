@@ -18,6 +18,8 @@
 
 import re
 from t0mm0.common.net import Net
+import urllib2
+from urlresolver import common
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
@@ -33,21 +35,46 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
     
     def get_media_url(self, web_url):
         #find session_hash
-        html = self.net.http_GET(web_url).content
-        session_hash = re.search('value="([0-9a-f]+?)" name="hash"', 
-                                 html).group(1)
+        try:
+            html = self.net.http_GET(web_url).content
+        except urllib2.URLError, e:
+            common.addon.log_error('putlocker: got http error %d fetching %s' %
+                                    (e.code, web_url))
+            return False
+        r = re.search('value="([0-9a-f]+?)" name="hash"', html)
+        if r:
+            session_hash = r.group(1)
+        else:
+            common.addon.log_error('putlocker: session hash not found')
+            return False
 
         #post session_hash
-        self.net.http_POST(web_url, form_data={'hash': session_hash, 
+        try:
+            self.net.http_POST(web_url, form_data={'hash': session_hash, 
                                           'confirm': 'Continue as Free User'})
+        except urllib2.URLError, e:
+            common.addon.log_error('putlocker: got http error %d posting %s' %
+                                    (e.code, web_url))
+            return False
         
         #find download link
         xml_url = web_url.replace('/file/', '/get_file.php?stream=')
-        html = self.net.http_GET(xml_url).content
-        flv_url = re.search('url="(.+?)"', html).group(1)
+        try:
+            html = self.net.http_GET(xml_url).content
+        except urllib2.URLError, e:
+            common.addon.log_error('putlocker: got http error %d fetching %s' %
+                                    (e.code, xml_url))
+            return False
+        r = re.search('url="(.+?)"', html)
+        if r:
+            flv_url = r.group(1)
+        else:
+            common.addon.log_error('putlocker: stream url not found')
+            return False
+        
         return flv_url
         
     def valid_url(self, web_url):
-        return re.match('http:\/\/(?:www.)?putlocker.com\/file\/' + 
-                        '(?:[0-9A-F]+)(?:\/.+)?', web_url)
+        return re.match('http://(www.)?putlocker.com/file/(?:[0-9A-F]+)', 
+                        web_url)
 
