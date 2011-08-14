@@ -94,7 +94,7 @@ Note that we only had to add oneline and change one other:
   list we set up in the first part of the line. We use ``int()`` because all
   settings are returned by XBMC as a string and a list index must be an int.
   
-  it might be simpler to think of this line as the following equivalent code
+  It might be simpler to think of this line as the following equivalent code
   (comments assume that the setting has not been changed from its default value
   of 'Maximum')::
   
