@@ -43,6 +43,8 @@ elif mode == 'test':
                          {'title': 'megaupload'})
     addon.add_video_item('http://www.megavideo.com/?v=LYWNYM1J', 
                          {'title': 'megavideo'})
+    addon.add_video_item('http://www.movshare.net/video/rnqmuilri1b71', 
+                         {'title': 'movshare'})
     addon.add_video_item('http://www.novamov.com/video/kdshwq2cj6vxv', 
                          {'title': 'novamov'})
     addon.add_video_item('http://www.putlocker.com/file/DFE7599AE064911A', 
