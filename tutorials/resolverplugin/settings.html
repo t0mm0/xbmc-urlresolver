@@ -45,7 +45,7 @@
              accesskey="P">previous</a> |</li>
         <li><a href="../../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Tutorials</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U">How to Write a <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">urlresolver</span></tt> Plugin</a> &raquo;</li> 
+          <li><a href="index.html" accesskey="U">How to Write a <tt class="docutils literal docutils literal"><span class="pre">urlresolver</span></tt> Plugin</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -56,7 +56,123 @@
             
   <div class="section" id="adding-a-quality-setting">
 <h1>Adding A Quality Setting<a class="headerlink" href="#adding-a-quality-setting" title="Permalink to this headline">¶</a></h1>
-<p>(coming soon...)</p>
+<p>This section will show you how to add a custom setting for your plugin. We will
+add a setting to choose the maximum quality we want to play from videobb.</p>
+<p>The only quality values I have seen from the site are &#8216;240p&#8217; and &#8216;480p&#8217; but we
+will also add a &#8216;Maximum&#8217; value which will just play whatever the maximum
+quality is in case there are higher resolutions.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For more information on how plugin settings work please see
+<a class="reference internal" href="../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings" title="urlresolver.plugnplay.interfaces.PluginSettings"><tt class="xref py py-class docutils literal"><span class="pre">PluginSettings</span></tt></a></p>
+</div>
+<div class="section" id="settings-xml">
+<h2>Settings XML<a class="headerlink" href="#settings-xml" title="Permalink to this headline">¶</a></h2>
+<p>First off we need to tell XBMC what settings we want for our plugin. This is
+done by implementing <a class="reference internal" href="../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings" title="urlresolver.plugnplay.interfaces.PluginSettings"><tt class="xref py py-class docutils literal"><span class="pre">PluginSettings</span></tt></a>
+and overriding the
+<a class="reference internal" href="../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml" title="urlresolver.plugnplay.interfaces.PluginSettings.get_settings_xml"><tt class="xref py py-meth docutils literal"><span class="pre">get_settings_xml()</span></tt></a>
+method.</p>
+<p>We have already said we are implementing
+<a class="reference internal" href="../../modules/urlresolver/interfaces.html#urlresolver.plugnplay.interfaces.PluginSettings" title="urlresolver.plugnplay.interfaces.PluginSettings"><tt class="xref py py-class docutils literal"><span class="pre">PluginSettings</span></tt></a> so lets add the
+following code to override the method:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_settings_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">xml</span> <span class="o">=</span> <span class="n">PluginSettings</span><span class="o">.</span><span class="n">get_settings_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="n">xml</span> <span class="o">+=</span> <span class="s">&#39;&lt;setting label=&quot;Highest Quality&quot; id=&quot;MyVideobbResolver_q&quot; &#39;</span>
+    <span class="n">xml</span> <span class="o">+=</span> <span class="s">&#39;type=&quot;enum&quot; values=&quot;240p|480p|Maximum&quot; default=&quot;2&quot; /&gt;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">xml</span>
+</pre></div>
+</td></tr></table></div>
+<ul class="simple">
+<li><em>Line 2</em> - This adds the default settings (currently only &#8216;priority&#8217;)</li>
+<li><em>Line 3-4</em> - This is a valid <tt class="docutils literal"><span class="pre">&lt;setting</span> <span class="pre">\&gt;</span></tt> tag that you would put in
+<tt class="docutils literal"><span class="pre">resources/settings.xml</span></tt> of a addon. Here we make an enum which will
+return 0, 1 or 2 depending which value is set. By default it will return
+2 which corresponds to &#8216;Maximum&#8217;. The setting id contains the class name
+of your plugin followed by an underscore and the name you want to refer to
+this setting by. We will retrieve this setting with the name &#8216;q&#8217;.</li>
+</ul>
+<p>That was easy enough! When the module is loaded, the <tt class="docutils literal"><span class="pre">resources/settings.xml</span></tt>
+for <tt class="docutils literal"><span class="pre">script.module.urlresolver</span></tt> is rebuilt including each plugins settings.</p>
+<p>Addons using <tt class="docutils literal"><span class="pre">script.module.urlresolver</span></tt> can display the plugin settings
+for editing by calling <a class="reference internal" href="../../modules/urlresolver/urlresolver.html#urlresolver.display_settings" title="urlresolver.display_settings"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.display_settings()</span></tt></a>.</p>
+<p>Go to &#8216;t0mm0 test addon&#8217; in XBMC and select &#8216;resolver settings&#8217; and you should
+see your new setting in the &#8216;myvideobb&#8217; category. Now if you look at the
+contents of <tt class="docutils literal"><span class="pre">script.module.urlresolver/resources/settings.xml</span></tt> you should see
+the generated file with the definition of your new setting in it.</p>
+</div>
+<div class="section" id="using-the-setting">
+<h2>Using the Setting<a class="headerlink" href="#using-the-setting" title="Permalink to this headline">¶</a></h2>
+<p>It isn&#8217;t much use having a setting if we don&#8217;t use it! So lets add some code
+to use it to determine what stream to play.</p>
+<p>Change the last section of code in <tt class="docutils literal"><span class="pre">get_media_url()</span></tt> to the following:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre>    <span class="c">#find highest quality URL</span>
+    <span class="n">max_res</span> <span class="o">=</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">99999</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s">&#39;q&#39;</span><span class="p">))]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="s">&#39;&quot;l&quot;.*?:.*?&quot;(.+?)&quot;.+?&quot;u&quot;.*?:.*?&quot;(.+?)&quot;&#39;</span><span class="p">,</span> <span class="n">json</span><span class="p">)</span>
+    <span class="n">chosen_res</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">stream_url</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">r</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">r</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">,</span> <span class="n">url</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">res</span> <span class="o">&gt;</span> <span class="n">chosen_res</span> <span class="ow">and</span> <span class="n">res</span> <span class="o">&lt;=</span> <span class="n">max_res</span><span class="p">:</span>
+                <span class="n">stream_url</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;base-64&#39;</span><span class="p">)</span>
+                <span class="n">chosen_res</span> <span class="o">=</span> <span class="n">res</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">common</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">log_error</span><span class="p">(</span><span class="s">&#39;myvideobb: stream url not found&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</pre></div>
+</td></tr></table></div>
+<p>Note that we only had to add oneline and change one other:</p>
+<ul>
+<li><p class="first"><em>Line 2</em> - This is a completely new line. It reads the setting and translates
+it into a value usable as a test for the maximum resolution.</p>
+<p>The first part <tt class="docutils literal"><span class="pre">[240,</span> <span class="pre">480,</span> <span class="pre">99999]</span></tt> sets up a list of values that we want
+to choose from. The second part <tt class="docutils literal"><span class="pre">[int(self.get_setting('q'))]</span></tt> gets the
+setting from XBMC, which will be  0, 1 or 2 and uses it as an index of the
+list we set up in the first part of the line. We use <tt class="docutils literal"><span class="pre">int()</span></tt> because all
+settings are returned by XBMC as a string and a list index must be an int.</p>
+<p>it might be simpler to think of this line as the following equivalent code
+(comments assume that the setting has not been changed from its default value
+of &#8216;Maximum&#8217;):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="mi">240</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span> <span class="mi">99999</span><span class="p">]</span>
+<span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s">&#39;q&#39;</span><span class="p">)</span> <span class="c"># q is now &#39;2&#39; (a str)</span>
+<span class="n">q</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="c"># q is now 2 (an int)</span>
+<span class="n">max_res</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="c"># max_res is now 99999 (an int)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>Line 10</em> - this line has been changed to add the condition
+<tt class="docutils literal"><span class="pre">and</span> <span class="pre">res</span> <span class="pre">&lt;=</span> <span class="pre">max_res</span></tt>. This just makes sure that the stream URL is only
+selected if it is the highest quality URL that is below or equal to the
+quality setting.</p>
+</li>
+</ul>
+<p>Now try changing the the settings and visiting the test links you created in
+&#8216;t0mm0 test addon&#8217; in XBMC. You should see (by pressing &#8216;o&#8217; once the video is
+playing) that the correct quality is chosen.</p>
+<p>Don&#8217;t forget that not all streams have all qualities available. If there is no
+version with a low enough quality the plugin will not resolve the URL, but if
+there is not a high enough quality version you will get the highest available.</p>
+</div>
 </div>
 
 
@@ -65,6 +181,15 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Adding A Quality Setting</a><ul>
+<li><a class="reference internal" href="#settings-xml">Settings XML</a></li>
+<li><a class="reference internal" href="#using-the-setting">Using the Setting</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="code.html"
                         title="previous chapter">Coding the Plugin</a></p>
@@ -110,7 +235,7 @@
              >previous</a> |</li>
         <li><a href="../../index.html">XBMC Helper Modules v0.1.0 documentation</a> &raquo;</li>
           <li><a href="../index.html" >Tutorials</a> &raquo;</li>
-          <li><a href="index.html" >How to Write a <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">urlresolver</span></tt> Plugin</a> &raquo;</li> 
+          <li><a href="index.html" >How to Write a <tt class="docutils literal docutils literal"><span class="pre">urlresolver</span></tt> Plugin</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
