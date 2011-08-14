@@ -18,7 +18,9 @@
 
 import re
 from t0mm0.common.net import Net
+import urllib2
 import urlresolver
+from urlresolver import common
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay import Plugin
 import xbmcgui
@@ -32,10 +34,17 @@ class TubeplusResolver(Plugin, UrlResolver):
 
     def get_media_url(self, web_url):
         #get list
-        html = self.net.http_GET(web_url).content
+        try:
+            html = self.net.http_GET(web_url).content
+        except urllib2.URLError, e:
+            common.addon.log_error('tubeplus: got http error %d fetching %s' %
+                                    (e.code, web_url))
+            return False
+            
         r = '"none" href="(.+?)"'
         host_urls = []
         regex = re.finditer(r, html, re.DOTALL)
+
         for s in regex:
             host_urls.append(s.group(1)) 
         
@@ -59,6 +68,5 @@ class TubeplusResolver(Plugin, UrlResolver):
             return urlresolver.resolve(filtered_urls[index])
                     
     def valid_url(self, web_url):
-        return re.match('http:\/\/(?:www.)?tubeplus.me\/player\/' + 
-                        '\d+(?:\/.+)?', web_url)
+        return re.match('http://(www.)?tubeplus.me/player/\d+', web_url)
 
