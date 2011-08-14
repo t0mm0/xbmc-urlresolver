@@ -51,6 +51,8 @@ elif mode == 'test':
                          {'title': 'sockshare'})
     addon.add_video_item('http://www.videoweed.es/file/crirmdz3tj116', 
                          {'title': 'videoweed'})
+    addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
+                         {'title': 'videobb'})
     addon.add_video_item('http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/', 
                          {'title': 'tubeplus'})
 
