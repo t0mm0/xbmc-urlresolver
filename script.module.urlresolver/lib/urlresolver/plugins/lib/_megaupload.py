@@ -279,27 +279,26 @@ def GetURL(url,cookiepath,enable_cookies=True):
     #print 'processing url: '+url
 
     # use cookie, if logged in.
-    if enable_cookies==True and cookiepath is not None:
-        if os.path.exists(cookiepath):
-            cj = cookielib.LWPCookieJar()
-            cj.load(cookiepath)
-            req = urllib2.Request(url)
-            req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')   
-            opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-            response = opener.open(req)
+    if enable_cookies==True and cookiepath is not None os.path.exists(cookiepath):
+        cj = cookielib.LWPCookieJar()
+        cj.load(cookiepath)
+        req = urllib2.Request(url)
+        req.add_header('User-Agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.9.0.3) Gecko/2008092417 Firefox/3.0.3')   
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+        response = opener.open(req)
 
-            #check if we might have been redirected (megapremium Direct Downloads...)
-            finalurl = response.geturl()
+        #check if we might have been redirected (megapremium Direct Downloads...)
+        finalurl = response.geturl()
 
-            #if we weren't redirected, return the page source
-            if finalurl is url:
-                link=response.read()
-                response.close()
-                return link
+        #if we weren't redirected, return the page source
+        if finalurl is url:
+            link=response.read()
+            response.close()
+            return link
 
-            #if we have been redirected, return the redirect url
-            elif finalurl is not url:               
-                return finalurl
+        #if we have been redirected, return the redirect url
+        elif finalurl is not url:               
+            return finalurl
 
     # don't use cookie, if not logged in        
     else:
