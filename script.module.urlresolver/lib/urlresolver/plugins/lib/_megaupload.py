@@ -279,7 +279,7 @@ def GetURL(url,cookiepath,enable_cookies=True):
     #print 'processing url: '+url
 
     # use cookie, if logged in.
-    if enable_cookies==True and cookiepath is not None os.path.exists(cookiepath):
+    if enable_cookies==True and cookiepath is not None and os.path.exists(cookiepath):
         cj = cookielib.LWPCookieJar()
         cj.load(cookiepath)
         req = urllib2.Request(url)
