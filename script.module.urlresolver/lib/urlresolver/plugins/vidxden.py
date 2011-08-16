@@ -20,7 +20,7 @@
 RogerThis - 16/8/2011
 Site: http://www.vidxden.com , http://www.divxden.com & http://www.vidbux.com
 vidxden hosts both avi and flv videos
-In testing the seems to be a timing issue with files coming up as not playable.
+In testing there seems to be a timing issue with files coming up as not playable.
 This happens on both the addon and in a browser.
 """
 
@@ -118,7 +118,7 @@ class VidxdenResolver(Plugin, UrlResolver, PluginSettings):
                 play_url = re.compile('src="(.+?)"').findall(decrypted_data)
                 
         print play_url[0]
-        final_url = play_url[0].replace('\\','') # cuoldn't find a better way to remove the leading backslash from the flv url
+        final_url = play_url[0].replace('\\','') # couldn't find a better way to remove the leading backslash from the flv url
         print final_url
         return final_url
         
