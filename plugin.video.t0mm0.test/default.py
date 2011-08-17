@@ -51,7 +51,7 @@ elif mode == 'test':
                          {'title': 'putlocker'})
     addon.add_video_item('http://seeon.tv/view/14451', 
                          {'title': 'seeon.tv'})
-    addon.add_video_item('http://www.sockshare.com/file/541433EA7B32FB39', 
+    addon.add_video_item('http://www.sockshare.com/embed/541433EA7B32FB39', 
                          {'title': 'sockshare'})
     addon.add_video_item('http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/', 
                          {'title': 'tubeplus'})

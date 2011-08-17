@@ -26,7 +26,7 @@ from urlresolver.plugnplay import Plugin
 
 class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
     implements = [UrlResolver, PluginSettings]
-    name = "putlocker"
+    name = "putlocker/sockshare"
 
     def __init__(self):
         p = self.get_setting('priority') or 100
@@ -58,7 +58,7 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
             return False
         
         #find download link
-        xml_url = web_url.replace('/file/', '/get_file.php?stream=')
+        xml_url = re.sub('/(file|embed)/', '/get_file.php?stream=', web_url)
         try:
             html = self.net.http_GET(xml_url).content
         except urllib2.URLError, e:
@@ -75,6 +75,6 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
         return flv_url
         
     def valid_url(self, web_url):
-        return re.match('http://(www.)?putlocker.com/(file|embed)/[0-9A-F]+', 
-                        web_url)
+        return re.match('http://(www.)?(putlocker|sockshare).com/(file|embed)' +
+                        '/[0-9A-F]+', web_url)
 
