@@ -17,6 +17,26 @@
 import urllib2,re
 __version__ = "1.0.0"
 
+try:
+	if bin(0): pass
+except NameError, ne:
+	def bin(x):
+		'''
+		bin(number) -> string
+
+		Stringifies an int or long in base 2.
+		'''
+		if x < 0: return '-' + bin(-x)
+		out = []
+		if x == 0: out.append('0')
+		while x > 0:
+			out.append('01'[x & 1])
+			x >>= 1
+			pass
+		try: return '0b' + ''.join(reversed(out))
+		except NameError, ne2: out.reverse()
+		return '0b' + ''.join(out)
+
 class Megavideo:
 	URL = "http://www.megavideo.com/xml/videolink.php"
 
