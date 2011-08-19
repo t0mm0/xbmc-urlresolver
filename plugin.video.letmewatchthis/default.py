@@ -72,32 +72,37 @@ elif mode == 'browse':
     browse = addon.queries.get('browse', False)
     letter = addon.queries.get('letter', False)
     section = addon.queries.get('section', '')
-    page = addon.queries.get('page', 1)
-    if letter:
-        url = '%s/?letter=%s&sort=alphabet&page=%s&%s' % (base_url, letter, 
-                                                          page, section)
-        try:
-            addon.log_debug('fetching %s' % url)
-            html = net.http_GET(url).content
-        except urllib2.URLError, e:
-            html = ''
-            addon.log_error('got http error %d fetching %s' %
-                            (e.code, web_url))
+    if letter:        
+        html = '> >> <'
+        page = 0
+        while html.find('> >> <') > -1:
+            page += 1
+            url = '%s/?letter=%s&sort=alphabet&page=%s&%s' % (base_url, letter, 
+                                                              page, section)
+            try:
+                addon.log_debug('fetching %s' % url)
+                html = net.http_GET(url).content
+            except urllib2.URLError, e:
+                html = ''
+                addon.log_error('got http error %d fetching %s' %
+                                (e.code, web_url))
 
-        r = 'class="index_item.+?href="(.+?)".+?src="(.+?)".+?alt="Watch (.+?)"'
-        regex = re.finditer(r, html, re.DOTALL)
-        for s in regex:
-            url, thumb, title = s.groups()
-            addon.add_directory({'mode': 'series', 
-                                 'url': base_url + url}, 
-                                 title, 
-                                 img=thumb)
-        if html.find('> >> <'):
-            addon.add_directory({'mode': 'browse', 
-                                 'section': section,
-                                 'page': int(page) + 1,
-                                 'letter': letter}, 'Next Page')
-        
+            r = re.search('number_movies_result">(\d+)', html)
+            if r:
+                total = int(r.group(1))
+            else:
+                total = 0
+                
+            r = 'class="index_item.+?href="(.+?)".+?src="(.+?)".+?alt="Watch (.+?)"'
+            regex = re.finditer(r, html, re.DOTALL)
+            for s in regex:
+                url, thumb, title = s.groups()
+                addon.add_directory({'mode': 'series', 
+                                     'url': base_url + url}, 
+                                     title, 
+                                     img=thumb,
+                                     total_items=total)
+            
 
     else:
             addon.add_directory({'mode': 'browse', 
