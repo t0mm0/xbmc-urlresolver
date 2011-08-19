@@ -59,6 +59,10 @@ elif mode == 'test':
                          {'title': 'videobb'})
     addon.add_video_item('http://www.videoweed.es/file/crirmdz3tj116', 
                          {'title': 'videoweed'})
+    addon.add_video_item('http://www.vidxden.com/0up93nsov4w9/Hells.Kitchen.US.S07E07.WS.PDTV.XviD-LOL.avi.html', 
+                         {'title': 'vidxden avi'})
+    addon.add_video_item('http://www.vidxden.com/embed-ce9eahujm85p.html', 
+                         {'title': 'vidxden flv'})
     addon.add_video_item('http://www.youtube.com/watch?v=Q3VJOl_XeGs', 
                          {'title': 'youtube'})
 
