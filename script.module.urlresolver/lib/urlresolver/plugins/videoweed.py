@@ -34,7 +34,7 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
     def get_media_url(self, web_url):
-        #grab stream address
+        #grab stream details
         try:
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
@@ -42,15 +42,34 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
                                     (e.code, web_url))
             return False
         
-        r = re.search('flashvars.file="(.+?)"', html)
+        r = re.search('flashvars.domain="(.+?)".*flashvars.file="(.+?)".*' + 
+                      'flashvars.filekey="(.+?)"', html, re.DOTALL)
+        
+        #use api to find stream address
         if r:
-            stream_url = r.group(1)
+            domain, fileid, filekey = r.groups()
+            api_call = ('%s/api/player.api.php?user=undefined&codes=1&file=%s' +
+                        '&pass=undefined&key=%s') % (domain, fileid, filekey)
+        else:
+            common.addon.log_error('videoweed: api url not found')
+            return False
+
+        try:
+            api_html = self.net.http_GET(api_call).content
+        except urllib2.URLERROR, e:
+            common.addon.log_error('videoweed: failed to call the video API: ' +
+                                   'got http error %d fetching %s' %
+                                                            (e.code, api_call))
+            return False
+
+        rapi = re.search('url=(.+?)&title=', api_html)
+        if rapi:
+            stream_url = rapi.group(1)
         else:
             common.addon.log_error('videoweed: stream url not found')
-            return False
-        
+
         return stream_url
-        
+
     def valid_url(self, web_url):
         return re.match('http://(www.)?videoweed.(es|com)/file/[0-9a-z]+', 
                         web_url)
