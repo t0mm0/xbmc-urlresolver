@@ -21,6 +21,7 @@ import string
 import sys
 from t0mm0.common.addon import Addon
 from t0mm0.common.net import Net
+import urllib2
 import urlresolver
 
 addon = Addon('plugin.video.letmewatchthis', sys.argv)
@@ -75,9 +76,9 @@ elif mode == 'browse':
                 addon.log_error('got http error %d fetching %s' %
                                 (e.code, web_url))
 
-            r = re.search('number_movies_result">(\d+)', html)
+            r = re.search('number_movies_result">([0-9,]+)', html)
             if r:
-                total = int(r.group(1))
+                total = int(r.group(1).replace(',', ''))
             else:
                 total = 0
                 
@@ -86,12 +87,16 @@ elif mode == 'browse':
             regex = re.finditer(r, html, re.DOTALL)
             for s in regex:
                 url, thumb, title = s.groups()
-                addon.add_directory({'mode': 'series', 
-                                     'url': base_url + url}, 
-                                     title, 
-                                     img=thumb,
-                                     total_items=total)
-            
+                if section == 'tv':
+                    addon.add_directory({'mode': 'series', 
+                                         'url': base_url + url}, 
+                                         title, 
+                                         img=thumb,
+                                         total_items=total)
+                else:
+                    addon.add_video_item(base_url + url, 
+                                         {'title': title}, 
+                                          img=thumb, total_items=total)
 
     else:
             addon.add_directory({'mode': 'browse', 
@@ -143,6 +148,7 @@ elif mode == 'series':
 
 elif mode == 'main':
     addon.add_directory({'mode': 'browse', 'section': 'tv'}, 'TV')
+    addon.add_directory({'mode': 'browse', 'section': ''}, 'Movies')
     addon.add_directory({'mode': 'resolver_settings'}, 'Resolver Settings', 
                         is_folder=False)
 
