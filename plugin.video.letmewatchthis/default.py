@@ -71,6 +71,8 @@ elif mode == 'browse':
         html = '> >> <'
         if genre == 'All':
             genre = ''
+        if letter == 'All':
+            letter = ''
         page = 0
         while html.find('> >> <') > -1:
             page += 1
@@ -111,6 +113,11 @@ elif mode == 'browse':
                                               img=thumb, total_items=total)
 
     elif genre:
+        if genre != 'All':
+            addon.add_directory({'mode': 'browse', 
+                                 'section': section,
+                                 'genre': genre,
+                                 'letter': 'All'}, 'All')
         addon.add_directory({'mode': 'browse', 
                              'section': section,
                              'genre': genre,
