@@ -94,18 +94,21 @@ elif mode == 'browse':
             r = 'class="index_item.+?href="(.+?)".+?src="(.+?)".+?' + \
                 'alt="Watch (.+?)"'
             regex = re.finditer(r, html, re.DOTALL)
+            urls = []
             for s in regex:
                 url, thumb, title = s.groups()
-                if section == 'tv':
-                    addon.add_directory({'mode': 'series', 
-                                         'url': base_url + url}, 
-                                         title, 
-                                         img=thumb,
-                                         total_items=total)
-                else:
-                    addon.add_video_item(base_url + url, 
-                                         {'title': title}, 
-                                          img=thumb, total_items=total)
+                if url not in urls:
+                    urls.append(url)
+                    if section == 'tv':
+                        addon.add_directory({'mode': 'series', 
+                                             'url': base_url + url}, 
+                                             title, 
+                                             img=thumb,
+                                             total_items=total)
+                    else:
+                        addon.add_video_item(base_url + url, 
+                                             {'title': title}, 
+                                              img=thumb, total_items=total)
 
     elif genre:
         addon.add_directory({'mode': 'browse', 
@@ -142,6 +145,14 @@ elif mode == 'series':
         addon.log_error('couldn\'t find image')
         img = ''
     
+    regex = re.search('<p style="width:460px; display:block;">(.+?)</p', html,
+                      re.DOTALL)
+    if regex:
+        plot = regex.group(1).strip()
+    else:
+        addon.log_error('couldn\'t find plot')
+        plot = ''
+    
     seasons = re.search('tv_container(.+?)<div class="clearer', html, re.DOTALL)    
     if not seasons:
         addon.log_error('couldn\'t find seasons')
@@ -161,7 +172,8 @@ elif mode == 'series':
                 title = re.sub('<[^<]+?>', '', title.strip())
                 title = re.sub('\s\s+' , ' ', title)
                 addon.add_video_item(base_url + url, {'title': '%s %s' % 
-                                                 (season_name, title)}, img=img)
+                                                        (season_name, title),
+                                                      'plot': plot}, img=img)
 
 
 elif mode == 'main':
