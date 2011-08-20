@@ -57,7 +57,31 @@
   <div class="section" id="module-urlresolver">
 <span id="urlresolver"></span><h1><a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a><a class="headerlink" href="#module-urlresolver" title="Permalink to this headline">¶</a></h1>
 <p>This module provides the main API for accessing the urlresolver features.</p>
-<p>For most cases you probably want to use <a class="reference internal" href="#urlresolver.resolve" title="urlresolver.resolve"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.resolve()</span></tt></a>.</p>
+<p>For most cases you probably want to use <a class="reference internal" href="#urlresolver.resolve" title="urlresolver.resolve"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.resolve()</span></tt></a> or 
+<a class="reference internal" href="#urlresolver.choose_source" title="urlresolver.choose_source"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.choose_source()</span></tt></a>.</p>
+<dl class="function">
+<dt id="urlresolver.choose_source">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">choose_source</tt><big>(</big><em>sources</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#choose_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.choose_source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a dictionary of sources where the keys are web URLs to be resolved and
+the values are a title to display this function checks which are playable
+and if there are more than one it pops up a dialog box displaying the 
+choices.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sources</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;http://youtu.be/VIDEOID&#39;</span><span class="p">:</span> <span class="s">&#39;Youtube [verified] (20 views)&#39;</span><span class="p">,</span>
+           <span class="s">&#39;http://putlocker.com/file/VIDEOID&#39;</span><span class="p">:</span> <span class="s">&#39;Putlocker (3 views)&#39;</span><span class="p">}</span>
+<span class="n">stream_url</span> <span class="o">=</span> <span class="n">urlresolver</span><span class="o">.</span><span class="n">choose_source</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>sources (dict): A dictionary where the keys are web URLs to be resolved
+and the values are titles to be displayed in the coice dialog.</dd>
+<dt>Returns:</dt>
+<dd>If the chosen URL could be resolved, a string containing the direct 
+URL to the media file, if not, returns <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+</dl>
+</dd></dl>
+
 <dl class="function">
 <dt id="urlresolver.display_settings">
 <tt class="descclassname">urlresolver.</tt><tt class="descname">display_settings</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#display_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.display_settings" title="Permalink to this definition">¶</a></dt>
@@ -70,6 +94,23 @@ exposing settings.</p>
 <p class="last">All changes made to these setting by the user are global and will 
 affect any addon that uses <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="urlresolver.filter_dict">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">filter_dict</tt><big>(</big><em>d</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#filter_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.filter_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#urlresolver.filter_urls" title="urlresolver.filter_urls"><tt class="xref py py-func docutils literal"><span class="pre">filter_urls()</span></tt></a> but takes a dictionary where the keys are
+web URLs to check and returns a dictionary which only contains items that
+have a resolver plugin.</p>
+<p>Useful for when you want to filter a list of web URLs and keep some other
+information with each URL.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>d (dict): A dictionary where the keys are all web URLs</dd>
+<dt>Returns:</dt>
+<dd>A copy of the dictionary with items that can&#8217;t be resolved by a resolver
+plugin removed.</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">

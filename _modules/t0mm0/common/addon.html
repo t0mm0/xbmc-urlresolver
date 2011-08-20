@@ -409,7 +409,7 @@
             <span class="n">xbmcplugin</span><span class="o">.</span><span class="n">setResolvedUrl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> 
                                       <span class="n">xbmcgui</span><span class="o">.</span><span class="n">ListItem</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">stream_url</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">show_error_dialog</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_string</span><span class="p">(</span><span class="mi">30001</span><span class="p">)])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_error_dialog</span><span class="p">([</span><span class="s">&#39;sorry, failed to resolve URL :(&#39;</span><span class="p">])</span>
             <span class="n">xbmcplugin</span><span class="o">.</span><span class="n">setResolvedUrl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">xbmcgui</span><span class="o">.</span><span class="n">ListItem</span><span class="p">())</span>
 
     </div>
