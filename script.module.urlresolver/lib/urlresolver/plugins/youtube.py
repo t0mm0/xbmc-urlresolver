@@ -36,8 +36,13 @@ class YoutubeResolver(Plugin, UrlResolver, PluginSettings):
         #just call youtube addon
         plugin = 'plugin://plugin.video.youtube/?action=play_video&videoid='
 
-        queries = common.addon.parse_query(web_url.split('?')[1])
-        video_id = queries.get('v', None)
+        if web_url.find('?') > -1:
+            queries = common.addon.parse_query(web_url.split('?')[1])
+            video_id = queries.get('v', None)
+        else:
+            r = re.findall('/([0-9A-Za-z_\-]+)', web_url)
+            if r:
+                video_id = r[-1]
         if video_id:
             return plugin + video_id
         else:
@@ -46,7 +51,8 @@ class YoutubeResolver(Plugin, UrlResolver, PluginSettings):
         
         
     def valid_url(self, web_url):
-        return re.match('http://(www.)?youtube.+?v=.+', web_url)
+        return re.match('http://(((www.)?youtube.+?(v|embed)(=|/))|' +
+                        'youtu.be/)[0-9A-Za-z_\-]+', web_url)
 
     def get_settings_xml(self):
         xml = PluginSettings.get_settings_xml(self)
