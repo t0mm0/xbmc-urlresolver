@@ -311,7 +311,7 @@ class HttpResponse:
         self.content = html
     
     
-    def get_headers():
+    def get_headers(self):
         '''Returns a List of headers returned by the server.'''
         return self._response.info().headers
     
