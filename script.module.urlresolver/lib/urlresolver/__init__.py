@@ -17,7 +17,8 @@
 '''
 This module provides the main API for accessing the urlresolver features.
 
-For most cases you probably want to use :func:`urlresolver.resolve`.
+For most cases you probably want to use :func:`urlresolver.resolve` or 
+:func:`urlresolver.choose_source`.
 '''
 
 import os
@@ -26,6 +27,7 @@ import plugnplay
 from plugnplay.interfaces import UrlResolver
 from plugnplay.interfaces import PluginSettings
 from plugnplay.interfaces import SiteAuth
+import xbmcgui
 
 #load all available plugins
 plugnplay.set_plugin_dirs(common.plugins_path)
@@ -87,6 +89,24 @@ def filter_urls(urls):
         if imp:
             ret.append(url)
     return ret
+
+def filter_dict(d):
+    '''
+    Similar to :func:`filter_urls` but takes a dictionary where the keys are
+    web URLs to check and returns a dictionary which only contains items that
+    have a resolver plugin.
+    
+    Useful for when you want to filter a list of web URLs and keep some other
+    information with each URL.
+    
+    Args:
+        d (dict): A dictionary where the keys are all web URLs
+    
+    Returns:
+        A copy of the dictionary with items that can't be resolved by a resolver
+        plugin removed.
+    '''
+    return dict((k, v) for k, v in d.iteritems() if find_resolver(k))
         
 def find_resolver(web_url):
     '''
@@ -112,6 +132,46 @@ def find_resolver(web_url):
         if imp.valid_url(web_url):
             return imp
     return False
+
+def choose_source(sources):
+    '''
+    Given a dictionary of sources where the keys are web URLs to be resolved and
+    the values are a title to display this function checks which are playable
+    and if there are more than one it pops up a dialog box displaying the 
+    choices.
+    
+    Example::
+    
+        sources = {'http://youtu.be/VIDEOID': 'Youtube [verified] (20 views)',
+                   'http://putlocker.com/file/VIDEOID': 'Putlocker (3 views)'}
+        stream_url = urlresolver.choose_source(sources)
+
+    Args:
+        sources (dict): A dictionary where the keys are web URLs to be resolved
+        and the values are titles to be displayed in the coice dialog.
+        
+    Returns:
+        If the chosen URL could be resolved, a string containing the direct 
+        URL to the media file, if not, returns ``False``.    
+        
+    '''
+    #get rid of sources with no resolver plugin
+    sources = filter_dict(sources)
+    
+    #show dialog to choose source
+    if len(sources) > 1:
+        dialog = xbmcgui.Dialog()
+        index = dialog.select('Choose your stream', sources.values())
+        return resolve(sources.keys()[index])
+    
+    #only one playable source so just play it
+    elif len(sources) == 1:
+        return resolve(sources.keys()[0])    
+    
+    #no playable sources available
+    else:
+        common.addon.log_error('no playable streams found')
+        return False
     
         
 def display_settings():

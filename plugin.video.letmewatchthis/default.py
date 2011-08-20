@@ -22,7 +22,6 @@ import sys
 from t0mm0.common.addon import Addon
 from t0mm0.common.net import Net
 import urlresolver
-import xbmcgui
 
 addon = Addon('plugin.video.letmewatchthis', sys.argv)
 net = Net()
@@ -41,31 +40,20 @@ if play:
         addon.log_error('got http error %d fetching %s' %
                         (e.code, web_url))
     
-    links = {}
-    for l in re.finditer('class="movie_version".+?quality_(.+?)>.+?url=(.+?)&domain=(.+?)&.+?"version_veiws">(.+?)</', html, re.DOTALL):
-        q, url, host, views = l.groups()
-        verified = l.group(0).find('star.gif') > -1
-        link =  host.decode('base-64')
+    #find all sources and their info
+    sources = {}
+    for s in re.finditer('class="movie_version".+?quality_(.+?)>.+?url=(.+?)' + 
+                         '&domain=(.+?)&.+?"version_veiws">(.+?)</', 
+                         html, re.DOTALL):
+        q, url, host, views = s.groups()
+        verified = s.group(0).find('star.gif') > -1
+        source =  host.decode('base-64')
         if verified:
-            link += ' [verified]'
-        link += ' (%s)' % views.strip()
-        links[url.decode('base-64')] = link
+            source += ' [verified]'
+        source += ' (%s)' % views.strip()
+        sources[url.decode('base-64')] = source
     
-
-    playable = urlresolver.filter_urls(links.keys())
-    
-    if playable:
-        readable = []
-        for p in playable:
-            readable.append(links[p])
-        
-        dialog = xbmcgui.Dialog()
-        index = dialog.select('Choose your stream', readable)
-        stream_url = urlresolver.resolve(playable[index])
-    else:
-        addon.log_error('no playable streams found')
-        stream_url = False
-
+    stream_url = urlresolver.choose_source(sources)    
     addon.resolve_url(stream_url)
 
 elif mode == 'browse':
@@ -93,7 +81,8 @@ elif mode == 'browse':
             else:
                 total = 0
                 
-            r = 'class="index_item.+?href="(.+?)".+?src="(.+?)".+?alt="Watch (.+?)"'
+            r = 'class="index_item.+?href="(.+?)".+?src="(.+?)".+?' + \
+                'alt="Watch (.+?)"'
             regex = re.finditer(r, html, re.DOTALL)
             for s in regex:
                 url, thumb, title = s.groups()
