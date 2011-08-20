@@ -28,7 +28,12 @@ addon = Addon('plugin.video.letmewatchthis', sys.argv)
 net = Net()
 
 base_url = 'http://www.letmewatchthis.ch'
-
+genres = ['All', 'Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 
+          'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Game-Show', 
+          'History', 'Horror', 'Japanese', 'Korean', 'Music', 'Musical', 
+          'Mystery', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 
+          'Talk-Show', 'Thriller', 'War', 'Western', 'Zombies']
+          
 mode = addon.queries['mode']
 play = addon.queries.get('play', None)
 
@@ -59,15 +64,19 @@ if play:
 
 elif mode == 'browse':
     browse = addon.queries.get('browse', False)
+    genre = addon.queries.get('genre', False)
     letter = addon.queries.get('letter', False)
     section = addon.queries.get('section', '')
     if letter:        
         html = '> >> <'
+        if genre == 'All':
+            genre = ''
         page = 0
         while html.find('> >> <') > -1:
             page += 1
-            url = '%s/?letter=%s&sort=alphabet&page=%s&%s' % (base_url, letter, 
-                                                              page, section)
+            url = '%s/?letter=%s&sort=alphabet&page=%s&genre=%s&%s' % (
+                                         base_url, letter, page, genre, section)
+            print url
             try:
                 addon.log_debug('fetching %s' % url)
                 html = net.http_GET(url).content
@@ -98,14 +107,23 @@ elif mode == 'browse':
                                          {'title': title}, 
                                           img=thumb, total_items=total)
 
-    else:
+    elif genre:
+        addon.add_directory({'mode': 'browse', 
+                             'section': section,
+                             'genre': genre,
+                             'letter': '123'}, '#')
+        for l in string.uppercase:
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
-                                 'letter': '123'}, '#')
-            for l in string.uppercase:
-                addon.add_directory({'mode': 'browse', 
-                                     'section': section,
-                                     'letter': l}, l)
+                                 'genre': genre,
+                                 'letter': l}, l)
+    
+    else:
+        for genre in genres:
+            addon.add_directory({'mode': 'browse', 
+                                 'section': section,
+                                 'genre': genre}, genre)
+            
         
 elif mode == 'series':
     url = addon.queries['url']
