@@ -7,19 +7,14 @@ import urllib2
 from urlresolver import common
 import os
 
-class TowgbhostingResolver(Plugin, UrlResolver, PluginSettings):
+class TwogbhostingResolver(Plugin, UrlResolver, PluginSettings):
 	implements = [UrlResolver, PluginSettings]
 	name = "2gbhosting"
-	profile_path = common.profile_path
-	cookie_file = os.path.join(profile_path, '%s.cookies' % name)
+
 
 	def __init__(self):
 		p = self.get_setting('priority') or 100
 		self.priority = int(p)
-		try:
-                        os.makedirs(os.path.dirname(self.cookie_file))
-                except OSError:
-                        pass
 		self.net = Net()
 
 	
