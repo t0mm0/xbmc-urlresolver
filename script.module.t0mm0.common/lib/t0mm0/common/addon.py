@@ -334,6 +334,32 @@ class Addon:
         self.show_ok_dialog(msg, 'Error: %s' % self.get_name(), True)
 
 
+    def show_small_popup(self,title,msg,delay,image):
+        '''
+        Displays a small popup box in the lower right corner
+
+        Code inspired by anarchintoch and daledude's Icefilms addon.
+
+        Args:
+        title (str): title to be displayed at the top of the box
+        msg (str): Main message body
+        delay (int): delay in seconds until it disapears
+        image (path): Path to the image you want to display
+
+        Example::
+
+            import os,xbmc
+            logo = os.path.join(xbmc.translatePath(addon.get_path()), 'art','logo.jpg')
+            addon.show_small_popup('MyAddonName','Is now loaded enjoy',['5000'],[logo])
+        '''
+        
+        if delay == '':
+            delay == '5000'
+        if image == '':
+            image = 'logo_in_gold.png'
+        xbmc.executebuiltin("XBMC.Notification("+title+","+msg+","+delay+","+image+")")
+        
+
     def show_settings(self):
         '''Shows the settings dialog for this addon.'''
         self.addon.openSettings()

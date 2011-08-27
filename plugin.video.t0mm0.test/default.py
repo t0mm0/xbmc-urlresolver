@@ -22,9 +22,12 @@ import sys
 from t0mm0.common.addon import Addon
 from t0mm0.common.net import Net
 import urlresolver
+import os,xbmc
 
 addon = Addon('plugin.video.t0mm0.test', sys.argv)
 net = Net()
+
+logo = os.path.join(xbmc.translatePath(addon.get_path()), 'art','logo.jpg')
 
 base_url = 'http://tubeplus.me'
 
@@ -114,6 +117,7 @@ elif mode == 'series':
     
 
 elif mode == 'main':
+    addon.show_small_popup('t0mm0 test addon','Is now loaded enjoy','6000',logo)
     addon.add_directory({'mode': 'test'}, '*test links*')
     addon.add_directory({'mode': 'tv'}, 'tubeplus.me tv')
     addon.add_directory({'mode': 'resolver_settings'}, 'resolver settings', 
