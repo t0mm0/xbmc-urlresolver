@@ -68,6 +68,12 @@ elif mode == 'test':
                          {'title': 'vidxden flv'})
     addon.add_video_item('http://www.youtube.com/watch?v=Q3VJOl_XeGs', 
                          {'title': 'youtube'})
+    addon.add_video_item('http://www.nolimitvideo.com/video/bdb6e2c62fe027a7b20a/friends-with-benefits-ts', 
+                         {'title': 'nolimitvideo'})
+    addon.add_video_item('http://www.divxstage.eu/video/eb20c352c3ccc', 
+                         {'title': 'divxstage'})
+    addon.add_video_item('http://www.2gb-hosting.com/v/e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html', 
+                         {'title': '2gb-hosting'})
 
 elif mode == 'tv':
     browse = addon.queries.get('browse', False)

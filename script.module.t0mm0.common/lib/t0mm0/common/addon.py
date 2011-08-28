@@ -352,7 +352,6 @@ class Addon:
             logo = os.path.join(xbmc.translatePath(addon.get_path()), 'art','logo.jpg')
             addon.show_small_popup('MyAddonName','Is now loaded enjoy',['5000'],[logo])
         '''
-        
         if delay == '':
             delay == '5000'
         if image == '':
@@ -363,6 +362,7 @@ class Addon:
     def show_settings(self):
         '''Shows the settings dialog for this addon.'''
         self.addon.openSettings()
+
 
     def resolve_url(self, stream_url):
         '''
