@@ -18,6 +18,8 @@
 
 import cgi
 import re
+import os
+import pickle
 import unicodedata
 import urllib
 import xbmc
@@ -662,4 +664,55 @@ class Addon:
         for key, value in d.items():
             out[key] = self.unescape(value)
         return out
+    
+    def save_data(self,filename,data):
+        '''
+        Saves the data structure using pickle. If the addon data path does 
+        not exist it will be automatically created. This save function has
+        the same restrictions as the pickle module
+        
+        Args:
+            filename (string): name of the file you want to save data to.
+            
+            data (data object / string): you want to save.
+            
+        Returns:
+            True on success
+            False on failure
+        '''
+        profile_path = self.get_profile()
+        if not os.path.exists(profile_path):
+            os.mkdir(profile_path)
+        save_path = os.path.join(xbmc.translatePath( profile_path), ''+filename+'')
+        try:
+            pickle.dump( data, open(save_path, 'wb'))
+            return True
+        except pickle.PickleError:
+            return false
+        
+    def load_data(self,filename):
+        '''
+        Load the data that was saved with save_data() and returns the
+        data structure.
+        
+        Args:
+            filename (string): Name of the file you want to load data from.
+            
+        Returns:
+            Data stucture on success
+            False on failure
+        '''
+        profile_path = self.get_profile()
+        load_path = os.path.join(xbmc.translatePath( profile_path), ''+filename+'')
+        file_exists = os.path.isfile(load_path)
+        if not file_exists:
+            return False
+        else:
+            try:
+                data = pickle.load( open(load_path))
+            except pickle.PickleError:
+                return False
+            return data
+            
+        
 
