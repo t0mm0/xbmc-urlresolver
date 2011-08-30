@@ -70,6 +70,6 @@ class NovamovResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
         
     def valid_url(self, web_url):
-        return re.match('http://(www.)?novamov.com/video/(?:[0-9a-zA-Z]+)', 
-                        web_url)
+        return re.match('http://(www.|embed.)?novamov.com/(video/|embed.php\?)' +
+                        '(?:[0-9a-zA-Z]+|width)', web_url)
 

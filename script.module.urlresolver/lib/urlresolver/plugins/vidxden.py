@@ -64,7 +64,7 @@ class VidxdenResolver(Plugin, UrlResolver, PluginSettings):
         if r:
             p, k = r.groups()
         else:
-            common.log_error('vidxden: packed javascript embed code not found')
+            common.addon.log_error('vidxden: packed javascript embed code not found')
 
         decrypted_data = unpack_js(p, k)
         
