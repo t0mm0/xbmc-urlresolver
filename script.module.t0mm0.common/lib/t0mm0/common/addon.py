@@ -19,7 +19,10 @@
 import cgi
 import re
 import os
-import pickle
+try:
+   import cPickle as pickle
+except:
+   import pickle
 import unicodedata
 import urllib
 import xbmc
@@ -113,7 +116,7 @@ class Addon:
         Returns the full path to the addon profile directory 
         (useful for storing files needed by the addon such as cookies).
         '''
-        return self.addon.getAddonInfo('profile')
+        return xbmc.translatePath(self.addon.getAddonInfo('profile'))
             
 
     def get_stars(self):    
@@ -666,30 +669,33 @@ class Addon:
             out[key] = self.unescape(value)
         return out
     
-    def save_data(self,filename,data):
+    def save_data(self, filename, data):
         '''
         Saves the data structure using pickle. If the addon data path does 
         not exist it will be automatically created. This save function has
-        the same restrictions as the pickle module
+        the same restrictions as the pickle module.
         
         Args:
-            filename (string): name of the file you want to save data to.
+            filename (string): name of the file you want to save data to. This 
+            file will be saved in your addon's profile directory.
             
-            data (data object / string): you want to save.
+            data (data object/string): you want to save.
             
         Returns:
             True on success
             False on failure
         '''
         profile_path = self.get_profile()
-        if not os.path.exists(profile_path):
-            os.mkdir(profile_path)
-        save_path = os.path.join(xbmc.translatePath( profile_path), ''+filename+'')
         try:
-            pickle.dump( data, open(save_path, 'wb'))
+            os.makedirs(profile_path)
+        except:
+            pass
+        save_path = os.path.join(profile_path, filename)
+        try:
+            pickle.dump(data, open(save_path, 'wb'))
             return True
         except pickle.PickleError:
-            return false
+            return False
         
     def load_data(self,filename):
         '''
@@ -697,23 +703,24 @@ class Addon:
         data structure.
         
         Args:
-            filename (string): Name of the file you want to load data from.
+            filename (string): Name of the file you want to load data from. This
+            file will be loaded from your addons profile directory.
             
         Returns:
             Data stucture on success
             False on failure
         '''
         profile_path = self.get_profile()
-        load_path = os.path.join(xbmc.translatePath( profile_path), ''+filename+'')
-        file_exists = os.path.isfile(load_path)
-        if not file_exists:
+        load_path = os.path.join(profile_path, filename)
+        print profile_path
+        if not os.path.isfile(load_path):
+            self.log_debug('%s does not exist' % load_path)
             return False
-        else:
-            try:
-                data = pickle.load( open(load_path))
-            except pickle.PickleError:
-                return False
-            return data
+        try:
+            data = pickle.load(open(load_path))
+        except:
+            return False
+        return data
             
         
 
