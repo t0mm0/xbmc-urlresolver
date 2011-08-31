@@ -16,13 +16,11 @@ class nolimitvideoResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
 
-
-
     def get_media_url(self, web_url):
         try:
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
-            common.addon.log_error('nolimitvideo: got http error %d fetching %s' %
+            common.addon.log_error('nolimitvideo: http error %d fetching %s' %
                                    (e.code, web_url))
             return False
                 
@@ -37,9 +35,7 @@ class nolimitvideoResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
 
 
-
     def valid_url(self, web_url):
         return re.match('http://(www)?.nolimitvideo.com/' +
                         'video/[0-9A-Za-z]+/', web_url)
-
 

@@ -16,8 +16,6 @@ class DivxstageResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
 
-
-
     def get_media_url(self, web_url):
         try:
             html = self.net.http_GET(web_url).content
@@ -27,12 +25,11 @@ class DivxstageResolver(Plugin, UrlResolver, PluginSettings):
             return False
                 
         r = re.search('<param name="src" value="(.+?)" />', html)
-        stream_url = ""
         if r:
             stream_url = r.group(1)
         else:
             message ='Divxstage: 1st attempt at finding the stream_url failed'
-            common.addon.log_error(message)
+            common.addon.log_debug(message)
             r = re.search("\'flashvars\',\'file=(.+)&type=video", html)
             if r:
                 stream_url = r.group(1)
@@ -41,9 +38,6 @@ class DivxstageResolver(Plugin, UrlResolver, PluginSettings):
                 common.addon.log_error(message)
                 return False
         return stream_url
-
-                
-
 
 
     def valid_url(self, web_url):
