@@ -26,3 +26,6 @@ abortRequested = False
 
 def log(msg, level=0):
     pass
+
+def translatePath(path):
+    pass
