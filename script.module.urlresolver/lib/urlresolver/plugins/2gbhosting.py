@@ -23,15 +23,14 @@ class TwogbhostingResolver(Plugin, UrlResolver, PluginSettings):
         try:
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
-            common.addon.log_error('2gb-hosting: got http error %d fetching %s' %
+            common.addon.log_error('2gb-hosting: http error %d fetching %s' %
                                     (e.code, web_url))
             return False
 
         r = re.search('<input type="hidden" name="sid" value="(.+?)" />', html)
-        sid = ""
         if r:
             sid = r.group(1)
-            common.addon.log_error('eg-hosting: found sid' + sid)
+            common.addon.log_debug('eg-hosting: found sid' + sid)
         else:
             common.addon.log_error('2gb-hosting: Could not find sid')
             return False
@@ -43,23 +42,18 @@ class TwogbhostingResolver(Plugin, UrlResolver, PluginSettings):
                                     (e.code, web_url))
             return False
 
-        r = re.search('swf\|(.+?)\|mpl\|\d+\|(.+?)\|stretching\|autostart\|jpg\|' +
-                      'exactfit\|provider\|write\|lighttpd\|.+?\|' +
-                      'thumbs\|mediaspace\|(.+)\|(.+)\|(.+?)\|image\|files', html)
-        stream_url = ""
+        r = re.search('swf\|(.+?)\|mpl\|\d+\|(.+?)\|stretching\|autostart\|' +
+                      'jpg\|exactfit\|provider\|write\|lighttpd\|.+?\|' +
+                      'thumbs\|mediaspace\|(.+)\|(.+)\|(.+?)\|image\|files', 
+                      html)
         if r:
-            stream_host = r.group(1)
-            url_part4 = r.group(2)
-            url_part2 = r.group(3)
-            url_part1 = r.group(4)
-            url_extension = r.group(5)
-
-            stream_url = 'http://' + stream_host + '.' + '2gb-hosting.com/files/' + url_part1 + '/' + url_part2 + '/2gb/' + url_part4 + '.' + url_extension
-            common.addon.log_error('2gbhosting: streaming url' + stream_url)
+            stream_host, url_part4, url_part2, url_part1, ext = r.groups()
+            stream_url = 'http://%s.2gb-hosting.com/files/%s/%s/2gb/%s.%s' % (
+                             stream_host, url_part1, url_part2, url_part4, ext)
+            common.addon.log_debug('2gbhosting: streaming url ' + stream_url)
         else:
             common.addon.log_error('2gbhosting: stream_url not found')
             return False
-
 
         return stream_url
 
