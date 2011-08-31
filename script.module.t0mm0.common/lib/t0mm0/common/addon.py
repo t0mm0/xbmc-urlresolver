@@ -336,29 +336,30 @@ class Addon:
         self.show_ok_dialog(msg, 'Error: %s' % self.get_name(), True)
 
 
-    def show_small_popup(self,title,msg,delay,image):
+    def show_small_popup(self, title='', msg='', delay=5000, image=''):
         '''
-        Displays a small popup box in the lower right corner
+        Displays a small popup box in the lower right corner. The default delay 
+        is 5 seconds.
 
-        Code inspired by anarchintoch and daledude's Icefilms addon.
-
-        Args:
-        title (str): title to be displayed at the top of the box
-        msg (str): Main message body
-        delay (int): delay in seconds until it disapears
-        image (path): Path to the image you want to display
+        Code inspired by anarchintosh and daledude's Icefilms addon.
 
         Example::
 
-            import os,xbmc
-            logo = os.path.join(xbmc.translatePath(addon.get_path()), 'art','logo.jpg')
-            addon.show_small_popup('MyAddonName','Is now loaded enjoy',['5000'],[logo])
+            import os
+            logo = os.path.join(addon.get_path(), 'art','logo.jpg')
+            addon.show_small_popup('MyAddonName','Is now loaded enjoy', 5000, logo)
+
+        Kwargs:
+            title (str): title to be displayed at the top of the box
+            
+            msg (str): Main message body
+            
+            delay (int): delay in milliseconds until it disapears
+            
+            image (str): Path to the image you want to display
         '''
-        if delay == '':
-            delay == '5000'
-        if image == '':
-            image = 'logo_in_gold.png'
-        xbmc.executebuiltin("XBMC.Notification("+title+","+msg+","+delay+","+image+")")
+        xbmc.executebuiltin('XBMC.Notification("%s","%s",%d,"%s")' %
+                            (title, msg, delay, image))
         
 
     def show_settings(self):

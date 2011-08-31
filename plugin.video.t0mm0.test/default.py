@@ -16,18 +16,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import os
 import re
 import string
 import sys
 from t0mm0.common.addon import Addon
 from t0mm0.common.net import Net
 import urlresolver
-import os,xbmc
 
 addon = Addon('plugin.video.t0mm0.test', sys.argv)
 net = Net()
 
-logo = os.path.join(xbmc.translatePath(addon.get_path()), 'art','logo.jpg')
+logo = os.path.join(addon.get_path(), 'art','logo.jpg')
 
 base_url = 'http://tubeplus.me'
 
@@ -42,12 +42,18 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item('http://www.2gb-hosting.com/v/e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html', 
+                         {'title': '2gb-hosting'})
+    addon.add_video_item('http://www.divxstage.eu/video/eb20c352c3ccc', 
+                         {'title': 'divxstage'})
     addon.add_video_item('http://www.megaupload.com/?d=TQPQJM5H', 
                          {'title': 'megaupload'})
     addon.add_video_item('http://www.megavideo.com/?v=LYWNYM1J', 
                          {'title': 'megavideo'})
     addon.add_video_item('http://www.movshare.net/video/rnqmuilri1b71', 
                          {'title': 'movshare'})
+    addon.add_video_item('http://www.nolimitvideo.com/video/bdb6e2c62fe027a7b20a/friends-with-benefits-ts', 
+                         {'title': 'nolimitvideo'})
     addon.add_video_item('http://www.novamov.com/video/kdshwq2cj6vxv', 
                          {'title': 'novamov'})
     addon.add_video_item('http://www.putlocker.com/file/DFE7599AE064911A', 
@@ -68,12 +74,6 @@ elif mode == 'test':
                          {'title': 'vidxden flv'})
     addon.add_video_item('http://www.youtube.com/watch?v=Q3VJOl_XeGs', 
                          {'title': 'youtube'})
-    addon.add_video_item('http://www.nolimitvideo.com/video/bdb6e2c62fe027a7b20a/friends-with-benefits-ts', 
-                         {'title': 'nolimitvideo'})
-    addon.add_video_item('http://www.divxstage.eu/video/eb20c352c3ccc', 
-                         {'title': 'divxstage'})
-    addon.add_video_item('http://www.2gb-hosting.com/v/e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html', 
-                         {'title': '2gb-hosting'})
 
 elif mode == 'tv':
     browse = addon.queries.get('browse', False)
@@ -123,7 +123,8 @@ elif mode == 'series':
     
 
 elif mode == 'main':
-    addon.show_small_popup('t0mm0 test addon','Is now loaded enjoy','6000',logo)
+    addon.show_small_popup('t0mm0 test addon', 'Is now loaded enjoy', 6000,
+                           logo)
     addon.add_directory({'mode': 'test'}, '*test links*')
     addon.add_directory({'mode': 'tv'}, 'tubeplus.me tv')
     addon.add_directory({'mode': 'resolver_settings'}, 'resolver settings', 
