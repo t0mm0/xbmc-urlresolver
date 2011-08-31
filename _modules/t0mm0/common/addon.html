@@ -66,6 +66,11 @@
 
 <span class="kn">import</span> <span class="nn">cgi</span>
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">try</span><span class="p">:</span>
+   <span class="kn">import</span> <span class="nn">cPickle</span> <span class="kn">as</span> <span class="nn">pickle</span>
+<span class="k">except</span><span class="p">:</span>
+   <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">unicodedata</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 <span class="kn">import</span> <span class="nn">xbmc</span>
@@ -159,7 +164,7 @@
 <span class="sd">        Returns the full path to the addon profile directory </span>
 <span class="sd">        (useful for storing files needed by the addon such as cookies).</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">getAddonInfo</span><span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xbmc</span><span class="o">.</span><span class="n">translatePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">getAddonInfo</span><span class="p">(</span><span class="s">&#39;profile&#39;</span><span class="p">))</span>
             
 </div>
 <div class="viewcode-block" id="Addon.get_stars"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.get_stars">[docs]</a>    <span class="k">def</span> <span class="nf">get_stars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>    
@@ -382,9 +387,36 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">show_ok_dialog</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s">&#39;Error: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="bp">True</span><span class="p">)</span>
 
 </div>
+<div class="viewcode-block" id="Addon.show_small_popup"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.show_small_popup">[docs]</a>    <span class="k">def</span> <span class="nf">show_small_popup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Displays a small popup box in the lower right corner. The default delay </span>
+<span class="sd">        is 5 seconds.</span>
+
+<span class="sd">        Code inspired by anarchintosh and daledude&#39;s Icefilms addon.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            import os</span>
+<span class="sd">            logo = os.path.join(addon.get_path(), &#39;art&#39;,&#39;logo.jpg&#39;)</span>
+<span class="sd">            addon.show_small_popup(&#39;MyAddonName&#39;,&#39;Is now loaded enjoy&#39;, 5000, logo)</span>
+
+<span class="sd">        Kwargs:</span>
+<span class="sd">            title (str): title to be displayed at the top of the box</span>
+<span class="sd">            </span>
+<span class="sd">            msg (str): Main message body</span>
+<span class="sd">            </span>
+<span class="sd">            delay (int): delay in milliseconds until it disapears</span>
+<span class="sd">            </span>
+<span class="sd">            image (str): Path to the image you want to display</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">xbmc</span><span class="o">.</span><span class="n">executebuiltin</span><span class="p">(</span><span class="s">&#39;XBMC.Notification(&quot;</span><span class="si">%s</span><span class="s">&quot;,&quot;</span><span class="si">%s</span><span class="s">&quot;,</span><span class="si">%d</span><span class="s">,&quot;</span><span class="si">%s</span><span class="s">&quot;)&#39;</span> <span class="o">%</span>
+                            <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">image</span><span class="p">))</span>
+        
+</div>
 <div class="viewcode-block" id="Addon.show_settings"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.show_settings">[docs]</a>    <span class="k">def</span> <span class="nf">show_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Shows the settings dialog for this addon.&#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addon</span><span class="o">.</span><span class="n">openSettings</span><span class="p">()</span>
+
 </div>
 <div class="viewcode-block" id="Addon.resolve_url"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.resolve_url">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_url</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -684,6 +716,61 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span>
+    </div>
+<div class="viewcode-block" id="Addon.save_data"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.save_data">[docs]</a>    <span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Saves the data structure using pickle. If the addon data path does </span>
+<span class="sd">        not exist it will be automatically created. This save function has</span>
+<span class="sd">        the same restrictions as the pickle module.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            filename (string): name of the file you want to save data to. This </span>
+<span class="sd">            file will be saved in your addon&#39;s profile directory.</span>
+<span class="sd">            </span>
+<span class="sd">            data (data object/string): you want to save.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            True on success</span>
+<span class="sd">            False on failure</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">profile_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">profile_path</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">profile_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="n">pickle</span><span class="o">.</span><span class="n">PickleError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        </div>
+<div class="viewcode-block" id="Addon.load_data"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Load the data that was saved with save_data() and returns the</span>
+<span class="sd">        data structure.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            filename (string): Name of the file you want to load data from. This</span>
+<span class="sd">            file will be loaded from your addons profile directory.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Data stucture on success</span>
+<span class="sd">            False on failure</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">profile_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+        <span class="n">load_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">profile_path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">profile_path</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">load_path</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_debug</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s"> does not exist&#39;</span> <span class="o">%</span> <span class="n">load_path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">load_path</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="n">data</span>
+            
+        
 </pre></div></div></div>
 
           </div>

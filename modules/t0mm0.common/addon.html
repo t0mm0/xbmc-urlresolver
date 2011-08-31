@@ -381,6 +381,21 @@ video <tt class="xref py py-class docutils literal"><span class="pre">xbmc.Playl
 </dd></dl>
 
 <dl class="method">
+<dt id="t0mm0.common.addon.Addon.load_data">
+<tt class="descname">load_data</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the data that was saved with save_data() and returns the
+data structure.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filename (string): Name of the file you want to load data from. This
+file will be loaded from your addons profile directory.</dd>
+<dt>Returns:</dt>
+<dd>Data stucture on success
+False on failure</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="t0mm0.common.addon.Addon.log">
 <tt class="descname">log</tt><big>(</big><em>msg</em>, <em>level=2</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes a string to the XBMC log file. The addon name is inserted into 
@@ -475,6 +490,24 @@ error messsage.</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="t0mm0.common.addon.Addon.save_data">
+<tt class="descname">save_data</tt><big>(</big><em>filename</em>, <em>data</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.save_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.save_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the data structure using pickle. If the addon data path does 
+not exist it will be automatically created. This save function has
+the same restrictions as the pickle module.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">filename (string): name of the file you want to save data to. This 
+file will be saved in your addon&#8217;s profile directory.</p>
+<p class="last">data (data object/string): you want to save.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>True on success
+False on failure</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="t0mm0.common.addon.Addon.show_error_dialog">
 <tt class="descname">show_error_dialog</tt><big>(</big><em>msg</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.show_error_dialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.show_error_dialog" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience method to show an XBMC dialog box with a single OK button
@@ -525,6 +558,28 @@ the ERROR log level, otherwise NOTICE will be used.</p>
 <dt id="t0mm0.common.addon.Addon.show_settings">
 <tt class="descname">show_settings</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.show_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.show_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shows the settings dialog for this addon.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="t0mm0.common.addon.Addon.show_small_popup">
+<tt class="descname">show_small_popup</tt><big>(</big><em>title=''</em>, <em>msg=''</em>, <em>delay=5000</em>, <em>image=''</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.show_small_popup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.show_small_popup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays a small popup box in the lower right corner. The default delay 
+is 5 seconds.</p>
+<p>Code inspired by anarchintosh and daledude&#8217;s Icefilms addon.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">logo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">addon</span><span class="o">.</span><span class="n">get_path</span><span class="p">(),</span> <span class="s">&#39;art&#39;</span><span class="p">,</span><span class="s">&#39;logo.jpg&#39;</span><span class="p">)</span>
+<span class="n">addon</span><span class="o">.</span><span class="n">show_small_popup</span><span class="p">(</span><span class="s">&#39;MyAddonName&#39;</span><span class="p">,</span><span class="s">&#39;Is now loaded enjoy&#39;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="n">logo</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Kwargs:</dt>
+<dd><p class="first">title (str): title to be displayed at the top of the box</p>
+<p>msg (str): Main message body</p>
+<p>delay (int): delay in milliseconds until it disapears</p>
+<p class="last">image (str): Path to the image you want to display</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
