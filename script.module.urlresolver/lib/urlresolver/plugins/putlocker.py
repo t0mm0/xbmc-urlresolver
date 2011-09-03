@@ -76,5 +76,5 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
         
     def valid_url(self, web_url):
         return re.match('http://(www.)?(putlocker|sockshare).com/(file|embed)' +
-                        '/[0-9A-F]+', web_url)
+                        '/[0-9A-Z]+', web_url)
 
