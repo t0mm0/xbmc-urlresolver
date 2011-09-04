@@ -162,7 +162,10 @@ def choose_source(sources):
     if len(sources) > 1:
         dialog = xbmcgui.Dialog()
         index = dialog.select('Choose your stream', sources.values())
-        return resolve(sources.keys()[index])
+        if index > -1:
+            return resolve(sources.keys()[index])
+        else:
+            return False
     
     #only one playable source so just play it
     elif len(sources) == 1:
