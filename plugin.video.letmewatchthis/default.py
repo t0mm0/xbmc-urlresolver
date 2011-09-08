@@ -27,7 +27,7 @@ import urlresolver
 addon = Addon('plugin.video.letmewatchthis', sys.argv)
 net = Net()
 
-base_url = 'http://www.letmewatchthis.ch'
+base_url = 'http://www.1channel.ch'
 genres = ['All', 'Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 
           'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Game-Show', 
           'History', 'Horror', 'Japanese', 'Korean', 'Music', 'Musical', 
