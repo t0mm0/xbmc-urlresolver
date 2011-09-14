@@ -20,12 +20,12 @@ import re
 from t0mm0.common.net import Net
 import urllib2
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
-    implements = [UrlResolver, PluginSettings]
+class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
+    implements = [NewUrlResolver, PluginSettings]
     name = "putlocker/sockshare"
 
     def __init__(self):
@@ -33,7 +33,9 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
     
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
+        print web_url
         #find session_hash
         try:
             html = self.net.http_GET(web_url).content
@@ -59,12 +61,14 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
         
         #find download link
         xml_url = re.sub('/(file|embed)/', '/get_file.php?stream=', web_url)
+        print xml_url
         try:
             html = self.net.http_GET(xml_url).content
         except urllib2.URLError, e:
             common.addon.log_error('putlocker: got http error %d fetching %s' %
                                     (e.code, xml_url))
             return False
+
         r = re.search('url="(.+?)"', html)
         if r:
             flv_url = r.group(1)
@@ -73,8 +77,24 @@ class PutlockerResolver(Plugin, UrlResolver, PluginSettings):
             return False
         
         return flv_url
+
+    def get_url(self, host, media_id):
+        if not host.startswith('www.'):
+            host = 'www.' + host
+        return 'http://%s/file/%s' % (host, media_id)
         
-    def valid_url(self, web_url):
-        return re.match('http://(www.)?(putlocker|sockshare).com/(file|embed)' +
-                        '/[0-9A-Z]+', web_url)
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:file|embed)/([0-9A-Z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+        
+    def valid_url(self, hosted_media_file):
+        return (re.match('http://(www.)?(putlocker|sockshare).com/(file|embed)' +
+                         '/[0-9A-Z]+', hosted_media_file.get_url()) or
+                hosted_media_file.get_host().find('putlocker.com') > -1 or
+                hosted_media_file.get_host().find('sockshare.com') > -1)
+                 
 

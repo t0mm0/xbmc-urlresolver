@@ -514,7 +514,10 @@ class Addon:
         '''
         infolabels = self.unescape_dict(infolabels)
         if not resolved:
-            play = self.build_plugin_url({'play': play})
+            play['play'] = 'True'
+            play = self.build_plugin_url(play)
+        else: 
+            play = play['url']
         listitem = xbmcgui.ListItem(infolabels['title'], iconImage=img, 
                                     thumbnailImage=img)
         listitem.setInfo(item_type, infolabels)

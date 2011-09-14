@@ -35,13 +35,22 @@ mode = addon.queries['mode']
 play = addon.queries.get('play', None)
 
 if play:
-    stream_url = urlresolver.resolve(play)
+    url = addon.queries.get('url', None)
+    host = addon.queries.get('host', None)
+    media_id = addon.queries.get('media_id', None)
+    #stream_url = urlresolver.resolve(play)
+    stream_url = urlresolver.HostedMediaFile(url=url, host=host, media_id=media_id).resolve()
     addon.resolve_url(stream_url)
 
 elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://www.putlocker.com/file/DFE7599AE064911A'}, 
+                         {'title': 'putlocker url'})
+    addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 
+                         {'title': 'putlocker media id'})
+    '''
     addon.add_video_item('http://www.2gb-hosting.com/v/e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html', 
                          {'title': '2gb-hosting'})
     addon.add_video_item('http://www.divxstage.eu/video/eb20c352c3ccc', 
@@ -74,7 +83,7 @@ elif mode == 'test':
                          {'title': 'vidxden flv'})
     addon.add_video_item('http://www.youtube.com/watch?v=Q3VJOl_XeGs', 
                          {'title': 'youtube'})
-
+    '''
 elif mode == 'tv':
     browse = addon.queries.get('browse', False)
     if browse == 'alpha':

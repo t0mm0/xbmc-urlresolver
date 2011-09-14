@@ -24,7 +24,8 @@ For most cases you probably want to use :func:`urlresolver.resolve` or
 import os
 import common
 import plugnplay
-from plugnplay.interfaces import UrlResolver
+from types import HostedMediaFile
+from plugnplay.interfaces import NewUrlResolver
 from plugnplay.interfaces import PluginSettings
 from plugnplay.interfaces import SiteAuth
 import xbmcgui
