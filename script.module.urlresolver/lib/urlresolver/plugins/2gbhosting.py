@@ -17,7 +17,7 @@
 '''
 
 from t0mm0.common.net import Net
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 import re
@@ -25,8 +25,8 @@ import urllib2
 from urlresolver import common
 import os
 
-class TwogbhostingResolver(Plugin, UrlResolver, PluginSettings):
-    implements = [UrlResolver, PluginSettings]
+class TwogbhostingResolver(Plugin, NewUrlResolver, PluginSettings):
+    implements = [NewUrlResolver, PluginSettings]
     name = "2gbhosting"
 
 
@@ -36,7 +36,8 @@ class TwogbhostingResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         data = {}
         try:
             html = self.net.http_GET(web_url).content
@@ -76,8 +77,21 @@ class TwogbhostingResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
 
 
+    def get_url(self, host, media_id):
+        return 'http://%s/v/%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/v/([0-9a-zA-Z/]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
 
-    def valid_url(self, web_url):
-        return re.match('http://(www.)?2gb-hosting.com/v/' +
-                        '[0-9A-Za-z]+/[0-9a-zA-Z]+.*', web_url)
+
+    def valid_url(self, url, host):
+        return (re.match('http://(www.)?2gb-hosting.com/v/' +
+                         '[0-9A-Za-z]+/[0-9a-zA-Z]+.*', url) or 
+                         '2gb-hosting.com' in host)
+
 

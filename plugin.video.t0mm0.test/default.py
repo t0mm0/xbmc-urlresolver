@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://www.2gb-hosting.com/v/94fb733db6e9f984b07da3cb238eb277/2074fe10f41c7e1.flv.html'}, 
+                         {'title': '2gbhosting url'})
+    addon.add_video_item({'host': '2gb-hosting.com', 'media_id': 'e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html'}, 
+                         {'title': '2gbhosting media id'})
     addon.add_video_item({'url': 'http://www.megaupload.com/?d=9T8NHCK4'}, 
                          {'title': 'megaupload url'})
     addon.add_video_item({'host': 'megaupload.com', 'media_id': '9T8NHCK4'}, 
