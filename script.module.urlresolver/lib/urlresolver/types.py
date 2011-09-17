@@ -17,6 +17,7 @@
 import urlresolver
 from urlresolver import common
 from plugnplay.interfaces import NewUrlResolver
+from plugnplay.interfaces import SiteAuth
 
 class HostedMediaFile:
 
@@ -53,6 +54,9 @@ class HostedMediaFile:
         if self._resolvers:
             resolver = self._resolvers[0]
             common.addon.log_debug('resolving using %s plugin' % resolver.name)
+            if SiteAuth in resolver.implements:
+                common.addon.log_debug('logging in')
+                resolver.login()
             return resolver.get_media_url(self._host, self._media_id)
         else:
             return False
