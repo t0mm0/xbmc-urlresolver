@@ -90,9 +90,11 @@ elif mode == 'test':
                          {'title': 'videobb url'})
     addon.add_video_item({'host': 'videobb.com', 'media_id': '8FvAG6AQpHi8'}, 
                          {'title': 'videobb media id'})
+    addon.add_video_item({'url': 'http://www.vidxden.com/rn3h4gbh5se7/kdshn-4x4_watchseries-online.dot.com.avi.html'}, 
+                         {'title': 'vidxden url'})
+    addon.add_video_item({'host': 'vidxden.com', 'media_id': 'rn3h4gbh5se7'}, 
+                         {'title': 'vidxden media id'})
     '''
-    addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
-                         {'title': 'videobb'})
     addon.add_video_item('http://www.videoweed.es/file/crirmdz3tj116', 
                          {'title': 'videoweed'})
     addon.add_video_item('http://www.vidxden.com/0up93nsov4w9/Hells.Kitchen.US.S07E07.WS.PDTV.XviD-LOL.avi.html', 
