@@ -82,9 +82,11 @@ elif mode == 'test':
                          {'title': 'seeon.tv url'})
     addon.add_video_item({'host': 'seeon.tv', 'media_id': '19412'}, 
                          {'title': 'seeon.tv media id'})
+    addon.add_video_item({'url': 'http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/'}, 
+                         {'title': 'tubeplus url'})
+    addon.add_video_item({'host': 'tubeplus.me', 'media_id': '1962655'}, 
+                         {'title': 'tubeplus media id'})
     '''
-    addon.add_video_item('http://www.sockshare.com/embed/541433EA7B32FB39', 
-                         {'title': 'sockshare'})
     addon.add_video_item('http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/', 
                          {'title': 'tubeplus'})
     addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
