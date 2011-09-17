@@ -50,6 +50,10 @@ elif mode == 'test':
                          {'title': '2gbhosting url'})
     addon.add_video_item({'host': '2gb-hosting.com', 'media_id': 'e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html'}, 
                          {'title': '2gbhosting media id'})
+    addon.add_video_item({'url': 'http://www.divxstage.eu/video/eb20c352c3ccc'}, 
+                         {'title': 'divxstage url'})
+    addon.add_video_item({'host': 'divxstage.eu', 'media_id': 'eb20c352c3ccc'}, 
+                         {'title': 'divxstage media id'})
     addon.add_video_item({'url': 'http://www.megaupload.com/?d=9T8NHCK4'}, 
                          {'title': 'megaupload url'})
     addon.add_video_item({'host': 'megaupload.com', 'media_id': '9T8NHCK4'}, 
@@ -59,8 +63,6 @@ elif mode == 'test':
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 
                          {'title': 'putlocker media id'})
     '''
-    addon.add_video_item('http://www.2gb-hosting.com/v/e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html', 
-                         {'title': '2gb-hosting'})
     addon.add_video_item('http://www.divxstage.eu/video/eb20c352c3ccc', 
                          {'title': 'divxstage'})
     addon.add_video_item('http://www.megaupload.com/?d=TQPQJM5H', 
