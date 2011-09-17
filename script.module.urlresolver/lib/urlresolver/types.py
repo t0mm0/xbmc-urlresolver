@@ -24,14 +24,9 @@ class HostedMediaFile:
         if not url and not (host and media_id) or (url and (host or media_id)):
             raise ValueError('Set either url, or host AND media_id. ' +
                              'No other combinations are valid.')
-        if url:
-            self._url = url
-            self._host = ''
-            self._media_id = ''
-        else:
-            self._url = ''
-            self._host = host
-            self._media_id = media_id
+        self._url = url
+        self._host = host
+        self._media_id = media_id
         
         self._resolvers = self._find_resolvers()
         if url and self._resolvers:

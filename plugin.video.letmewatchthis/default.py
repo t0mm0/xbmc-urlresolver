@@ -62,7 +62,11 @@ if play:
         hosted_media = urlresolver.HostedMediaFile(url=url, title=title)
         sources.append(hosted_media)
 
-    stream_url = urlresolver.choose_source(sources).resolve()
+    source = urlresolver.choose_source(sources)
+    if source:
+        stream_url = source.resolve()
+    else:
+        stream_url = ''
     addon.resolve_url(stream_url)
 
 elif mode == 'browse':
