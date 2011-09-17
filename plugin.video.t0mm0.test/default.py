@@ -58,15 +58,15 @@ elif mode == 'test':
                          {'title': 'megaupload url'})
     addon.add_video_item({'host': 'megaupload.com', 'media_id': '9T8NHCK4'}, 
                          {'title': 'megaupload media id'})
+    addon.add_video_item({'url': 'http://www.megavideo.com/?v=LYWNYM1J'}, 
+                         {'title': 'megavideo url'})
+    addon.add_video_item({'host': 'megavideo.com', 'media_id': 'LYWNYM1J'}, 
+                         {'title': 'megavideo media id'})
     addon.add_video_item({'url': 'http://www.putlocker.com/file/DFE7599AE064911A'}, 
                          {'title': 'putlocker url'})
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 
                          {'title': 'putlocker media id'})
     '''
-    addon.add_video_item('http://www.divxstage.eu/video/eb20c352c3ccc', 
-                         {'title': 'divxstage'})
-    addon.add_video_item('http://www.megaupload.com/?d=TQPQJM5H', 
-                         {'title': 'megaupload'})
     addon.add_video_item('http://www.megavideo.com/?v=LYWNYM1J', 
                          {'title': 'megavideo'})
     addon.add_video_item('http://www.movshare.net/video/rnqmuilri1b71', 

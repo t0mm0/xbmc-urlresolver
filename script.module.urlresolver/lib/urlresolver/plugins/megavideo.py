@@ -19,19 +19,20 @@ from lib.megavideo import Megavideo
 import re
 from t0mm0.common.net import Net
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class MegavideoResolver(Plugin, UrlResolver, PluginSettings):
-    implements = [UrlResolver, PluginSettings]
+class MegavideoResolver(Plugin, NewUrlResolver, PluginSettings):
+    implements = [NewUrlResolver, PluginSettings]
     name = "megavideo"
 
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         #just call megavideo library
         m = Megavideo(web_url)
         
@@ -42,8 +43,20 @@ class MegavideoResolver(Plugin, UrlResolver, PluginSettings):
             return False
         
         
-    def valid_url(self, web_url):
+    def get_url(self, host, media_id):
+        return 'http://%s/?v=%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:v/|\?v=)([0-9A-Z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
         return re.match('http://(www.)?megavideo.com/(v/|\?v=)[0-9A-Z]+', 
-                        web_url)
+                        url) or 'megavideo.com' in host
 
 
