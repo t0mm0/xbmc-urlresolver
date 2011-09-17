@@ -78,9 +78,11 @@ elif mode == 'test':
                          {'title': 'putlocker url'})
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 
                          {'title': 'putlocker media id'})
+    addon.add_video_item({'url': 'http://www.seeon.tv/view/19412/CBS'}, 
+                         {'title': 'seeon.tv url'})
+    addon.add_video_item({'host': 'seeon.tv', 'media_id': '19412'}, 
+                         {'title': 'seeon.tv media id'})
     '''
-    addon.add_video_item('http://seeon.tv/view/14451', 
-                         {'title': 'seeon.tv'})
     addon.add_video_item('http://www.sockshare.com/embed/541433EA7B32FB39', 
                          {'title': 'sockshare'})
     addon.add_video_item('http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/', 

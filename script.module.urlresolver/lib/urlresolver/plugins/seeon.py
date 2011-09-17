@@ -3,12 +3,12 @@ import re
 from t0mm0.common.net import Net
 import urllib2
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class SeeonResolver(Plugin, UrlResolver, PluginSettings):
-    implements = [UrlResolver, PluginSettings]
+class SeeonResolver(Plugin, NewUrlResolver, PluginSettings):
+    implements = [NewUrlResolver, PluginSettings]
     name = "seeon.tv"
 
     def __init__(self):
@@ -16,7 +16,8 @@ class SeeonResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         try:
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
@@ -35,6 +36,20 @@ class SeeonResolver(Plugin, UrlResolver, PluginSettings):
                                                        web_url, rtmp)
         return rtmp
         
-    def valid_url(self, web_url):
-        return re.match('http://(www.)?seeon.tv/view/(?:\d+)', web_url)
+
+    def get_url(self, host, media_id):
+        return 'http://%s/view/%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/view/(\d+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
+        return re.match('http://(www.)?seeon.tv/view/(?:\d+)', 
+                        url) or 'seeon.tv' in host 
     
