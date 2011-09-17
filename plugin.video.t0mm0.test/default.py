@@ -62,13 +62,15 @@ elif mode == 'test':
                          {'title': 'megavideo url'})
     addon.add_video_item({'host': 'megavideo.com', 'media_id': 'LYWNYM1J'}, 
                          {'title': 'megavideo media id'})
+    addon.add_video_item({'url': 'http://www.movshare.net/video/rnqmuilri1b71'}, 
+                         {'title': 'movshare url'})
+    addon.add_video_item({'host': 'movshare.net', 'media_id': 'rnqmuilri1b71'}, 
+                         {'title': 'movshare media id'})
     addon.add_video_item({'url': 'http://www.putlocker.com/file/DFE7599AE064911A'}, 
                          {'title': 'putlocker url'})
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 
                          {'title': 'putlocker media id'})
     '''
-    addon.add_video_item('http://www.megavideo.com/?v=LYWNYM1J', 
-                         {'title': 'megavideo'})
     addon.add_video_item('http://www.movshare.net/video/rnqmuilri1b71', 
                          {'title': 'movshare'})
     addon.add_video_item('http://www.nolimitvideo.com/video/bdb6e2c62fe027a7b20a/friends-with-benefits-ts', 
