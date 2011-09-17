@@ -86,9 +86,11 @@ elif mode == 'test':
                          {'title': 'tubeplus url'})
     addon.add_video_item({'host': 'tubeplus.me', 'media_id': '1962655'}, 
                          {'title': 'tubeplus media id'})
+    addon.add_video_item({'url': 'http://videobb.com/video/8FvAG6AQpHi8'}, 
+                         {'title': 'videobb url'})
+    addon.add_video_item({'host': 'videobb.com', 'media_id': '8FvAG6AQpHi8'}, 
+                         {'title': 'videobb media id'})
     '''
-    addon.add_video_item('http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/', 
-                         {'title': 'tubeplus'})
     addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
                          {'title': 'videobb'})
     addon.add_video_item('http://www.videoweed.es/file/crirmdz3tj116', 

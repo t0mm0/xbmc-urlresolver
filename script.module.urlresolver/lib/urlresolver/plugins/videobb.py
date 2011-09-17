@@ -2,12 +2,12 @@ import re
 from t0mm0.common.net import Net
 import urllib2
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class VideobbResolver(Plugin, UrlResolver, PluginSettings):
-    implements = [UrlResolver, PluginSettings]
+class VideobbResolver(Plugin, NewUrlResolver, PluginSettings):
+    implements = [NewUrlResolver, PluginSettings]
     name = "videobb"
 
     def __init__(self):
@@ -16,23 +16,15 @@ class VideobbResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
 
-    def get_media_url(self, web_url):
-        #find video_id
-        r = re.search('(?:/e/|/video/|v=)([0-9a-zA-Z]+)', web_url)
-        if r:
-            video_id = r.group(1)
-        else:
-            common.addon.log_error('videobb: video_id not found')
-            return False
-
+    def get_media_url(self, host, media_id):
         #grab json info for this video
         json_url = 'http://videobb.com/player_control/settings.php?v=%s' % \
-                                                                    video_id
+                                                                    media_id
         try:
             json = self.net.http_GET(json_url).content
         except urllib2.URLError, e:
             common.addon.log_error('videobb: got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, json_url))
             return False
             
         #find highest quality URL
@@ -54,10 +46,23 @@ class VideobbResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
        
         
-    def valid_url(self, web_url):
+    def get_url(self, host, media_id):
+        return 'http://%s/video/%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:e/|video/|watch_video.php\?v=)([0-9a-zA-Z]+)', 
+                      url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
         return re.match('http://(www.)?videobb.com/' + 
                         '(e/|video/|watch_video.php\?v=)' +
-                        '[0-9A-Za-z]+', web_url)
+                        '[0-9A-Za-z]+', url) or 'videobb.com' in host
 
     
     def get_settings_xml(self):
