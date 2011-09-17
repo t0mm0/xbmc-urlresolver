@@ -81,7 +81,6 @@ elif mode == 'browse':
             page += 1
             url = '%s/?letter=%s&sort=alphabet&page=%s&genre=%s&%s' % (
                                          base_url, letter, page, genre, section)
-            print url
             try:
                 addon.log_debug('fetching %s' % url)
                 html = net.http_GET(url).content

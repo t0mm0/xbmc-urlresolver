@@ -15,6 +15,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import urlresolver
+from urlresolver import common
 from plugnplay.interfaces import NewUrlResolver
 
 class HostedMediaFile:
@@ -33,7 +34,6 @@ class HostedMediaFile:
             self._media_id = media_id
         
         self._resolvers = self._find_resolvers()
-        print self._resolvers
         if url and self._resolvers:
             self._host, self._media_id = self._resolvers[0].get_host_and_id(url)
         elif self._resolvers:
@@ -55,9 +55,10 @@ class HostedMediaFile:
         return self._media_id
           
     def resolve(self):
-        print self
         if self._resolvers:
-            return self._resolvers[0].get_media_url(self._host, self._media_id)
+            resolver = self._resolvers[0]
+            common.addon.log_debug('resolving using %s plugin' % resolver.name)
+            return resolver.get_media_url(self._host, self._media_id)
         else:
             return False
         

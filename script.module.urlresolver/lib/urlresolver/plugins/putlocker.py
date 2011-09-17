@@ -35,7 +35,6 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
     
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
-        print web_url
         #find session_hash
         try:
             html = self.net.http_GET(web_url).content
@@ -61,7 +60,6 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
         
         #find download link
         xml_url = re.sub('/(file|embed)/', '/get_file.php?stream=', web_url)
-        print xml_url
         try:
             html = self.net.http_GET(xml_url).content
         except urllib2.URLError, e:
