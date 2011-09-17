@@ -90,8 +90,8 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
             return False
         
     def valid_url(self, hosted_media_file):
-        host = hosted_media_file.get_host() or ' '
-        url = hosted_media_file.get_url() or ' '
+        host = hosted_media_file.get_host()
+        url = hosted_media_file.get_url()
         if host or url:
             return (re.match('http://(www.)?(putlocker|sockshare).com/' + 
                              '(file|embed)/[0-9A-Z]+', url) or
