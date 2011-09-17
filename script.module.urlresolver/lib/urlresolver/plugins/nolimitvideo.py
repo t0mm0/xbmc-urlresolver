@@ -17,15 +17,15 @@
 '''
 
 from t0mm0.common.net import Net
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 import re
 import urllib2
 from urlresolver import common
 
-class nolimitvideoResolver(Plugin, UrlResolver, PluginSettings):
-    implements = [UrlResolver, PluginSettings]
+class nolimitvideoResolver(Plugin, NewUrlResolver, PluginSettings):
+    implements = [NewUrlResolver, PluginSettings]
     name = "nolimitvideo"
 
     def __init__(self):
@@ -34,7 +34,8 @@ class nolimitvideoResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         try:
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
@@ -53,7 +54,19 @@ class nolimitvideoResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
 
 
-    def valid_url(self, web_url):
-        return re.match('http://(www)?.nolimitvideo.com/' +
-                        'video/[0-9A-Za-z]+/', web_url)
+    def get_url(self, host, media_id):
+        return 'http://%s/video/%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/video/([0-9a-f]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
+        return re.match('http://(www)?.nolimitvideo.com/video/[0-9a-f]+/', 
+                        url) or 'nolimitvideo.com' in host
 
