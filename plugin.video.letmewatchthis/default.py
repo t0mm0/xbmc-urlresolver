@@ -54,21 +54,16 @@ if play:
                          html, re.DOTALL):
         q, url, host, views = s.groups()
         verified = s.group(0).find('star.gif') > -1
-        source =  host.decode('base-64')
+        title = host.decode('base-64')
         if verified:
-            source += ' [verified]'
-        source += ' (%s)' % views.strip()
-        #sources[url.decode('base-64')] = source
+            title += ' [verified]'
+        title += ' (%s)' % views.strip()
         url = url.decode('base-64')
-        hosted_media = urlresolver.HostedMediaFile(url=url, title=source)
-        print url
-        print source
-        print hosted_media
+        hosted_media = urlresolver.HostedMediaFile(url=url, title=title)
         sources.append(hosted_media)
-    print sources
-    stream_url = urlresolver.choose_source(sources)
-    print stream_url
-    addon.resolve_url(stream_url.resolve())
+
+    stream_url = urlresolver.choose_source(sources).resolve()
+    addon.resolve_url(stream_url)
 
 elif mode == 'browse':
     browse = addon.queries.get('browse', False)
