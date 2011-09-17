@@ -77,8 +77,6 @@ class MegaUploadResolver(Plugin, NewUrlResolver, SiteAuth, PluginSettings):
     def valid_url(self, hosted_media_file):
         host = hosted_media_file.get_host()
         url = hosted_media_file.get_url()
-        print host
-        print url
         if host or url:
             return (re.match('http://(www.)?megaupload.com/\?d=' + 
                             '([0-9A-Z]+)', url) or
