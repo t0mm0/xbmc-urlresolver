@@ -69,7 +69,7 @@ class HostedMediaFile:
     def _find_resolvers(self):
         imps = []
         for imp in NewUrlResolver.implementors():
-            if imp.valid_url(self):
+            if imp.valid_url(self.get_url(), self.get_host()):
                 imps.append(imp)
         return imps
 
