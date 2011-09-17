@@ -27,7 +27,7 @@ import urlresolver
 addon = Addon('plugin.video.letmewatchthis', sys.argv)
 net = Net()
 
-base_url = 'http://www.letmewatchthis.ch'
+base_url = 'http://www.1channel.ch'
 genres = ['All', 'Action', 'Adventure', 'Animation', 'Biography', 'Comedy', 
           'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Game-Show', 
           'History', 'Horror', 'Japanese', 'Korean', 'Music', 'Musical', 
@@ -38,17 +38,18 @@ mode = addon.queries['mode']
 play = addon.queries.get('play', None)
 
 if play:
+    url = addon.queries.get('url', None)
     try:
-        addon.log_debug('fetching %s' % play)
-        html = net.http_GET(play).content
+        addon.log_debug('fetching %s' % url)
+        html = net.http_GET(url).content
     except urllib2.URLError, e:
         html = ''
         addon.log_error('got http error %d fetching %s' %
-                        (e.code, web_url))
+                        (e.code, url))
     
     #find all sources and their info
-    sources = {}
-    for s in re.finditer('class="movie_version".+?quality_(.+?)>.+?url=(.+?)' + 
+    sources = []
+    for s in re.finditer('class="movie_version.+?quality_(.+?)>.+?url=(.+?)' + 
                          '&domain=(.+?)&.+?"version_veiws">(.+?)</', 
                          html, re.DOTALL):
         q, url, host, views = s.groups()
@@ -57,10 +58,17 @@ if play:
         if verified:
             source += ' [verified]'
         source += ' (%s)' % views.strip()
-        sources[url.decode('base-64')] = source
-    
-    stream_url = urlresolver.choose_source(sources)    
-    addon.resolve_url(stream_url)
+        #sources[url.decode('base-64')] = source
+        url = url.decode('base-64')
+        hosted_media = urlresolver.HostedMediaFile(url=url, title=source)
+        print url
+        print source
+        print hosted_media
+        sources.append(hosted_media)
+    print sources
+    stream_url = urlresolver.choose_source(sources)
+    print stream_url
+    addon.resolve_url(stream_url.resolve())
 
 elif mode == 'browse':
     browse = addon.queries.get('browse', False)
@@ -108,7 +116,7 @@ elif mode == 'browse':
                                              img=thumb,
                                              total_items=total)
                     else:
-                        addon.add_video_item(base_url + url, 
+                        addon.add_video_item({'url': base_url + url}, 
                                              {'title': title}, 
                                               img=thumb, total_items=total)
 
@@ -178,9 +186,9 @@ elif mode == 'series':
                 url, title = ep.groups()
                 title = re.sub('<[^<]+?>', '', title.strip())
                 title = re.sub('\s\s+' , ' ', title)
-                addon.add_video_item(base_url + url, {'title': '%s %s' % 
-                                                        (season_name, title),
-                                                      'plot': plot}, img=img)
+                addon.add_video_item({'url': base_url + url}, 
+                                     {'title': '%s %s' % (season_name, title),
+                                      'plot': plot}, img=img)
 
 
 elif mode == 'main':

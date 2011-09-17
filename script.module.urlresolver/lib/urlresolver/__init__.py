@@ -108,7 +108,11 @@ def filter_dict(d):
         plugin removed.
     '''
     return dict((k, v) for k, v in d.iteritems() if find_resolver(k))
-        
+
+def filter_source_list(source_list):
+    return [source for source in source_list if source]
+
+
 def find_resolver(web_url):
     '''
     Finds the first resolver that says it can resolve the given URL to a media 
@@ -157,20 +161,23 @@ def choose_source(sources):
         
     '''
     #get rid of sources with no resolver plugin
-    sources = filter_dict(sources)
+    sources = filter_source_list(sources)
     
     #show dialog to choose source
     if len(sources) > 1:
         dialog = xbmcgui.Dialog()
-        index = dialog.select('Choose your stream', sources.values())
+        titles = []
+        for source in sources:
+            titles.append(source.title)
+        index = dialog.select('Choose your stream', titles)
         if index > -1:
-            return resolve(sources.keys()[index])
+            return sources[index]
         else:
             return False
     
     #only one playable source so just play it
     elif len(sources) == 1:
-        return resolve(sources.keys()[0])    
+        return sources[0]    
     
     #no playable sources available
     else:

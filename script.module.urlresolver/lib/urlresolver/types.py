@@ -36,7 +36,7 @@ class HostedMediaFile:
         print self._resolvers
         if url and self._resolvers:
             self._host, self._media_id = self._resolvers[0].get_host_and_id(url)
-        else:
+        elif self._resolvers:
             self._url = self._resolvers[0].get_url(host, media_id)
             
         
@@ -56,7 +56,10 @@ class HostedMediaFile:
           
     def resolve(self):
         print self
-        return self._resolvers[0].get_media_url(self._host, self._media_id)
+        if self._resolvers:
+            return self._resolvers[0].get_media_url(self._host, self._media_id)
+        else:
+            return False
         
     def valid_url(self):
         if self._resolvers:
