@@ -98,10 +98,10 @@ elif mode == 'test':
                          {'title': 'vidxden url'})
     addon.add_video_item({'host': 'vidxden.com', 'media_id': 'rn3h4gbh5se7'}, 
                          {'title': 'vidxden media id'})
-    '''
-    addon.add_video_item('http://www.youtube.com/watch?v=Q3VJOl_XeGs', 
-                         {'title': 'youtube'})
-    '''
+    addon.add_video_item({'url': 'http://www.youtube.com/watch?v=Q3VJOl_XeGs'}, 
+                         {'title': 'youtube url'})
+    addon.add_video_item({'host': 'youtube.com', 'media_id': 'Q3VJOl_XeGs'}, 
+                         {'title': 'youtube media id'})
 elif mode == 'tv':
     browse = addon.queries.get('browse', False)
     if browse == 'alpha':
