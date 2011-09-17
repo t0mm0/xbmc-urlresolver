@@ -35,9 +35,9 @@ mode = addon.queries['mode']
 play = addon.queries.get('play', None)
 
 if play:
-    url = addon.queries.get('url', None)
-    host = addon.queries.get('host', None)
-    media_id = addon.queries.get('media_id', None)
+    url = addon.queries.get('url', '')
+    host = addon.queries.get('host', '')
+    media_id = addon.queries.get('media_id', '')
     #stream_url = urlresolver.resolve(play)
     stream_url = urlresolver.HostedMediaFile(url=url, host=host, media_id=media_id).resolve()
     addon.resolve_url(stream_url)
@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://www.megaupload.com/?d=9T8NHCK4'}, 
+                         {'title': 'megaupload url'})
+    addon.add_video_item({'host': 'megaupload.com', 'media_id': '9T8NHCK4'}, 
+                         {'title': 'megaupload media id'})
     addon.add_video_item({'url': 'http://www.putlocker.com/file/DFE7599AE064911A'}, 
                          {'title': 'putlocker url'})
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 

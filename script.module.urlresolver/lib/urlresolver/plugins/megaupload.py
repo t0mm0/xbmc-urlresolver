@@ -23,15 +23,15 @@ import urllib2
 
 from lib import _megaupload
 from urlresolver.countdown import countdown
-from urlresolver.plugnplay.interfaces import UrlResolver
+from urlresolver.plugnplay.interfaces import NewUrlResolver
 from urlresolver.plugnplay.interfaces import SiteAuth
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 from urlresolver import common
 import xbmc
 
-class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
-    implements = [UrlResolver, SiteAuth, PluginSettings]
+class MegaUploadResolver(Plugin, NewUrlResolver, SiteAuth, PluginSettings):
+    implements = [NewUrlResolver, SiteAuth, PluginSettings]
     name = "megaupload"
     profile_path = common.profile_path    
     cookie_file = os.path.join(profile_path, '%s.cookies' % name)
@@ -46,7 +46,8 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
 
 
     #UrlResolver methods
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         media_url = _megaupload.resolveURL(web_url, self.cookie_file)
         common.addon.log_debug('login type: %s' % self.login_type)
         ok = True
@@ -61,9 +62,28 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
         else:
             return False
         
-    def valid_url(self, web_url):
-        return re.match('http://(www.)?megaupload.com/\?d=' + 
-                        '([0-9A-Z]+)', web_url)
+    def get_url(self, host, media_id):
+        return 'http://%s/?d=%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/\?d=([0-9A-Z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, hosted_media_file):
+        host = hosted_media_file.get_host()
+        url = hosted_media_file.get_url()
+        print host
+        print url
+        if host or url:
+            return (re.match('http://(www.)?megaupload.com/\?d=' + 
+                            '([0-9A-Z]+)', url) or
+                    host.find('megaupload.com') > -1)
+        return False
     
     #SiteAuth methods
     def login(self):
