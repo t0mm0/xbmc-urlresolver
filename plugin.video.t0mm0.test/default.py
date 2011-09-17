@@ -70,15 +70,15 @@ elif mode == 'test':
                          {'title': 'nolimitvideo url'})
     addon.add_video_item({'host': 'nolimitvideo.com', 'media_id': 'bdb6e2c62fe027a7b20a'}, 
                          {'title': 'nolimitvideo media id'})
+    addon.add_video_item({'url': 'http://embed.novamov.com/embed.php?width=600&height=480&v=kdshwq2cj6vxv&px=1'}, 
+                         {'title': 'novamov url'})
+    addon.add_video_item({'host': 'novamov.com', 'media_id': 'kdshwq2cj6vxv'}, 
+                         {'title': 'novamov media id'})
     addon.add_video_item({'url': 'http://www.putlocker.com/file/DFE7599AE064911A'}, 
                          {'title': 'putlocker url'})
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'}, 
                          {'title': 'putlocker media id'})
     '''
-    addon.add_video_item('http://www.novamov.com/video/kdshwq2cj6vxv', 
-                         {'title': 'novamov'})
-    addon.add_video_item('http://www.putlocker.com/file/DFE7599AE064911A', 
-                         {'title': 'putlocker'})
     addon.add_video_item('http://seeon.tv/view/14451', 
                          {'title': 'seeon.tv'})
     addon.add_video_item('http://www.sockshare.com/embed/541433EA7B32FB39', 
