@@ -38,7 +38,7 @@ class SeeonResolver(Plugin, NewUrlResolver, PluginSettings):
         
 
     def get_url(self, host, media_id):
-        return 'http://%s/view/%s' % (host, media_id)
+        return 'http://seeon.tv/view/%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -51,5 +51,5 @@ class SeeonResolver(Plugin, NewUrlResolver, PluginSettings):
 
     def valid_url(self, url, host):
         return re.match('http://(www.)?seeon.tv/view/(?:\d+)', 
-                        url) or 'seeon.tv' in host 
+                        url) or 'seeon' in host 
     

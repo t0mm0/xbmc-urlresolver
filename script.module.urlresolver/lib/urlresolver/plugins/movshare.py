@@ -69,7 +69,7 @@ class MovshareResolver(Plugin, NewUrlResolver, PluginSettings):
         
 
     def get_url(self, host, media_id):
-        return 'http://%s/video/%s' % (host, media_id)
+        return 'http://www.movshare.net/video/%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -82,4 +82,4 @@ class MovshareResolver(Plugin, NewUrlResolver, PluginSettings):
 
     def valid_url(self, url, host):
         return re.match('http://(?:www.)?movshare.net/video/',
-                        url) or 'movshare.net' in host
+                        url) or 'movshare' in host

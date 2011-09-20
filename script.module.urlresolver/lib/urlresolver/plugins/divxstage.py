@@ -60,7 +60,7 @@ class DivxstageResolver(Plugin, NewUrlResolver, PluginSettings):
 
 
     def get_url(self, host, media_id):
-        return 'http://%s/video/%s' % (host, media_id)
+        return 'http://www.divxstage.eu/video/%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -73,5 +73,5 @@ class DivxstageResolver(Plugin, NewUrlResolver, PluginSettings):
 
     def valid_url(self, url, host):
         return re.match('http://(www.)?divxstage.eu/' +
-                        'video/[0-9A-Za-z]+', url) or 'divxstage.eu' in host
+                        'video/[0-9A-Za-z]+', url) or 'divxstage' in host
 

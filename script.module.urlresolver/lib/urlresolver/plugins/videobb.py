@@ -47,7 +47,7 @@ class VideobbResolver(Plugin, NewUrlResolver, PluginSettings):
        
         
     def get_url(self, host, media_id):
-        return 'http://%s/video/%s' % (host, media_id)
+        return 'http://www.videobb.com/video/%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -62,7 +62,7 @@ class VideobbResolver(Plugin, NewUrlResolver, PluginSettings):
     def valid_url(self, url, host):
         return re.match('http://(www.)?videobb.com/' + 
                         '(e/|video/|watch_video.php\?v=)' +
-                        '[0-9A-Za-z]+', url) or 'videobb.com' in host
+                        '[0-9A-Za-z]+', url) or 'videobb' in host
 
     
     def get_settings_xml(self):

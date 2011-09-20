@@ -83,6 +83,10 @@ class VidxdenResolver(Plugin, NewUrlResolver, PluginSettings):
 
         
     def get_url(self, host, media_id):
+        if 'vidbux' in host:
+            host = 'www.vidbux.com'
+        else:
+            host = 'www.vidxden.com'
         return 'http://%s/%s' % (host, media_id)
         
         
@@ -97,8 +101,8 @@ class VidxdenResolver(Plugin, NewUrlResolver, PluginSettings):
     def valid_url(self, url, host):
         return (re.match('http://(?:www.)?(vidxden|divxden|vidbux).com/' +
                          '(embed-)?[0-9a-z]+', url) or
-                'vidxden.com' in host or 'divxden.com' in host or
-                'vidbux.com' in host)
+                'vidxden' in host or 'divxden' in host or
+                'vidbux' in host)
         
         
 def unpack_js(p, k):

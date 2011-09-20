@@ -78,7 +78,7 @@ class TwogbhostingResolver(Plugin, NewUrlResolver, PluginSettings):
 
 
     def get_url(self, host, media_id):
-        return 'http://%s/v/%s' % (host, media_id)
+        return 'http://www.2gb-hosting.com/v/%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -92,6 +92,6 @@ class TwogbhostingResolver(Plugin, NewUrlResolver, PluginSettings):
     def valid_url(self, url, host):
         return (re.match('http://(www.)?2gb-hosting.com/v/' +
                          '[0-9A-Za-z]+/[0-9a-zA-Z]+.*', url) or 
-                         '2gb-hosting.com' in host)
+                         '2gb-hosting' in host)
 
 

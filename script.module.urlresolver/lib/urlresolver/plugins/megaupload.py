@@ -63,7 +63,7 @@ class MegaUploadResolver(Plugin, NewUrlResolver, SiteAuth, PluginSettings):
             return False
         
     def get_url(self, host, media_id):
-        return 'http://%s/?d=%s' % (host, media_id)
+        return 'http://www.megaupload.com/?d=%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -76,7 +76,7 @@ class MegaUploadResolver(Plugin, NewUrlResolver, SiteAuth, PluginSettings):
 
     def valid_url(self, url, host):
         return (re.match('http://(www.)?megaupload.com/\?d=' + 
-                        '([0-9A-Z]+)', url) or 'megaupload.com' in host)
+                        '([0-9A-Z]+)', url) or 'megaupload' in host)
     
     #SiteAuth methods
     def login(self):

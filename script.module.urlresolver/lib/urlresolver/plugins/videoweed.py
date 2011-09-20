@@ -73,7 +73,7 @@ class VideoweedResolver(Plugin, NewUrlResolver, PluginSettings):
 
 
     def get_url(self, host, media_id):
-        return 'http://%s/file/%s' % (host, media_id)
+        return 'http://www.videoweed.es/file/%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -86,5 +86,5 @@ class VideoweedResolver(Plugin, NewUrlResolver, PluginSettings):
 
     def valid_url(self, url, host):
         return re.match('http://(www.)?videoweed.(es|com)/file/[0-9a-z]+', 
-                       url) or 'videoweed.es' in host or 'videoweed.com' in host
+                       url) or 'videoweed' in host
 

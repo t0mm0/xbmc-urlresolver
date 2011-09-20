@@ -44,7 +44,7 @@ class MegavideoResolver(Plugin, NewUrlResolver, PluginSettings):
         
         
     def get_url(self, host, media_id):
-        return 'http://%s/?v=%s' % (host, media_id)
+        return 'http://www.megavideo.com/?v=%s' % media_id
         
         
     def get_host_and_id(self, url):
@@ -57,6 +57,6 @@ class MegavideoResolver(Plugin, NewUrlResolver, PluginSettings):
 
     def valid_url(self, url, host):
         return re.match('http://(www.)?megavideo.com/(v/|\?v=)[0-9A-Z]+', 
-                        url) or 'megavideo.com' in host
+                        url) or 'megavideo' in host
 
 

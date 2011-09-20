@@ -58,7 +58,7 @@ class TubeplusResolver(Plugin, NewUrlResolver):
 
 
     def get_url(self, host, media_id):
-        return 'http://%s/player/%s/' % (host, media_id)
+        return 'http://tubeplus.me/player/%s/' % media_id
         
         
     def get_host_and_id(self, url):
@@ -71,5 +71,5 @@ class TubeplusResolver(Plugin, NewUrlResolver):
 
     def valid_url(self, url, host):
         return re.match('http://(www.)?tubeplus.me/player/\d+', 
-                        url) or 'tubeplus.me' in host
+                        url) or 'tubeplus' in host
 

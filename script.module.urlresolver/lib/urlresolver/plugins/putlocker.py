@@ -35,6 +35,7 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
     
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
+
         #find session_hash
         try:
             html = self.net.http_GET(web_url).content
@@ -51,15 +52,24 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
 
         #post session_hash
         try:
-            self.net.http_POST(web_url, form_data={'hash': session_hash, 
-                                          'confirm': 'Continue as Free User'})
+            html = self.net.http_POST(web_url, form_data={'hash': session_hash, 
+                                   'confirm': 'Continue as Free User'}).content
         except urllib2.URLError, e:
             common.addon.log_error('putlocker: got http error %d posting %s' %
                                     (e.code, web_url))
             return False
         
+        #find playlist code
+        r = re.search('\?stream=(.+?)\'', html)
+        if r:
+            playlist_code = r.group(1)
+        else:
+            common.addon.log_error('putlocker: playlist code not found')
+            return False
+        
         #find download link
-        xml_url = re.sub('/(file|embed)/', '/get_file.php?stream=', web_url)
+        xml_url = re.sub('/(file|embed)/.+', '/get_file.php?stream=', web_url)
+        xml_url += playlist_code
         try:
             html = self.net.http_GET(xml_url).content
         except urllib2.URLError, e:
@@ -77,8 +87,10 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
         return flv_url
 
     def get_url(self, host, media_id):
-        if not host.startswith('www.'):
-            host = 'www.' + host
+        if 'putlocker' in host:
+            host = 'www.putlocker.com'
+        else:
+            host = 'www.sockshare.com'
         return 'http://%s/file/%s' % (host, media_id)
         
         
@@ -92,6 +104,6 @@ class PutlockerResolver(Plugin, NewUrlResolver, PluginSettings):
     def valid_url(self, url, host):
         return (re.match('http://(www.)?(putlocker|sockshare).com/' + 
                          '(file|embed)/[0-9A-Z]+', url) or
-                'putlocker.com' in host or 'sockshare.com'in host)
+                'putlocker' in host or 'sockshare' in host)
                  
 
