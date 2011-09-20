@@ -28,12 +28,12 @@ import re
 import urllib2
 from t0mm0.common.net import Net
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import NewUrlResolver
+from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class VidxdenResolver(Plugin, NewUrlResolver, PluginSettings):
-    implements = [NewUrlResolver, PluginSettings]
+class VidxdenResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "vidxden"
 
     def __init__(self):

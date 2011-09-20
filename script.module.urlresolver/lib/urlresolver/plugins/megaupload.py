@@ -23,15 +23,15 @@ import urllib2
 
 from lib import _megaupload
 from urlresolver.countdown import countdown
-from urlresolver.plugnplay.interfaces import NewUrlResolver
+from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import SiteAuth
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 from urlresolver import common
 import xbmc
 
-class MegaUploadResolver(Plugin, NewUrlResolver, SiteAuth, PluginSettings):
-    implements = [NewUrlResolver, SiteAuth, PluginSettings]
+class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
+    implements = [UrlResolver, SiteAuth, PluginSettings]
     name = "megaupload"
     profile_path = common.profile_path    
     cookie_file = os.path.join(profile_path, '%s.cookies' % name)

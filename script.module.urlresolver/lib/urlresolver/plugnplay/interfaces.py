@@ -50,11 +50,8 @@ def not_implemented(obj=None):
 	'''Use this instead of ``pass`` for the body of abstract methods.'''
 	raise Exception("Unimplemented abstract method: %s" % _function_id(obj, 1))
 
+
 class UrlResolver(Interface):
-    priority=100
-    
-    
-class NewUrlResolver(Interface):
     '''
     Your plugin needs to implement the abstract methods in this interface if
     it wants to be able to resolve URLs (which is probably all plugins!)

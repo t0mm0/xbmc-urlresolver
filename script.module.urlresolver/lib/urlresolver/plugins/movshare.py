@@ -25,12 +25,12 @@ movshare hosts both avi and flv videos
 import re
 from t0mm0.common.net import Net
 import urllib2
-from urlresolver.plugnplay.interfaces import NewUrlResolver
+from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class MovshareResolver(Plugin, NewUrlResolver, PluginSettings):
-    implements = [NewUrlResolver, PluginSettings]
+class MovshareResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "movshare"
 
     def __init__(self):

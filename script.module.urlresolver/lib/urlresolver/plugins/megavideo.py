@@ -19,12 +19,12 @@ from lib.megavideo import Megavideo
 import re
 from t0mm0.common.net import Net
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import NewUrlResolver
+from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class MegavideoResolver(Plugin, NewUrlResolver, PluginSettings):
-    implements = [NewUrlResolver, PluginSettings]
+class MegavideoResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "megavideo"
 
     def __init__(self):

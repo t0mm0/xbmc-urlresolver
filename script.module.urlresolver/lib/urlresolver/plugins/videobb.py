@@ -2,12 +2,12 @@ import re
 from t0mm0.common.net import Net
 import urllib2
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import NewUrlResolver
+from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 
-class VideobbResolver(Plugin, NewUrlResolver, PluginSettings):
-    implements = [NewUrlResolver, PluginSettings]
+class VideobbResolver(Plugin, UrlResolver, PluginSettings):
+    implements = [UrlResolver, PluginSettings]
     name = "videobb"
 
     def __init__(self):

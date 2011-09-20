@@ -21,11 +21,11 @@ from t0mm0.common.net import Net
 import urllib2
 import urlresolver
 from urlresolver import common
-from urlresolver.plugnplay.interfaces import NewUrlResolver
+from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay import Plugin
 
-class TubeplusResolver(Plugin, NewUrlResolver):
-    implements = [NewUrlResolver]
+class TubeplusResolver(Plugin, UrlResolver):
+    implements = [UrlResolver]
     name = "tubeplus.me"
     
     def __init__(self):
