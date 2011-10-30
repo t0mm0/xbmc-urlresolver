@@ -33,7 +33,8 @@ class NovamovResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         #find key
         try:
             html = self.net.http_GET(web_url).content
@@ -69,7 +70,21 @@ class NovamovResolver(Plugin, UrlResolver, PluginSettings):
             
         return stream_url
         
-    def valid_url(self, web_url):
+
+    def get_url(self, host, media_id):
+        return 'http://www.novamov.com/video/%s' % media_id
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(?:embed.)?(.+?)/(?:video/|embed.php\?.+?v=)' + 
+                      '([0-9a-z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
         return re.match('http://(www.|embed.)?novamov.com/(video/|embed.php\?)' +
-                        '(?:[0-9a-zA-Z]+|width)', web_url)
+                        '(?:[0-9a-z]+|width)', url) or 'novamov' in host
 

@@ -36,30 +36,37 @@ genres = ['All', 'Action', 'Adventure', 'Animation', 'Biography', 'Comedy',
           
 mode = addon.queries['mode']
 play = addon.queries.get('play', None)
-
+print play
 if play:
+    url = addon.queries.get('url', None)
     try:
-        addon.log_debug('fetching %s' % play)
-        html = net.http_GET(play).content
+        addon.log_debug('fetching %s' % url)
+        html = net.http_GET(url).content
     except urllib2.URLError, e:
         html = ''
         addon.log_error('got http error %d fetching %s' %
-                        (e.code, web_url))
+                        (e.code, url))
     
     #find all sources and their info
-    sources = {}
-    for s in re.finditer('class="movie_version".+?quality_(.+?)>.+?url=(.+?)' + 
+    sources = []
+    for s in re.finditer('class="movie_version.+?quality_(.+?)>.+?url=(.+?)' + 
                          '&domain=(.+?)&.+?"version_veiws">(.+?)</', 
                          html, re.DOTALL):
         q, url, host, views = s.groups()
         verified = s.group(0).find('star.gif') > -1
-        source =  host.decode('base-64')
+        title = host.decode('base-64')
         if verified:
-            source += ' [verified]'
-        source += ' (%s)' % views.strip()
-        sources[url.decode('base-64')] = source
-    
-    stream_url = urlresolver.choose_source(sources)    
+            title += ' [verified]'
+        title += ' (%s)' % views.strip()
+        url = url.decode('base-64')
+        hosted_media = urlresolver.HostedMediaFile(url=url, title=title)
+        sources.append(hosted_media)
+
+    source = urlresolver.choose_source(sources)
+    if source:
+        stream_url = source.resolve()
+    else:
+        stream_url = ''
     addon.resolve_url(stream_url)
 
 elif mode == 'browse':
@@ -78,7 +85,6 @@ elif mode == 'browse':
             page += 1
             url = '%s/?letter=%s&sort=alphabet&page=%s&genre=%s&%s' % (
                                          base_url, letter, page, genre, section)
-            print url
             try:
                 addon.log_debug('fetching %s' % url)
                 html = net.http_GET(url).content
@@ -104,11 +110,11 @@ elif mode == 'browse':
                     if section == 'tv':
                         addon.add_directory({'mode': 'series', 
                                              'url': base_url + url}, 
-                                             title, 
+                                             {'title': title}, 
                                              img=thumb,
                                              total_items=total)
                     else:
-                        addon.add_video_item(base_url + url, 
+                        addon.add_video_item({'url': base_url + url}, 
                                              {'title': title}, 
                                               img=thumb, total_items=total)
 
@@ -117,22 +123,22 @@ elif mode == 'browse':
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
                                  'genre': genre,
-                                 'letter': 'All'}, 'All')
+                                 'letter': 'All'}, {'title': 'All'})
         addon.add_directory({'mode': 'browse', 
                              'section': section,
                              'genre': genre,
-                             'letter': '123'}, '#')
+                             'letter': '123'}, {'title': '#'})
         for l in string.uppercase:
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
                                  'genre': genre,
-                                 'letter': l}, l)
+                                 'letter': l}, {'title': l})
     
     else:
         for genre in genres:
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
-                                 'genre': genre}, genre)
+                                 'genre': genre}, {'title': genre})
             
         
 elif mode == 'series':
@@ -178,15 +184,15 @@ elif mode == 'series':
                 url, title = ep.groups()
                 title = re.sub('<[^<]+?>', '', title.strip())
                 title = re.sub('\s\s+' , ' ', title)
-                addon.add_video_item(base_url + url, {'title': '%s %s' % 
-                                                        (season_name, title),
-                                                      'plot': plot}, img=img)
+                addon.add_video_item({'url': base_url + url}, 
+                                     {'title': '%s %s' % (season_name, title),
+                                      'plot': plot}, img=img)
 
 
 elif mode == 'main':
-    addon.add_directory({'mode': 'browse', 'section': 'tv'}, 'TV')
-    addon.add_directory({'mode': 'browse', 'section': ''}, 'Movies')
-    addon.add_directory({'mode': 'resolver_settings'}, 'Resolver Settings', 
+    addon.add_directory({'mode': 'browse', 'section': 'tv'}, {'title': 'TV'})
+    addon.add_directory({'mode': 'browse', 'section': ''}, {'title': 'Movies'})
+    addon.add_directory({'mode': 'resolver_settings'}, {'title': 'Resolver Settings'}, 
                         is_folder=False)
 
 elif mode == 'resolver_settings':

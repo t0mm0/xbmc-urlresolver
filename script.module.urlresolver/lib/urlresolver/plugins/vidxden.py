@@ -41,7 +41,8 @@ class VidxdenResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         """ Human Verification """
         try:
             resp = self.net.http_GET(web_url)
@@ -81,9 +82,27 @@ class VidxdenResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
 
         
-    def valid_url(self, web_url):
-        return re.match('http://(?:www.)?(vidxden|divxden|vidbux).com/' +
-                        '(embed-)?[0-9a-z]+', web_url)
+    def get_url(self, host, media_id):
+        if 'vidbux' in host:
+            host = 'www.vidbux.com'
+        else:
+            host = 'www.vidxden.com'
+        return 'http://%s/%s' % (host, media_id)
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:embed-)?([0-9a-z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
+        return (re.match('http://(?:www.)?(vidxden|divxden|vidbux).com/' +
+                         '(embed-)?[0-9a-z]+', url) or
+                'vidxden' in host or 'divxden' in host or
+                'vidbux' in host)
         
         
 def unpack_js(p, k):

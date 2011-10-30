@@ -16,23 +16,15 @@ class VideobbResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
 
 
-    def get_media_url(self, web_url):
-        #find video_id
-        r = re.search('(?:/e/|/video/|v=)([0-9a-zA-Z]+)', web_url)
-        if r:
-            video_id = r.group(1)
-        else:
-            common.addon.log_error('videobb: video_id not found')
-            return False
-
+    def get_media_url(self, host, media_id):
         #grab json info for this video
         json_url = 'http://videobb.com/player_control/settings.php?v=%s' % \
-                                                                    video_id
+                                                                    media_id
         try:
             json = self.net.http_GET(json_url).content
         except urllib2.URLError, e:
             common.addon.log_error('videobb: got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, json_url))
             return False
             
         #find highest quality URL
@@ -54,10 +46,23 @@ class VideobbResolver(Plugin, UrlResolver, PluginSettings):
         return stream_url
        
         
-    def valid_url(self, web_url):
+    def get_url(self, host, media_id):
+        return 'http://www.videobb.com/video/%s' % media_id
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:e/|video/|watch_video.php\?v=)([0-9a-zA-Z]+)', 
+                      url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
         return re.match('http://(www.)?videobb.com/' + 
                         '(e/|video/|watch_video.php\?v=)' +
-                        '[0-9A-Za-z]+', web_url)
+                        '[0-9A-Za-z]+', url) or 'videobb' in host
 
     
     def get_settings_xml(self):

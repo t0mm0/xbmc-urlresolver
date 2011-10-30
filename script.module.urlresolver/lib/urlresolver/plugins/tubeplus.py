@@ -23,7 +23,6 @@ import urlresolver
 from urlresolver import common
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay import Plugin
-import xbmcgui
 
 class TubeplusResolver(Plugin, UrlResolver):
     implements = [UrlResolver]
@@ -32,7 +31,8 @@ class TubeplusResolver(Plugin, UrlResolver):
     def __init__(self):
         self.net = Net()
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         #get list
         try:
             html = self.net.http_GET(web_url).content
@@ -42,31 +42,34 @@ class TubeplusResolver(Plugin, UrlResolver):
             return False
             
         r = '"none" href="(.+?)"'
-        host_urls = []
+        sources = []
         regex = re.finditer(r, html, re.DOTALL)
 
         for s in regex:
-            host_urls.append(s.group(1)) 
+            sources.append(urlresolver.HostedMediaFile(url=s.group(1))) 
         
-        #only keep urls we have resolver plugins for
-        filtered_urls = urlresolver.filter_urls(host_urls)
+        source = urlresolver.choose_source(sources)
         
-        l = len(filtered_urls)
+        if source:
+            stream_url = source.resolve()
+        else:
+            stream_url = ''
+        return stream_url
+
+
+    def get_url(self, host, media_id):
+        return 'http://tubeplus.me/player/%s/' % media_id
         
-        #no playable links found
-        if l == 0:
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/player/(\d+)', url)
+        if r:
+            return r.groups()
+        else:
             return False
 
-        #1 playable link found - just play it
-        elif l == 1:
-            return urlresolver.resolve(filtered_urls[0])
 
-        #more than 1 playable link found, let user choose
-        else:
-            dialog = xbmcgui.Dialog()
-            index = dialog.select('Choose your stream', filtered_urls)
-            return urlresolver.resolve(filtered_urls[index])
-                    
-    def valid_url(self, web_url):
-        return re.match('http://(www.)?tubeplus.me/player/\d+', web_url)
+    def valid_url(self, url, host):
+        return re.match('http://(www.)?tubeplus.me/player/\d+', 
+                        url) or 'tubeplus' in host
 

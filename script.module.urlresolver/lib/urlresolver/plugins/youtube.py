@@ -32,27 +32,36 @@ class YoutubeResolver(Plugin, UrlResolver, PluginSettings):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
         #just call youtube addon
-        plugin = 'plugin://plugin.video.youtube/?action=play_video&videoid='
+        plugin = 'plugin://plugin.video.youtube/?action=play_video&videoid=' +\
+                 media_id
+        return plugin
 
-        if web_url.find('?') > -1:
-            queries = common.addon.parse_query(web_url.split('?')[1])
+
+    def get_url(self, host, media_id):
+        return 'http://youtube.com/watch?v=%s' % media_id
+        
+        
+    def get_host_and_id(self, url):
+        if url.find('?') > -1:
+            queries = common.addon.parse_query(url.split('?')[1])
             video_id = queries.get('v', None)
         else:
-            r = re.findall('/([0-9A-Za-z_\-]+)', web_url)
+            r = re.findall('/([0-9A-Za-z_\-]+)', url)
             if r:
                 video_id = r[-1]
         if video_id:
-            return plugin + video_id
+            return ('youtube.com', video_id)
         else:
             common.addon.log_error('youtube: video id not found')
             return False
         
         
-    def valid_url(self, web_url):
+    def valid_url(self, url, host):
         return re.match('http://(((www.)?youtube.+?(v|embed)(=|/))|' +
-                        'youtu.be/)[0-9A-Za-z_\-]+', web_url)
+                        'youtu.be/)[0-9A-Za-z_\-]+', 
+                        url) or 'youtube' in host or 'youtu.be' in host
 
     def get_settings_xml(self):
         xml = PluginSettings.get_settings_xml(self)

@@ -102,6 +102,14 @@ class UrlResolver(Interface):
         not_implemented(self)
     
 
+    def get_url(self, host, media_id):
+        not_implemented(self)
+        
+
+    def get_host_and_id(self, url):
+        not_implemented(self)
+
+
     def valid_url(self, web_url):
         '''
         Determine whether this plugin is capable of resolving this URL. You must 

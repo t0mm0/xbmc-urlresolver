@@ -33,7 +33,8 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         #grab stream details
         try:
             html = self.net.http_GET(web_url).content
@@ -70,7 +71,20 @@ class VideoweedResolver(Plugin, UrlResolver, PluginSettings):
 
         return stream_url
 
-    def valid_url(self, web_url):
+
+    def get_url(self, host, media_id):
+        return 'http://www.videoweed.es/file/%s' % media_id
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/file/([0-9a-z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
         return re.match('http://(www.)?videoweed.(es|com)/file/[0-9a-z]+', 
-                        web_url)
+                       url) or 'videoweed' in host
 

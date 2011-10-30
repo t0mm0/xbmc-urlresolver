@@ -46,7 +46,8 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
 
 
     #UrlResolver methods
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         media_url = _megaupload.resolveURL(web_url, self.cookie_file)
         common.addon.log_debug('login type: %s' % self.login_type)
         ok = True
@@ -61,9 +62,21 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
         else:
             return False
         
-    def valid_url(self, web_url):
-        return re.match('http://(www.)?megaupload.com/\?d=' + 
-                        '([0-9A-Z]+)', web_url)
+    def get_url(self, host, media_id):
+        return 'http://www.megaupload.com/?d=%s' % media_id
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/\?d=([0-9A-Z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
+        return (re.match('http://(www.)?megaupload.com/\?d=' + 
+                        '([0-9A-Z]+)', url) or 'megaupload' in host)
     
     #SiteAuth methods
     def login(self):

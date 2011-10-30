@@ -31,7 +31,8 @@ class MegavideoResolver(Plugin, UrlResolver, PluginSettings):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
 
-    def get_media_url(self, web_url):
+    def get_media_url(self, host, media_id):
+        web_url = self.get_url(host, media_id)
         #just call megavideo library
         m = Megavideo(web_url)
         
@@ -42,8 +43,20 @@ class MegavideoResolver(Plugin, UrlResolver, PluginSettings):
             return False
         
         
-    def valid_url(self, web_url):
+    def get_url(self, host, media_id):
+        return 'http://www.megavideo.com/?v=%s' % media_id
+        
+        
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:v/|\?v=)([0-9A-Z]+)', url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+
+    def valid_url(self, url, host):
         return re.match('http://(www.)?megavideo.com/(v/|\?v=)[0-9A-Z]+', 
-                        web_url)
+                        url) or 'megavideo' in host
 
 
