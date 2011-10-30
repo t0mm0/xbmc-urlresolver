@@ -116,20 +116,20 @@ elif mode == 'tv':
                 thumb, url, title, plot = s.groups()
                 addon.add_directory({'mode': 'series', 
                                      'url': base_url + url}, 
-                                     title, 
+                                     {'title': title}, 
                                      img=base_url+thumb)
 
         else:
             addon.add_directory({'mode': 'tv', 
                                  'browse': 'alpha',
-                                 'letter': '-'}, '#')
+                                 'letter': '-'}, {'title': '#'})
             for l in string.uppercase:
                 addon.add_directory({'mode': 'tv', 
                                      'browse': 'alpha',
-                                     'letter': l}, l)
+                                     'letter': l}, {'title': l})
         
     else:
-        addon.add_directory({'mode': 'tv', 'browse': 'alpha'}, 'A-Z')
+        addon.add_directory({'mode': 'tv', 'browse': 'alpha'}, {'title': 'A-Z'})
 
 elif mode == 'series':
     url = addon.queries['url']
@@ -142,19 +142,18 @@ elif mode == 'series':
         for episode in episodes:
             params = episode.split('_')
             if len(params) == 5:
-                ep_url = '%s/player/%s/' % (base_url, 
-                                                                      params[2])
+                ep_url = '%s/player/%s/' % (base_url, params[2])
                 title = 'S%sE%s - %s (%s)' % (params[0], params[1], 
                                               params[3], params[4])
-                addon.add_video_item(ep_url, {'title': title})
+                addon.add_video_item({'url': ep_url}, {'title': title})
     
 
 elif mode == 'main':
     addon.show_small_popup('t0mm0 test addon', 'Is now loaded enjoy', 6000,
                            logo)
-    addon.add_directory({'mode': 'test'}, '*test links*')
-    addon.add_directory({'mode': 'tv'}, 'tubeplus.me tv')
-    addon.add_directory({'mode': 'resolver_settings'}, 'resolver settings', 
+    addon.add_directory({'mode': 'test'}, {'title': '*test links*'})
+    addon.add_directory({'mode': 'tv'}, {'title': 'tubeplus.me tv'})
+    addon.add_directory({'mode': 'resolver_settings'}, {'title': 'resolver settings'}, 
                         is_folder=False)
 
 

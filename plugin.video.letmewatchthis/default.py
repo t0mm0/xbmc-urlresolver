@@ -36,7 +36,7 @@ genres = ['All', 'Action', 'Adventure', 'Animation', 'Biography', 'Comedy',
           
 mode = addon.queries['mode']
 play = addon.queries.get('play', None)
-
+print play
 if play:
     url = addon.queries.get('url', None)
     try:
@@ -110,7 +110,7 @@ elif mode == 'browse':
                     if section == 'tv':
                         addon.add_directory({'mode': 'series', 
                                              'url': base_url + url}, 
-                                             title, 
+                                             {'title': title}, 
                                              img=thumb,
                                              total_items=total)
                     else:
@@ -123,22 +123,22 @@ elif mode == 'browse':
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
                                  'genre': genre,
-                                 'letter': 'All'}, 'All')
+                                 'letter': 'All'}, {'title': 'All'})
         addon.add_directory({'mode': 'browse', 
                              'section': section,
                              'genre': genre,
-                             'letter': '123'}, '#')
+                             'letter': '123'}, {'title': '#'})
         for l in string.uppercase:
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
                                  'genre': genre,
-                                 'letter': l}, l)
+                                 'letter': l}, {'title': l})
     
     else:
         for genre in genres:
             addon.add_directory({'mode': 'browse', 
                                  'section': section,
-                                 'genre': genre}, genre)
+                                 'genre': genre}, {'title': genre})
             
         
 elif mode == 'series':
@@ -190,9 +190,9 @@ elif mode == 'series':
 
 
 elif mode == 'main':
-    addon.add_directory({'mode': 'browse', 'section': 'tv'}, 'TV')
-    addon.add_directory({'mode': 'browse', 'section': ''}, 'Movies')
-    addon.add_directory({'mode': 'resolver_settings'}, 'Resolver Settings', 
+    addon.add_directory({'mode': 'browse', 'section': 'tv'}, {'title': 'TV'})
+    addon.add_directory({'mode': 'browse', 'section': ''}, {'title': 'Movies'})
+    addon.add_directory({'mode': 'resolver_settings'}, {'title': 'Resolver Settings'}, 
                         is_folder=False)
 
 elif mode == 'resolver_settings':
