@@ -98,6 +98,10 @@ elif mode == 'test':
                          {'title': 'vidxden url'})
     addon.add_video_item({'host': 'vidxden.com', 'media_id': 'rn3h4gbh5se7'}, 
                          {'title': 'vidxden media id'})
+    addon.add_video_item({'url': 'http://www.vimeo.com/30081785'}, 
+                         {'title': 'vimeo url'})
+    addon.add_video_item({'host': 'vimeo.com', 'media_id': '30081785'}, 
+                         {'title': 'vimeo media id'})
     addon.add_video_item({'url': 'http://www.youtube.com/watch?v=Q3VJOl_XeGs'}, 
                          {'title': 'youtube url'})
     addon.add_video_item({'host': 'youtube.com', 'media_id': 'Q3VJOl_XeGs'}, 
