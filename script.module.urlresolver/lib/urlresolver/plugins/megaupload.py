@@ -22,7 +22,6 @@ import re
 import urllib2
 
 from lib import _megaupload
-from urlresolver.countdown import countdown
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import SiteAuth
 from urlresolver.plugnplay.interfaces import PluginSettings
@@ -52,11 +51,10 @@ class MegaUploadResolver(Plugin, UrlResolver, SiteAuth, PluginSettings):
         common.addon.log_debug('login type: %s' % self.login_type)
         ok = True
         if self.login_type == 'free':
-            ok = countdown(25, title='megaupload',
-                           text='loading video from free account')
+            ok = common.addon.show_countdown(25, title='megaupload', text='loading video from free account')
         elif not self.login_type:
-            ok = countdown(45, title='megaupload',
-                           text='loading video with no account')
+            ok = common.addon.show_countdown(45, title='megaupload',
+                                        text='loading video with no account')
         if ok:
             return media_url[0]
         else:

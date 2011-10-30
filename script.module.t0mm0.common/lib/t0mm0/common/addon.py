@@ -363,7 +363,67 @@ class Addon:
         '''
         xbmc.executebuiltin('XBMC.Notification("%s","%s",%d,"%s")' %
                             (title, msg, delay, image))
+
+
+    def show_countdown(self, time_to_wait, title='', text=''):
+        '''
+        Show a countdown dialog with a progress bar for XBMC while delaying 
+        execution. Necessary for some filehosters eg. megaupload
         
+        The original version of this code came from Anarchintosh.
+        
+        Args:
+            time_to_wait (int): number of seconds to pause for.
+            
+        Kwargs:
+            title (str): Displayed in the title of the countdown dialog. Default
+            is blank.
+                         
+            text (str): A line of text to be displayed in the dialog. Default
+            is blank.
+            
+        Returns: 
+            ``True`` if countdown is allowed to complete, ``False`` if the 
+            user cancelled the countdown.
+        '''
+        
+        dialog = xbmcgui.DialogProgress()
+        ret = dialog.create(title)
+
+        self.log_notice('waiting %d secs' % time_to_wait)
+        
+        secs = 0
+        increment = 100 / time_to_wait
+
+        cancelled = False
+        while secs <= time_to_wait:
+
+            if (dialog.iscanceled()):
+                cancelled = True
+                break
+
+            if secs != 0: 
+                xbmc.sleep(1000)
+
+            secs_left = time_to_wait - secs
+            if secs_left == 0: 
+                percent = 100
+            else: 
+                percent = increment * secs
+            
+            remaining_display = ('Wait %d seconds for the ' +
+                    'video stream to activate...') % secs_left
+            dialog.update(percent, text, remaining_display)
+
+            secs += 1
+
+        if cancelled == True:     
+            self.log_notice('countdown cancelled')
+            return False
+        else:
+            self.log_debug('countdown finished waiting')
+            return True        
+
 
     def show_settings(self):
         '''Shows the settings dialog for this addon.'''
