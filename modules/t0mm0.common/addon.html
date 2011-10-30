@@ -55,7 +55,7 @@
           <div class="body">
             
   <div class="section" id="module-t0mm0.common.addon">
-<span id="t0mm0-common-addon"></span><h1><a class="reference internal" href="#module-t0mm0.common.addon"><tt class="xref py py-mod docutils literal"><span class="pre">t0mm0.common.addon</span></tt></a><a class="headerlink" href="#module-t0mm0.common.addon" title="Permalink to this headline">¶</a></h1>
+<span id="t0mm0-common-addon"></span><h1><a class="reference internal" href="#module-t0mm0.common.addon" title="t0mm0.common.addon"><tt class="xref py py-mod docutils literal"><span class="pre">t0mm0.common.addon</span></tt></a><a class="headerlink" href="#module-t0mm0.common.addon" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="t0mm0.common.addon.Addon">
 <em class="property">class </em><tt class="descclassname">t0mm0.common.addon.</tt><tt class="descname">Addon</tt><big>(</big><em>addon_id</em>, <em>argv=None</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon" title="Permalink to this definition">¶</a></dt>
@@ -81,42 +81,27 @@ which you can call from anywhere in your code.</p>
 </dl>
 <dl class="method">
 <dt id="t0mm0.common.addon.Addon.add_directory">
-<tt class="descname">add_directory</tt><big>(</big><em>queries</em>, <em>title</em>, <em>img=''</em>, <em>fanart=''</em>, <em>total_items=0</em>, <em>is_folder=True</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a directory to the list of items to be displayed by XBMC.</p>
-<p>When selected by the user, directory will call the addon with the 
-query values contained in <cite>queries</cite>.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">queries (dict): A set of keys/values to be sent to the addon when 
-the user selects this item.</p>
-<p class="last">title (str): The name to be displayed for this entry.</p>
-</dd>
-<dt>Kwargs:</dt>
-<dd><p class="first">img (str): A URL to an image file to be used as an icon for this
-entry.</p>
-<p>fanart (str): A URL to a fanart image for this entry.</p>
-<p>total_items (int): Total number of items to be added in this list.
-If supplied it enables XBMC to show a progress bar as the list of
-items is being built.</p>
-<p class="last">is_folder (bool): if <tt class="xref docutils literal"><span class="pre">True</span></tt> (default), when the user selects this 
-item XBMC will expect the plugin to add another set of items to 
-display. If <tt class="xref docutils literal"><span class="pre">False</span></tt>, the &#8216;Loading Directory&#8217; message will not be
-displayed by XBMC (useful if you want a directory item to do 
-something like pop up a dialog).</p>
-</dd>
-</dl>
+<tt class="descname">add_directory</tt><big>(</big><em>queries</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>total_items=0</em>, <em>is_folder=True</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to add a directory to the display list or a 
+playlist.</p>
+<p>See <a class="reference internal" href="#t0mm0.common.addon.Addon.add_item" title="t0mm0.common.addon.Addon.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a> for full infomation</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="t0mm0.common.addon.Addon.add_item">
-<tt class="descname">add_item</tt><big>(</big><em>play</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em>, <em>item_type='video'</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_item" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_item</tt><big>(</big><em>queries</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em>, <em>item_type='video'</em>, <em>is_folder=False</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds an item to the list of entries to be displayed in XBMC or to a 
 playlist.</p>
 <p>Use this method when you want users to be able to select this item to
-start playback of a media file. You can either pass the direct URL to
-the media file (in which case you must also set <tt class="docutils literal"><span class="pre">resolved=True</span></tt>) or
-some other string that will be passed as the &#8216;play&#8217; query and can be  
-used by the addon to resolve to a real media URL.</p>
+start playback of a media file. <tt class="docutils literal"><span class="pre">queries</span></tt> is a dict that will be sent 
+back to the addon when this item is selected:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">add_item</span><span class="p">({</span><span class="s">&#39;host&#39;</span><span class="p">:</span> <span class="s">&#39;youtube.com&#39;</span><span class="p">,</span> <span class="s">&#39;media_id&#39;</span><span class="p">:</span> <span class="s">&#39;ABC123XYZ&#39;</span><span class="p">},</span> 
+         <span class="p">{</span><span class="s">&#39;title&#39;</span><span class="p">:</span> <span class="s">&#39;A youtube vid&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>will add a link to:</p>
+<div class="highlight-python"><pre>plugin://your.plugin.id/?host=youtube.com&amp;media_id=ABC123XYZ</pre>
+</div>
 <div class="admonition-see-also admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#t0mm0.common.addon.Addon.add_music_item" title="t0mm0.common.addon.Addon.add_music_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_music_item()</span></tt></a>, <a class="reference internal" href="#t0mm0.common.addon.Addon.add_video_item" title="t0mm0.common.addon.Addon.add_video_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_video_item()</span></tt></a>, 
@@ -124,9 +109,8 @@ used by the addon to resolve to a real media URL.</p>
 </div>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">play (str): The string to be sent to the plugin when the user 
-plays this entry, or (if <tt class="docutils literal"><span class="pre">resolved=True</span></tt>) a URL to the media to be
-played.</p>
+<dd><p class="first">queries (dict): A set of keys/values to be sent to the addon when 
+the user selects this item.</p>
 <p class="last">infolabels (dict): A dictionary of information about this media 
 (see the <a class="reference external" href="http://wiki.xbmc.org/?title=InfoLabels">XBMC Wiki InfoLabels entry</a>).</p>
 </dd>
@@ -134,9 +118,8 @@ played.</p>
 <dd><p class="first">img (str): A URL to an image file to be used as an icon for this
 entry.</p>
 <p>fanart (str): A URL to a fanart image for this entry.</p>
-<p>resolved (bool): If <tt class="xref docutils literal"><span class="pre">False</span></tt> (default), <cite>play</cite> will be sent as a 
-query to the addon when the item is played. If <tt class="xref docutils literal"><span class="pre">False</span></tt>, <cite>play</cite> 
-will be treated as a URL to the media item.</p>
+<p>resolved (str): If not empty, <tt class="docutils literal"><span class="pre">queries</span></tt> will be ignored and 
+instead the added item will be the exact contentes of <tt class="docutils literal"><span class="pre">resolved</span></tt>.</p>
 <p>total_items (int): Total number of items to be added in this list.
 If supplied it enables XBMC to show a progress bar as the list of
 items is being built.</p>
@@ -152,7 +135,7 @@ the item will be added to the playlist instead</p>
 
 <dl class="method">
 <dt id="t0mm0.common.addon.Addon.add_music_item">
-<tt class="descname">add_music_item</tt><big>(</big><em>play</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_music_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_music_item" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_music_item</tt><big>(</big><em>queries</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_music_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_music_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience method to add a music item to the directory list or a 
 playlist.</p>
 <p>See <a class="reference internal" href="#t0mm0.common.addon.Addon.add_item" title="t0mm0.common.addon.Addon.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a> for full infomation</p>
@@ -160,7 +143,7 @@ playlist.</p>
 
 <dl class="method">
 <dt id="t0mm0.common.addon.Addon.add_video_item">
-<tt class="descname">add_video_item</tt><big>(</big><em>play</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_video_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_video_item" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_video_item</tt><big>(</big><em>queries</em>, <em>infolabels</em>, <em>img=''</em>, <em>fanart=''</em>, <em>resolved=False</em>, <em>total_items=0</em>, <em>playlist=False</em><big>)</big><a class="reference internal" href="../../_modules/t0mm0/common/addon.html#Addon.add_video_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#t0mm0.common.addon.Addon.add_video_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience method to add a video item to the directory list or a 
 playlist.</p>
 <p>See <a class="reference internal" href="#t0mm0.common.addon.Addon.add_item" title="t0mm0.common.addon.Addon.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a> for full infomation</p>
@@ -667,7 +650,7 @@ is 5 seconds.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2011, t0mm0.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>

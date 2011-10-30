@@ -512,17 +512,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">get_playlist</span><span class="p">(</span><span class="n">xbmc</span><span class="o">.</span><span class="n">PLAYLIST_VIDEO</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="Addon.add_item"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_item">[docs]</a>    <span class="k">def</span> <span class="nf">add_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">play</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">resolved</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
-                 <span class="n">total_items</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">playlist</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">item_type</span><span class="o">=</span><span class="s">&#39;video&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Addon.add_item"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_item">[docs]</a>    <span class="k">def</span> <span class="nf">add_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">resolved</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+                 <span class="n">total_items</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">playlist</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">item_type</span><span class="o">=</span><span class="s">&#39;video&#39;</span><span class="p">,</span> 
+                 <span class="n">is_folder</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Adds an item to the list of entries to be displayed in XBMC or to a </span>
 <span class="sd">        playlist.</span>
 <span class="sd">        </span>
 <span class="sd">        Use this method when you want users to be able to select this item to</span>
-<span class="sd">        start playback of a media file. You can either pass the direct URL to</span>
-<span class="sd">        the media file (in which case you must also set ``resolved=True``) or</span>
-<span class="sd">        some other string that will be passed as the &#39;play&#39; query and can be  </span>
-<span class="sd">        used by the addon to resolve to a real media URL. </span>
+<span class="sd">        start playback of a media file. ``queries`` is a dict that will be sent </span>
+<span class="sd">        back to the addon when this item is selected::</span>
+<span class="sd">        </span>
+<span class="sd">            add_item({&#39;host&#39;: &#39;youtube.com&#39;, &#39;media_id&#39;: &#39;ABC123XYZ&#39;}, </span>
+<span class="sd">                     {&#39;title&#39;: &#39;A youtube vid&#39;})</span>
+<span class="sd">                     </span>
+<span class="sd">        will add a link to::</span>
+<span class="sd">        </span>
+<span class="sd">            plugin://your.plugin.id/?host=youtube.com&amp;media_id=ABC123XYZ</span>
 <span class="sd">        </span>
 <span class="sd">        .. seealso::</span>
 <span class="sd">        </span>
@@ -530,9 +536,8 @@
 <span class="sd">            :meth:`add_directory`</span>
 <span class="sd">            </span>
 <span class="sd">        Args:</span>
-<span class="sd">            play (str): The string to be sent to the plugin when the user </span>
-<span class="sd">            plays this entry, or (if ``resolved=True``) a URL to the media to be</span>
-<span class="sd">            played.</span>
+<span class="sd">            queries (dict): A set of keys/values to be sent to the addon when </span>
+<span class="sd">            the user selects this item.</span>
 <span class="sd">            </span>
 <span class="sd">            infolabels (dict): A dictionary of information about this media </span>
 <span class="sd">            (see the `XBMC Wiki InfoLabels entry </span>
@@ -544,9 +549,8 @@
 <span class="sd">            </span>
 <span class="sd">            fanart (str): A URL to a fanart image for this entry.</span>
 <span class="sd">            </span>
-<span class="sd">            resolved (bool): If ``False`` (default), `play` will be sent as a </span>
-<span class="sd">            query to the addon when the item is played. If ``False``, `play` </span>
-<span class="sd">            will be treated as a URL to the media item.</span>
+<span class="sd">            resolved (str): If not empty, ``queries`` will be ignored and </span>
+<span class="sd">            instead the added item will be the exact contentes of ``resolved``.</span>
 <span class="sd">            </span>
 <span class="sd">            total_items (int): Total number of items to be added in this list.</span>
 <span class="sd">            If supplied it enables XBMC to show a progress bar as the list of</span>
@@ -562,7 +566,10 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">infolabels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unescape_dict</span><span class="p">(</span><span class="n">infolabels</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">resolved</span><span class="p">:</span>
-            <span class="n">play</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_plugin_url</span><span class="p">({</span><span class="s">&#39;play&#39;</span><span class="p">:</span> <span class="n">play</span><span class="p">})</span>
+            <span class="n">queries</span><span class="p">[</span><span class="s">&#39;play&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;True&#39;</span>
+            <span class="n">play</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_plugin_url</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="n">play</span> <span class="o">=</span> <span class="n">resolved</span>
         <span class="n">listitem</span> <span class="o">=</span> <span class="n">xbmcgui</span><span class="o">.</span><span class="n">ListItem</span><span class="p">(</span><span class="n">infolabels</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">],</span> <span class="n">iconImage</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> 
                                     <span class="n">thumbnailImage</span><span class="o">=</span><span class="n">img</span><span class="p">)</span>
         <span class="n">listitem</span><span class="o">.</span><span class="n">setInfo</span><span class="p">(</span><span class="n">item_type</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">)</span>
@@ -575,10 +582,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_debug</span><span class="p">(</span><span class="s">&#39;adding item: </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">infolabels</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">],</span> <span class="n">play</span><span class="p">))</span>
             <span class="n">xbmcplugin</span><span class="o">.</span><span class="n">addDirectoryItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">play</span><span class="p">,</span> <span class="n">listitem</span><span class="p">,</span> 
-                                        <span class="n">isFolder</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">totalItems</span><span class="o">=</span><span class="n">total_items</span><span class="p">)</span>
+                                        <span class="n">isFolder</span><span class="o">=</span><span class="n">is_folder</span><span class="p">,</span> 
+                                        <span class="n">totalItems</span><span class="o">=</span><span class="n">total_items</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="Addon.add_video_item"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_video_item">[docs]</a>    <span class="k">def</span> <span class="nf">add_video_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">play</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
+<div class="viewcode-block" id="Addon.add_video_item"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_video_item">[docs]</a>    <span class="k">def</span> <span class="nf">add_video_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
                        <span class="n">resolved</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">total_items</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">playlist</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Convenience method to add a video item to the directory list or a </span>
@@ -586,11 +594,11 @@
 <span class="sd">        </span>
 <span class="sd">        See :meth:`add_item` for full infomation</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">play</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">fanart</span><span class="p">,</span> <span class="n">resolved</span><span class="p">,</span> <span class="n">total_items</span><span class="p">,</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">fanart</span><span class="p">,</span> <span class="n">resolved</span><span class="p">,</span> <span class="n">total_items</span><span class="p">,</span> 
                       <span class="n">playlist</span><span class="p">,</span> <span class="n">item_type</span><span class="o">=</span><span class="s">&#39;video&#39;</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="Addon.add_music_item"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_music_item">[docs]</a>    <span class="k">def</span> <span class="nf">add_music_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">play</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
+<div class="viewcode-block" id="Addon.add_music_item"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_music_item">[docs]</a>    <span class="k">def</span> <span class="nf">add_music_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
                        <span class="n">resolved</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">total_items</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">playlist</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Convenience method to add a music item to the directory list or a </span>
@@ -598,52 +606,20 @@
 <span class="sd">        </span>
 <span class="sd">        See :meth:`add_item` for full infomation</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">play</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">fanart</span><span class="p">,</span> <span class="n">resolved</span><span class="p">,</span> <span class="n">total_items</span><span class="p">,</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">fanart</span><span class="p">,</span> <span class="n">resolved</span><span class="p">,</span> <span class="n">total_items</span><span class="p">,</span> 
                       <span class="n">playlist</span><span class="p">,</span> <span class="n">item_type</span><span class="o">=</span><span class="s">&#39;music&#39;</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="Addon.add_directory"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_directory">[docs]</a>    <span class="k">def</span> <span class="nf">add_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
+<div class="viewcode-block" id="Addon.add_directory"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.add_directory">[docs]</a>    <span class="k">def</span> <span class="nf">add_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> 
                       <span class="n">total_items</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_folder</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Add a directory to the list of items to be displayed by XBMC.</span>
+<span class="sd">        Convenience method to add a directory to the display list or a </span>
+<span class="sd">        playlist.</span>
 <span class="sd">        </span>
-<span class="sd">        When selected by the user, directory will call the addon with the </span>
-<span class="sd">        query values contained in `queries`.</span>
-<span class="sd">        </span>
-<span class="sd">        Args:</span>
-<span class="sd">            queries (dict): A set of keys/values to be sent to the addon when </span>
-<span class="sd">            the user selects this item.</span>
-<span class="sd">            </span>
-<span class="sd">            title (str): The name to be displayed for this entry.</span>
-<span class="sd">        </span>
-<span class="sd">        Kwargs:</span>
-<span class="sd">            img (str): A URL to an image file to be used as an icon for this</span>
-<span class="sd">            entry.</span>
-<span class="sd">            </span>
-<span class="sd">            fanart (str): A URL to a fanart image for this entry.</span>
-<span class="sd">            </span>
-<span class="sd">            total_items (int): Total number of items to be added in this list.</span>
-<span class="sd">            If supplied it enables XBMC to show a progress bar as the list of</span>
-<span class="sd">            items is being built.</span>
-
-<span class="sd">            is_folder (bool): if ``True`` (default), when the user selects this </span>
-<span class="sd">            item XBMC will expect the plugin to add another set of items to </span>
-<span class="sd">            display. If ``False``, the &#39;Loading Directory&#39; message will not be</span>
-<span class="sd">            displayed by XBMC (useful if you want a directory item to do </span>
-<span class="sd">            something like pop up a dialog).</span>
-<span class="sd">        </span>
+<span class="sd">        See :meth:`add_item` for full infomation</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_plugin_url</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log_debug</span><span class="p">(</span><span class="s">u&#39;adding dir: </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">url</span><span class="p">))</span>
-        <span class="n">listitem</span> <span class="o">=</span> <span class="n">xbmcgui</span><span class="o">.</span><span class="n">ListItem</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">iconImage</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> 
-                                    <span class="n">thumbnailImage</span><span class="o">=</span><span class="n">img</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">fanart</span><span class="p">:</span>
-            <span class="n">fanart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fanart</span><span class="p">()</span>
-        <span class="n">listitem</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&#39;fanart_image&#39;</span><span class="p">,</span> <span class="n">fanart</span><span class="p">)</span>
-        <span class="n">xbmcplugin</span><span class="o">.</span><span class="n">addDirectoryItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">listitem</span><span class="p">,</span> 
-                                    <span class="n">isFolder</span><span class="o">=</span><span class="n">is_folder</span><span class="p">,</span> <span class="n">totalItems</span><span class="o">=</span><span class="n">total_items</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">infolabels</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">fanart</span><span class="p">,</span> <span class="n">total_items</span><span class="o">=</span><span class="n">total_items</span><span class="p">,</span> 
+                      <span class="n">is_folder</span><span class="o">=</span><span class="n">is_folder</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Addon.end_of_directory"><a class="viewcode-back" href="../../../modules/t0mm0.common/addon.html#t0mm0.common.addon.Addon.end_of_directory">[docs]</a>    <span class="k">def</span> <span class="nf">end_of_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;Tell XBMC that we have finished adding items to this directory.&#39;&#39;&#39;</span>
@@ -810,7 +786,7 @@
     </div>
     <div class="footer">
         &copy; Copyright 2011, t0mm0.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>

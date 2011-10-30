@@ -55,99 +55,70 @@
           <div class="body">
             
   <div class="section" id="module-urlresolver">
-<span id="urlresolver"></span><h1><a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a><a class="headerlink" href="#module-urlresolver" title="Permalink to this headline">¶</a></h1>
+<span id="urlresolver"></span><h1><a class="reference internal" href="#module-urlresolver" title="urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a><a class="headerlink" href="#module-urlresolver" title="Permalink to this headline">¶</a></h1>
 <p>This module provides the main API for accessing the urlresolver features.</p>
 <p>For most cases you probably want to use <a class="reference internal" href="#urlresolver.resolve" title="urlresolver.resolve"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.resolve()</span></tt></a> or 
 <a class="reference internal" href="#urlresolver.choose_source" title="urlresolver.choose_source"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.choose_source()</span></tt></a>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a></p>
+</div>
 <dl class="function">
 <dt id="urlresolver.choose_source">
 <tt class="descclassname">urlresolver.</tt><tt class="descname">choose_source</tt><big>(</big><em>sources</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#choose_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.choose_source" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a dictionary of sources where the keys are web URLs to be resolved and
-the values are a title to display this function checks which are playable
-and if there are more than one it pops up a dialog box displaying the 
-choices.</p>
+<dd><p>Given a list of <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a> representing web pages that are 
+thought to be associated with media content this function checks which are 
+playable and if there are more than one it pops up a dialog box displaying 
+the choices.</p>
 <p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">sources</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;http://youtu.be/VIDEOID&#39;</span><span class="p">:</span> <span class="s">&#39;Youtube [verified] (20 views)&#39;</span><span class="p">,</span>
-           <span class="s">&#39;http://putlocker.com/file/VIDEOID&#39;</span><span class="p">:</span> <span class="s">&#39;Putlocker (3 views)&#39;</span><span class="p">}</span>
-<span class="n">stream_url</span> <span class="o">=</span> <span class="n">urlresolver</span><span class="o">.</span><span class="n">choose_source</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
-</pre></div>
+<div class="highlight-python"><pre>sources = [HostedMediaFile(url='http://youtu.be/VIDEOID', title='Youtube [verified] (20 views)'),
+           HostedMediaFile(url='http://putlocker.com/file/VIDEOID', title='Putlocker (3 views)')]
+        source = urlresolver.choose_source(sources)
+        if source:
+                stream_url = source.resolve()
+                addon.resolve_url(stream_url)
+        else:
+                addon.resolve_url(False)</pre>
 </div>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>sources (dict): A dictionary where the keys are web URLs to be resolved
-and the values are titles to be displayed in the coice dialog.</dd>
+<dd>sources (list): A list of <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a> representing web 
+pages that are thought to be associated with media content.</dd>
 <dt>Returns:</dt>
-<dd>If the chosen URL could be resolved, a string containing the direct 
-URL to the media file, if not, returns <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
+<dd>The chosen <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a> or <tt class="xref docutils literal"><span class="pre">False</span></tt> if the dialog is 
+cancelled or none of the <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a> are resolvable.</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="urlresolver.display_settings">
 <tt class="descclassname">urlresolver.</tt><tt class="descname">display_settings</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#display_settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.display_settings" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens the settings dialog for <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
+<dd><p>Opens the settings dialog for <a class="reference internal" href="#module-urlresolver" title="urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
 <p>This can be called from your addon to provide access to global 
-<a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> settings. Each resolver plugin is also capable of 
+<a class="reference internal" href="#module-urlresolver" title="urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> settings. Each resolver plugin is also capable of 
 exposing settings.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All changes made to these setting by the user are global and will 
-affect any addon that uses <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
+affect any addon that uses <a class="reference internal" href="#module-urlresolver" title="urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> and its plugins.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
-<dt id="urlresolver.filter_dict">
-<tt class="descclassname">urlresolver.</tt><tt class="descname">filter_dict</tt><big>(</big><em>d</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#filter_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.filter_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similar to <a class="reference internal" href="#urlresolver.filter_urls" title="urlresolver.filter_urls"><tt class="xref py py-func docutils literal"><span class="pre">filter_urls()</span></tt></a> but takes a dictionary where the keys are
-web URLs to check and returns a dictionary which only contains items that
-have a resolver plugin.</p>
-<p>Useful for when you want to filter a list of web URLs and keep some other
-information with each URL.</p>
+<dt id="urlresolver.filter_source_list">
+<tt class="descclassname">urlresolver.</tt><tt class="descname">filter_source_list</tt><big>(</big><em>source_list</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#filter_source_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.filter_source_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of <tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile`s</span> <span class="pre">representing</span> <span class="pre">web</span> <span class="pre">pages</span> <span class="pre">that</span> <span class="pre">are</span> 
+<span class="pre">thought</span> <span class="pre">to</span> <span class="pre">be</span> <span class="pre">associated</span> <span class="pre">with</span> <span class="pre">media</span> <span class="pre">content.</span> <span class="pre">If</span> <span class="pre">no</span> <span class="pre">resolver</span> <span class="pre">plugins</span> <span class="pre">exist</span> 
+<span class="pre">to</span> <span class="pre">resolve</span> <span class="pre">a</span> <span class="pre">:class:`HostedMediaFile</span></tt> to a link to a media file it is 
+removed from the list.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>d (dict): A dictionary where the keys are all web URLs</dd>
+<dd>urls (list of <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a>): A list of 
+<tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFiles</span></tt> representing web pages that are thought to be 
+associated with media content.</dd>
 <dt>Returns:</dt>
-<dd>A copy of the dictionary with items that can&#8217;t be resolved by a resolver
-plugin removed.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="urlresolver.filter_urls">
-<tt class="descclassname">urlresolver.</tt><tt class="descname">filter_urls</tt><big>(</big><em>urls</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#filter_urls"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.filter_urls" title="Permalink to this definition">¶</a></dt>
-<dd><p>Takes a list of URLs to web pages that are thought to be associated with 
-media content. If no resolver plugins exist to resolve a URL to a link to a
-media file it is removed from the list.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>urls (list of str): A list of URLs thought to be associated with media
-content.</dd>
-<dt>Returns:</dt>
-<dd>The same list of URLs but with any that can&#8217;t be resolved by a resolver 
-plugin removed.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="urlresolver.find_resolver">
-<tt class="descclassname">urlresolver.</tt><tt class="descname">find_resolver</tt><big>(</big><em>web_url</em><big>)</big><a class="reference internal" href="../../_modules/urlresolver.html#find_resolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#urlresolver.find_resolver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds the first resolver that says it can resolve the given URL to a media 
-file. Note that it might not actually be able to, but it advertises the
-fact that it can.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You probably won&#8217;t need to access this function for normal usage - just
-use <a class="reference internal" href="#urlresolver.resolve" title="urlresolver.resolve"><tt class="xref py py-func docutils literal"><span class="pre">urlresolver.resolve()</span></tt></a>.</p>
-</div>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>web_url (str): A URL to a web page associated with a piece of media
-content.</dd>
-<dt>Returns:</dt>
-<dd>An instance of a class that implements 
-<a class="reference internal" href="interfaces.html#urlresolver.plugnplay.interfaces.UrlResolver" title="urlresolver.plugnplay.interfaces.UrlResolver"><tt class="xref py py-class docutils literal"><span class="pre">urlresolver.plugnplay.interfaces.UrlResolver</span></tt></a> and advertises
-that it can resolve the given <tt class="docutils literal"><span class="pre">web_url</span></tt>.</dd>
+<dd>The same list of <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a> but with any that can&#8217;t be 
+resolved by a resolver plugin removed.</dd>
 </dl>
 </dd></dl>
 
@@ -162,11 +133,17 @@ that it can resolve the given <tt class="docutils literal"><span class="pre">web
 </div>
 <p>where <tt class="docutils literal"><span class="pre">web_url</span></tt> is the address of a web page which is associated with a 
 media file and <tt class="docutils literal"><span class="pre">media_url</span></tt> is the direct URL to the media.</p>
-<p>Behind the scenes, <a class="reference internal" href="#module-urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> will check each of the available 
+<p>Behind the scenes, <a class="reference internal" href="#module-urlresolver" title="urlresolver"><tt class="xref py py-mod docutils literal"><span class="pre">urlresolver</span></tt></a> will check each of the available 
 resolver plugins to see if they accept the <tt class="docutils literal"><span class="pre">web_url</span></tt> in priority order 
 (lowest priotity number first). When it finds a plugin willing to resolve 
 the URL, it passes the <tt class="docutils literal"><span class="pre">web_url</span></tt> to the plugin and returns the direct URL 
 to the media file, or <tt class="xref docutils literal"><span class="pre">False</span></tt> if it was not possible to resolve.</p>
+<blockquote>
+<div><div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a></p>
+</div>
+</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>web_url (str): A URL to a web page associated with a piece of media
@@ -175,6 +152,108 @@ content.</dd>
 <dd>If the <tt class="docutils literal"><span class="pre">web_url</span></tt> could be resolved, a string containing the direct 
 URL to the media file, if not, returns <tt class="xref docutils literal"><span class="pre">False</span></tt>.</dd>
 </dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="urlresolver.HostedMediaFile">
+<em class="property">class </em><tt class="descclassname">urlresolver.</tt><tt class="descname">HostedMediaFile</tt><big>(</big><em>url=''</em>, <em>host=''</em>, <em>media_id=''</em>, <em>title=''</em><big>)</big><a class="headerlink" href="#urlresolver.HostedMediaFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a piece of media (file or stream) that is hosted 
+somewhere on the internet. It may be instantiated with EITHER the url to the
+web page associated with the media file, OR the host name and a unique 
+<tt class="docutils literal"><span class="pre">media_id</span></tt> used by the host to point to the media.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">HostedMediaFile</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">&#39;http://youtube.com/watch?v=ABC123XYZ&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>represents the same piece of media as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">HostedMediaFile</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">&#39;youtube.com&#39;</span><span class="p">,</span> <span class="n">media_id</span><span class="o">=</span><span class="s">&#39;ABC123XYZ&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">title</span></tt> is a free text field useful for display purposes such as in
+<a class="reference internal" href="#urlresolver.choose_source" title="urlresolver.choose_source"><tt class="xref py py-func docutils literal"><span class="pre">choose_source()</span></tt></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If there is no resolver plugin to handle the arguments passed, 
+the resulting object will evaluate to <tt class="xref docutils literal"><span class="pre">False</span></tt>. Otherwise it will 
+evaluate to <tt class="xref docutils literal"><span class="pre">True</span></tt>. This is a handy way of checking whether
+a resolver exists:</p>
+<div class="last highlight-python"><pre>hmf = HostedMediaFile('http://youtube.com/watch?v=ABC123XYZ')
+if hmf:
+    print 'yay! we can resolve this one'
+else:
+    print 'sorry :( no resolvers available to handle this one.')</pre>
+</div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you pass <tt class="docutils literal"><span class="pre">url</span></tt> you must not pass <tt class="docutils literal"><span class="pre">host</span></tt> or <tt class="docutils literal"><span class="pre">media_id</span></tt>. You 
+must pass either <tt class="docutils literal"><span class="pre">url</span></tt> or <tt class="docutils literal"><span class="pre">host</span></tt> AND <tt class="docutils literal"><span class="pre">media_id</span></tt>.</p>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">url (str): a URL to a web page that represents a piece of media.</p>
+<p>host (str): the host of the media to be represented.</p>
+<p class="last">media_id (str): the unique ID given to the media by the host.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="urlresolver.HostedMediaFile.get_host">
+<tt class="descname">get_host</tt><big>(</big><big>)</big><a class="headerlink" href="#urlresolver.HostedMediaFile.get_host" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the host of this <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.HostedMediaFile.get_media_id">
+<tt class="descname">get_media_id</tt><big>(</big><big>)</big><a class="headerlink" href="#urlresolver.HostedMediaFile.get_media_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the media_id of this <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.HostedMediaFile.get_url">
+<tt class="descname">get_url</tt><big>(</big><big>)</big><a class="headerlink" href="#urlresolver.HostedMediaFile.get_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the URL of this <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.HostedMediaFile.resolve">
+<tt class="descname">resolve</tt><big>(</big><big>)</big><a class="headerlink" href="#urlresolver.HostedMediaFile.resolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves this <a class="reference internal" href="#urlresolver.HostedMediaFile" title="urlresolver.HostedMediaFile"><tt class="xref py py-class docutils literal"><span class="pre">HostedMediaFile</span></tt></a> to a media URL.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">stream_url</span> <span class="o">=</span> <span class="n">HostedMediaFile</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">&#39;youtube.com&#39;</span><span class="p">,</span> <span class="n">media_id</span><span class="o">=</span><span class="s">&#39;ABC123XYZ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method currently uses just the highest priority resolver to 
+attempt to resolve to a media URL and if that fails it will return 
+False. In future perhaps we should be more clever and check to make 
+sure that there are no more resolvers capable of attempting to 
+resolve the URL first.</p>
+</div>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>A direct URL to the media file that is playable by XBMC, or False
+if this was not possible.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="urlresolver.HostedMediaFile.valid_url">
+<tt class="descname">valid_url</tt><big>(</big><big>)</big><a class="headerlink" href="#urlresolver.HostedMediaFile.valid_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the <tt class="docutils literal"><span class="pre">HostedMediaFile</span></tt> can be resolved.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following are exactly equivalent:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">HostedMediaFile</span><span class="p">(</span><span class="s">&#39;http://youtube.com/watch?v=ABC123XYZ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">valid_url</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">&#39;resolvable!&#39;</span>
+
+<span class="k">if</span> <span class="n">HostedMediaFile</span><span class="p">(</span><span class="s">&#39;http://youtube.com/watch?v=ABC123XYZ&#39;</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&#39;resolvable!&#39;</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -235,7 +314,7 @@ URL to the media file, if not, returns <tt class="xref docutils literal"><span c
     </div>
     <div class="footer">
         &copy; Copyright 2011, t0mm0.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>
