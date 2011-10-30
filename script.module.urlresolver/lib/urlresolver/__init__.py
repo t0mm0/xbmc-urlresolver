@@ -19,6 +19,12 @@ This module provides the main API for accessing the urlresolver features.
 
 For most cases you probably want to use :func:`urlresolver.resolve` or 
 :func:`urlresolver.choose_source`.
+
+.. seealso::
+	
+	:class:`HostedMediaFile`
+
+
 '''
 
 import os
@@ -35,7 +41,7 @@ plugnplay.set_plugin_dirs(common.plugins_path)
 plugnplay.load_plugins()
 
 def resolve(web_url):
-    """
+    '''
     Resolve a web page to a media stream.
     
     It is usually as simple as::
@@ -52,6 +58,10 @@ def resolve(web_url):
     the URL, it passes the ``web_url`` to the plugin and returns the direct URL 
     to the media file, or ``False`` if it was not possible to resolve.
     
+	.. seealso::
+		
+		:class:`HostedMediaFile`
+
     Args:
         web_url (str): A URL to a web page associated with a piece of media
         content.
@@ -59,105 +69,55 @@ def resolve(web_url):
     Returns:
         If the ``web_url`` could be resolved, a string containing the direct 
         URL to the media file, if not, returns ``False``.    
-    """
-    imp = find_resolver(web_url)
-    if imp:
-        common.addon.log_notice('resolving using %s plugin' % imp.name)
-        if SiteAuth in imp.implements:
-            common.addon.log_debug('logging in')
-            imp.login()
-        return imp.get_media_url(web_url)
-    return False
-    
-def filter_urls(urls):
     '''
-    Takes a list of URLs to web pages that are thought to be associated with 
-    media content. If no resolver plugins exist to resolve a URL to a link to a
-    media file it is removed from the list.
-    
-    Args:
-        urls (list of str): A list of URLs thought to be associated with media
-        content.
-        
-    Returns:
-        The same list of URLs but with any that can't be resolved by a resolver 
-        plugin removed.
-    
-    '''
-    ret = []
-    for url in urls:
-        imp = find_resolver(url)
-        if imp:
-            ret.append(url)
-    return ret
-
-def filter_dict(d):
-    '''
-    Similar to :func:`filter_urls` but takes a dictionary where the keys are
-    web URLs to check and returns a dictionary which only contains items that
-    have a resolver plugin.
-    
-    Useful for when you want to filter a list of web URLs and keep some other
-    information with each URL.
-    
-    Args:
-        d (dict): A dictionary where the keys are all web URLs
-    
-    Returns:
-        A copy of the dictionary with items that can't be resolved by a resolver
-        plugin removed.
-    '''
-    return dict((k, v) for k, v in d.iteritems() if find_resolver(k))
+    source = HostedMediaFile(url=web_url)
+    return source.resolve()
 
 def filter_source_list(source_list):
+    '''
+    Takes a list of :class:`HostedMediaFile`s representing web pages that are 
+    thought to be associated with media content. If no resolver plugins exist 
+    to resolve a :class:`HostedMediaFile` to a link to a media file it is 
+    removed from the list.
+    
+    Args:
+        urls (list of :class:`HostedMediaFile`): A list of 
+        :class:`HostedMediaFiles` representing web pages that are thought to be 
+        associated with media content.
+        
+    Returns:
+        The same list of :class:`HostedMediaFile` but with any that can't be 
+        resolved by a resolver plugin removed.
+    
+    '''
     return [source for source in source_list if source]
 
 
-def find_resolver(web_url):
-    '''
-    Finds the first resolver that says it can resolve the given URL to a media 
-    file. Note that it might not actually be able to, but it advertises the
-    fact that it can.
-    
-    .. note::
-    
-        You probably won't need to access this function for normal usage - just
-        use :func:`urlresolver.resolve`.
-        
-    Args:
-        web_url (str): A URL to a web page associated with a piece of media
-        content.
-        
-    Returns:
-        An instance of a class that implements 
-        :class:`urlresolver.plugnplay.interfaces.UrlResolver` and advertises
-        that it can resolve the given ``web_url``.
-    '''
-    for imp in UrlResolver.implementors():
-        if imp.valid_url(web_url):
-            return imp
-    return False
-
 def choose_source(sources):
     '''
-    Given a dictionary of sources where the keys are web URLs to be resolved and
-    the values are a title to display this function checks which are playable
-    and if there are more than one it pops up a dialog box displaying the 
-    choices.
+    Given a list of :class:`HostedMediaFile` representing web pages that are 
+    thought to be associated with media content this function checks which are 
+    playable and if there are more than one it pops up a dialog box displaying 
+    the choices.
     
     Example::
     
-        sources = {'http://youtu.be/VIDEOID': 'Youtube [verified] (20 views)',
-                   'http://putlocker.com/file/VIDEOID': 'Putlocker (3 views)'}
-        stream_url = urlresolver.choose_source(sources)
+        sources = [HostedMediaFile(url='http://youtu.be/VIDEOID', title='Youtube [verified] (20 views)'),
+                   HostedMediaFile(url='http://putlocker.com/file/VIDEOID', title='Putlocker (3 views)')]
+		source = urlresolver.choose_source(sources)
+		if source:
+			stream_url = source.resolve()
+			addon.resolve_url(stream_url)
+		else:
+			addon.resolve_url(False)
 
     Args:
-        sources (dict): A dictionary where the keys are web URLs to be resolved
-        and the values are titles to be displayed in the coice dialog.
+        sources (list): A list of :class:`HostedMediaFile` representing web 
+        pages that are thought to be associated with media content.
         
     Returns:
-        If the chosen URL could be resolved, a string containing the direct 
-        URL to the media file, if not, returns ``False``.    
+        The chosen :class:`HostedMediaFile` or ``False`` if the dialog is 
+        cancelled or none of the :class:`HostedMediaFile` are resolvable.    
         
     '''
     #get rid of sources with no resolver plugin
@@ -201,6 +161,7 @@ def display_settings():
     _update_settings_xml()
     common.addon.show_settings()
         
+        
 def _update_settings_xml():
     '''
     This function writes a new ``resources/settings.xml`` file which contains
@@ -225,6 +186,7 @@ def _update_settings_xml():
             f.close
     except IOError:
         common.addon.log_error('error writing ' + common.settings_file)
+
 
 #make sure settings.xml is up to date
 _update_settings_xml()

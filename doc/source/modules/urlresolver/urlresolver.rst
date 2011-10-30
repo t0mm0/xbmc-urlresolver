@@ -5,3 +5,5 @@
 .. automodule:: urlresolver
     :members:
 
+.. autoclass:: HostedMediaFile
+	:members:
