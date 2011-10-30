@@ -50,10 +50,16 @@ Make a new file in ``script.module.urlresolver/lib/plugins`` called
             self.priority = int(p)
             self.net = Net()
 
-        def get_media_url(self, web_url):
+        def get_media_url(self, host, media_id):
             return 'media url'
             
-        def valid_url(self, web_url):
+        def get_url(self, host, media_id):
+            return 'web url'
+            
+        def get_host_and_id(self, url):
+            return ('host', 'media id')
+
+        def valid_url(self, url, host):
             return False
             
 Here's a quick explanation.
@@ -90,8 +96,12 @@ Here's a quick explanation.
   
   For many plugins this ``__init__`` method can be left as is.
 * *Line 15-16* A stub for our main method. This is where the code to turn the
-  ``web_url`` into a media URL will go.
-* *Line 18-19* A stub for the method that determines whether this plugin is 
+  ``host`` and ``media_id`` into a media URL will go.
+* *Line 18-19* A stub for the method which turns a ``host`` and ``media_id`` 
+  into a ``web_url``.
+* *Line 21-22* A stub for the method which turns a ``web_url`` into a ``host``
+  and ``media_id``. ``get_host_and_id`` is the inverse of ``get_url``. 
+* *Line 24-25* A stub for the method that determines whether this plugin is 
   capable of handling any given ``web_url``.  
  
 Now turn on debugging in XBMC and navigate to the 't0mm0 test addon' in 
@@ -104,6 +114,8 @@ something similar to the following two lines::
     18:35:03 T:122399600 M:374116352   DEBUG: urlresolver: registering plugin: myvideobb (MyVideobbResolver), as: PluginSettings (P=100)
 
 This shows that your new plugin is installed and initialised correctly.
+
+
 
 Can We Handle It?
 =================
@@ -179,13 +191,20 @@ will be detected by this regular expression whether it includes a www. or not::
     >>> print re.match('http://(www.)?videobb.com/(e/|video/|watch_video.php\?v=)[0-9A-Za-z]+', 'http://different-hoster.com/video/8FvAG6AQpHi8')
     None
 
+We also need to return True if strings like 'videobb' or 'videobb.com' are 
+passed in the ``host`` argument. A simple::
+
+    'videobb' in host
+    
+test will return True if this is the case.
+
 So lets use that to fill in our ``valid_url()`` method. Replace the existing 
 stub with::
 
-    def valid_url(self, web_url):
+    def valid_url(self, url, host):
         return re.match('http://(www.)?videobb.com/' + 
                         '(e/|video/|watch_video.php\?v=)' +
-                        '[0-9A-Za-z]+')
+                        '[0-9A-Za-z]+') or 'videobb' in host
                         
 and add::
 
@@ -197,11 +216,57 @@ In case you are wondering why I split the regular expression on multiple lines,
 it is to make it more readable. I always try and keep line lengths less than 80
 characters, as suggested in :pep:`8`.
 
+
 .. seealso::
 
     If you'd like more info on regular expressions, check out the module docs
     for the :mod:`re` module, or read one of the many fine tutorials on the
     web such as http://www.regular-expressions.info/.
+
+Handling host/media_id or URL
+=============================
+
+Addons could know either the URL to the host page, or just the domain name (or 
+name) of the host and it's media_id.
+
+.. note::
+
+    a media_id is a unique identifier given to a piece of media by the site that 
+    hosts it.
+    
+We need ``get_url()`` and ``get_host_and_id()`` in order to convert either way.
+
+``get_url()`` is the easiest. We want to make a web URL out of the ``host`` and 
+``media_id``. In this case the host part will always be the same and we just 
+need to add the media_id on the end of it::
+
+    def get_url(self, host, media_id):
+        return 'http://www.videobb.com/video/%s' % media_id
+
+Now for the trickier``get_host_and_id()`` part. By now you ar an expert at 
+regular expressions so this shoud not be too complicated!
+
+.. code-block:: python
+    :linenos:
+
+    def get_host_and_id(self, url):
+        r = re.search('//(.+?)/(?:e/|video/|watch_video.php\?v=)([0-9a-zA-Z]+)', 
+                      url)
+        if r:
+            return r.groups()
+        else:
+            return False
+
+Lets break down the regex a bit. It is in three parts.
+
+* ``//(.+?)/`` grabs the ``host`` part.
+* ``(?:e/|video/|watch_video.php\?v=)`` matches all the possible URLS we found 
+  earlier but the ``?:`` at the beginning means that the group is discarded.
+* ``([0-9a-zA-Z]+)`` grabs the ``media_id`` part.
+
+If there is a match, ``r.groups()`` will return a tuple containing the ``host``
+as the first element and ``media_id`` as the second. If not the method returns
+False.
 
 Testing ``valid_url()``
 =======================
@@ -212,12 +277,14 @@ Lets add some test urls into the test addon. Under::
 
 add::
 
-    addon.add_video_item('http://videobb.com/video/8FvAG6AQpHi8', 
+    addon.add_video_item({'url': 'http://videobb.com/video/8FvAG6AQpHi8'}, 
                          {'title': 'videobb test 1'})
-    addon.add_video_item('http://videobb.com/watch_video.php?v=8FvAG6AQpHi8', 
+    addon.add_video_item({'url': 'http://videobb.com/watch_video.php?v=8FvAG6AQpHi8'}, 
                          {'title': 'videobb test 2'})
-    addon.add_video_item('http://videobb.com/e/8FvAG6AQpHi8', 
+    addon.add_video_item({'url': 'http://videobb.com/e/8FvAG6AQpHi8'}, 
                          {'title': 'videobb test 3'})
+    addon.add_video_item({'host': 'videobb.com', 'media_id': '8FvAG6AQpHi8'}, 
+                         {'title': 'videobb test 4'})
 
 Now we can test to see if our plugin tries to resolve these links by trying to
 play them in XBMC. 
@@ -240,6 +307,7 @@ If it still says ``resolving using videobb plugin`` you have done something
 wrong. Go back and check your regular expressions and check the priority 
 settings.
 
+
 The Main Event
 ==============
 
@@ -248,18 +316,10 @@ Now lets replace the ``get_media_url()`` method with something useful:
 .. code-block:: python
     :linenos:
 
-    def get_media_url(self, web_url):
-        #find video_id
-        r = re.search('(?:/e/|/video/|v=)([0-9a-zA-Z]+)', web_url)
-        if r:
-            video_id = r.group(1)
-        else:
-            common.addon.log_error('myvideobb: video_id not found')
-            return False
-
+    def get_media_url(self, host, media_id):
         #grab json info for this video
         json_url = 'http://videobb.com/player_control/settings.php?v=%s' % \
-                                                                    video_id
+                                                                    media_id
         try:
             json = self.net.http_GET(json_url).content
         except urllib2.URLError, e:
@@ -297,29 +357,10 @@ exceptions if something goes wrong.
 
 ``urlrsolver.common`` is imported so that we can use the logging functions.
 
-This code is split into three main sections:
+This code is split into two main sections:
 
-#. :ref:`find-video-id` (lines 3-8)
-#. :ref:`grab-json` (lines 11-18)
-#. :ref:`grab-url` (lines 21-33)
-
-.. _find-video-id:
-
-Find video_id
--------------
-
-This section finds the video ID from the URL that has been passed to the 
-plugin.
-
-* *Line 2* - More regular expressions. This one grabs the video ID from the URL
-  passed to the plugin. We already know it matches the pattern used for 
-  ``valid_url()`` so we can make some assumptions. The left hand capture group
-  (enclosed by brackets) is not actually captured because it begins ``?:`` but
-  is just used to make sure the right hand capture group starts at the right 
-  place. 
-* *Line 4-8* - If a match was found, ``video_id`` will be the contents of the 
-  first (and only) capture group returned. Otherwise log the problem and give
-  up, returning ``False`` to tell the addon that we couldn't resolve this URL.
+#. :ref:`grab-json` (lines 2-10)
+#. :ref:`grab-url` (lines 12-27)
 
 .. _grab-json:
 
@@ -329,9 +370,9 @@ Grab JSON info for this video
 This section of code handles grabbing the URL of the JSON information and 
 getting its contents.
 
-* *Line 11-12* - Construct the URL to fetch using the ``video_id`` we found 
+* *Line 3-4* - Construct the URL to fetch using the ``video_id`` we found 
   earlier.
-* *Line 13-18* - Use :class:`~t0mm0.common.net.Net` to grab the URL's content,
+* *Line 5-10* - Use :class:`~t0mm0.common.net.Net` to grab the URL's content,
   catching the exception if we get an error (such as 404 not found). Again if 
   there is an error we log it and return ``False``.
 
@@ -360,7 +401,7 @@ Remember this from earlier:
   
 (this is the beautified version, the real thing is all on a single line)
 
-* *Line 21* - We could have used 
+* *Line 13* - We could have used 
   `simplejson <http://simplejson.github.com/simplejson/>`_ here but (despite its 
   name!) it would be more work than regular expressions. 
   
@@ -368,27 +409,27 @@ Remember this from earlier:
   base64 encoded URL. We use :func:`re.finditer` because there may be more than
   one result which we want to loop through.
   
-* *Line 22-23* - Set up some variables. ``chosen_res`` will keep track of the
+* *Line 14-15* - Set up some variables. ``chosen_res`` will keep track of the
   currently chosen resolution, and ``stream_url`` is set to ``False`` so that if
   the next few lines go wrong this method will return ``False`` and the addon 
   will know something went wrong.
   
-* *Line 25* - Loop through all the matches we made.
+* *Line 17* - Loop through all the matches we made.
 
-* *Line 26* - Grab the two values from the capture groups for this match.
+* *Line 18* - Grab the two values from the capture groups for this match.
 
-* *Line 27* - Remove any 'p' from the end of the resolution. This is just a 
+* *Line 19* - Remove any 'p' from the end of the resolution. This is just a 
   guess, because this JSON is not documented we can not tell what all the 
   possible resolutions are, but the only ones I have seen are '240p' and '480p'
   so i think it's safe to assume if there are any others they will probably end 
   in 'p'.
   
-* *Line 28-30* If the resolution for this match is higher than our current 
+* *Line 20-22* If the resolution for this match is higher than our current 
   selection, set ``stream_url`` to be this URL (remember it is base64 encoded
   so we need to :func:`decode`) and update the value in ``chosen_res`` so we
   know what our currently chosen resolution is for the next time round the loop.
   
-* *Line 32-33* - As usual, log the error and return ``False`` if the regular
+* *Line 23-25* - As usual, log the error and return ``False`` if the regular
   expression didn't match.
   
   
