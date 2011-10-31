@@ -23,6 +23,7 @@ from urlresolver.plugnplay import Plugin
 import re
 import urllib2
 from urlresolver import common
+from lib import jsunpack
 
 class XvidstageResolver(Plugin, UrlResolver, PluginSettings):
     implements = [UrlResolver, PluginSettings]
@@ -34,33 +35,6 @@ class XvidstageResolver(Plugin, UrlResolver, PluginSettings):
         self.net = Net()
         self.pattern ='http://((?:www.)?xvidstage.com)/([0-9A-Za-z]+)'
 
-    def unpackByString(self, sJavascript):
-        aSplit = sJavascript.split(";',")
-        p = str(aSplit[0])
-        aSplit = aSplit[1].split(",")
-        a = int(aSplit[0])
-        c = int(aSplit[1])
-        k = aSplit[2].split(".")[0].replace("'", '').split('|')
-        e = ''
-        d = ''
-        sUnpacked = str(self.__unpack(p, a, c, k, e, d))
-        return sUnpacked.replace('\\', '')
-
-    def __unpack(self, p, a, c, k, e, d):
-        while (c > 1):
-            c = c -1
-            if (k[c]):
-                p = re.sub('\\b' + str(self.__itoa(c, a)) +'\\b', k[c], p)
-        return p
-
-    def __itoa(self, num, radix):
-        result = ""
-        while num > 0:
-            result = "0123456789abcdefghijklmnopqrstuvwxyz"[num % radix] + result
-            num /= radix
-        return result
-
-
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
 
@@ -68,14 +42,14 @@ class XvidstageResolver(Plugin, UrlResolver, PluginSettings):
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, web_url))
         sPattern = "<div id=\"player_code\"><script type='text/javascript'>eval.*?return p}\((.*?)</script>"
 
         # get url from packed javascript
         r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
         if r:
             sJavascript = r.group(1)
-            sUnpacked = self.unpackByString(sJavascript)
+            sUnpacked = jsunpack.unpack(sJavascript)
             sPattern = '<param name="src"0="(.*?)"'
             r = re.search(sPattern, sUnpacked)
             if r:

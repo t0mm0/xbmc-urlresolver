@@ -62,10 +62,12 @@ class ZshareResolver(Plugin, UrlResolver, PluginSettings):
             stream_url = ''
             sPattern = 'file: "([^"]+)"'
             r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
+            print r
             if r:
                 stream_url = r.group(1) + "?start=0" + '|user-agent=Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.109 Safari/535.1'
+                print stream_url
 
-
+            ''' download url not working for now....
             # get download url
             download_url = ''
             # emulate download button click
@@ -89,7 +91,7 @@ class ZshareResolver(Plugin, UrlResolver, PluginSettings):
                 r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
                 if r:
                     download_url = r.group(1).replace("'","").replace(",","")
-
+            '''
 
         return stream_url
 

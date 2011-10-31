@@ -66,7 +66,7 @@ class EcostreamResolver(Plugin, UrlResolver, PluginSettings):
                     html = self.net.http_GET(sNextUrl).content
                 except urllib2.URLError, e:
                     common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                            (e.code, web_url))
+                                            (e.code, sNextUrl))
                     return False
 
                 sPattern = '<param name="flashvars" value="file=(.*?)&'

@@ -43,7 +43,7 @@ class Stream2kResolver(Plugin, UrlResolver, PluginSettings):
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, web_url))
         sPattern = "<file>(.*?)</file>"
 
         # get stream url

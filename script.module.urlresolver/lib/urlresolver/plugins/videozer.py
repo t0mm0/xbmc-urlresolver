@@ -47,14 +47,14 @@ class VideozerResolver(Plugin, UrlResolver, PluginSettings):
     def get_media_url(self, host, media_id):
 
         #grab url for this video
-        SETTINGS_URL = "http://www.videozer.com/" + \
+        settings_url = "http://www.videozer.com/" + \
             "player_control/settings.php?v=%s" % media_id
 
         try:
-            html = self.net.http_GET(SETTINGS_URL).content
+            html = self.net.http_GET(settings_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, settings_url))
             return False
 
         # Try to load the datas from html. This data should be json styled.

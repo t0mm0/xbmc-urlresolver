@@ -99,6 +99,10 @@ elif mode == 'test':
                          {'title': 'tubeplus url'})
     addon.add_video_item({'host': 'tubeplus.me', 'media_id': '1962655'},
                          {'title': 'tubeplus media id'})
+    addon.add_video_item({'url': 'http://www.uploadc.com/wheon4xa0sh6'},
+                         {'title': 'uploadc url'})
+    addon.add_video_item({'host': 'uploadc.com', 'media_id': 'wheon4xa0sh6'},
+                         {'title': 'uploadc media id'})
     addon.add_video_item({'url': 'http://videobb.com/video/8FvAG6AQpHi8'},
                          {'title': 'videobb url'})
     addon.add_video_item({'host': 'videobb.com', 'media_id': '8FvAG6AQpHi8'},
@@ -107,6 +111,10 @@ elif mode == 'test':
                          {'title': 'videoweed url'})
     addon.add_video_item({'host': 'videoweed.com', 'media_id': 'crirmdz3tj116'},
                          {'title': 'videoweed media id'})
+    addon.add_video_item({'url': 'http://www.videozer.com/video/3LsT'},
+                         {'title': 'videozer url'})
+    addon.add_video_item({'host': 'videozer', 'media_id': '3LsT'},
+                         {'title': 'videozer media id'})
     addon.add_video_item({'url': 'http://www.vidxden.com/rn3h4gbh5se7/kdshn-4x4_watchseries-online.dot.com.avi.html'},
                          {'title': 'vidxden url'})
     addon.add_video_item({'host': 'vidxden.com', 'media_id': 'rn3h4gbh5se7'},
@@ -115,10 +123,15 @@ elif mode == 'test':
                          {'title': 'vimeo url'})
     addon.add_video_item({'host': 'vimeo.com', 'media_id': '30081785'},
                          {'title': 'vimeo media id'})
+    addon.add_video_item({'url': 'http://xvidstage.com/v9t09l63m9vn'},
+                         {'title': 'xvidstage url'})
+    addon.add_video_item({'host': 'xvidstage', 'media_id': 'v9t09l63m9vn'},
+                         {'title': 'xvidstage media id'})
     addon.add_video_item({'url': 'http://www.youtube.com/watch?v=Q3VJOl_XeGs'},
                          {'title': 'youtube url'})
     addon.add_video_item({'host': 'youtube.com', 'media_id': 'Q3VJOl_XeGs'},
                          {'title': 'youtube media id'})
+
 elif mode == 'tv':
     browse = addon.queries.get('browse', False)
     if browse == 'alpha':
