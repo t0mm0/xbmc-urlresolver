@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://flashx.tv/player/embed_player.php?vid=1503&width=600&height=370&autoplay=no'},
+        {'title': 'flashx url'})
+    addon.add_video_item({'host': 'flashx','media_id': '1503'},
+        {'title': 'flashx media id'})
     addon.add_video_item({'url': 'http://www.sharefiles4u.com/pknlizmgi6mw/contagion-md-dubbed-german.avi'},
         {'title': 'sharefiles url'})
     addon.add_video_item({'host': 'sharefiles','media_id': 'pknlizmgi6mw'},
