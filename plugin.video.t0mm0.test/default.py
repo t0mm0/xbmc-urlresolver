@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://www.sharefiles4u.com/pknlizmgi6mw/contagion-md-dubbed-german.avi'},
+        {'title': 'sharefiles url'})
+    addon.add_video_item({'host': 'sharefiles','media_id': 'pknlizmgi6mw'},
+        {'title': 'sharefiles media id'})
     addon.add_video_item({'url': 'http://skyload.net/File/a25454887fd8cce41bac2e316d9d0a51.flv'},
         {'title': 'skyload url'})
     addon.add_video_item({'host': 'skyload', 'media_id': 'a25454887fd8cce41bac2e316d9d0a51'},
