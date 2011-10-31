@@ -46,19 +46,6 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
-    addon.add_video_item({'url': 'http://skyload.net/File/a25454887fd8cce41bac2e316d9d0a51.flv'},
-        {'title': 'skyload url'})
-    addon.add_video_item({'host': 'skyload', 'media_id': 'a25454887fd8cce41bac2e316d9d0a51'},
-        {'title': 'skyload media id'})
-    addon.add_video_item({'url': 'http://server4.stream2k.com/playerjw/vConfig56.php?vkey=1d8dc00940da661ffba9'},
-        {'title': 'stream2k url'})
-    addon.add_video_item({'host': 'stream2k', 'media_id': '1d8dc00940da661ffba9'},
-        {'title': 'stream2k media id'})
-    addon.add_video_item({'url': 'http://www.ecostream.tv/stream/b83c3c5d07b1ab195fb8245576c27daa.html?' +
-        'width=679&height=365&bGetRedirectUrl=False&sFileName=Larry+Crowne'},
-        {'title': 'ecostream url'})
-    addon.add_video_item({'host': 'ecostream', 'media_id': 'b83c3c5d07b1ab195fb8245576c27daa'},
-        {'title': 'ecostream media id'})
     addon.add_video_item({'url': 'http://www.2gb-hosting.com/v/94fb733db6e9f984b07da3cb238eb277/2074fe10f41c7e1.flv.html'},
                          {'title': '2gbhosting url'})
     addon.add_video_item({'host': '2gb-hosting.com', 'media_id': 'e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html'},
@@ -67,6 +54,11 @@ elif mode == 'test':
                          {'title': 'divxstage url'})
     addon.add_video_item({'host': 'divxstage.eu', 'media_id': 'eb20c352c3ccc'},
                          {'title': 'divxstage media id'})
+    addon.add_video_item({'url': 'http://www.ecostream.tv/stream/b83c3c5d07b1ab195fb8245576c27daa.html?' +
+                          'width=679&height=365&bGetRedirectUrl=False&sFileName=Larry+Crowne'},
+                         {'title': 'ecostream url'})
+    addon.add_video_item({'host': 'ecostream', 'media_id': 'b83c3c5d07b1ab195fb8245576c27daa'},
+                         {'title': 'ecostream media id'})
     addon.add_video_item({'url': 'http://www.megaupload.com/?d=9T8NHCK4'},
                          {'title': 'megaupload url'})
     addon.add_video_item({'host': 'megaupload.com', 'media_id': '9T8NHCK4'},
@@ -95,6 +87,14 @@ elif mode == 'test':
                          {'title': 'seeon.tv url'})
     addon.add_video_item({'host': 'seeon.tv', 'media_id': '19412'},
                          {'title': 'seeon.tv media id'})
+    addon.add_video_item({'url': 'http://skyload.net/File/a25454887fd8cce41bac2e316d9d0a51.flv'},
+                         {'title': 'skyload url'})
+    addon.add_video_item({'host': 'skyload', 'media_id': 'a25454887fd8cce41bac2e316d9d0a51'},
+                         {'title': 'skyload media id'})
+    addon.add_video_item({'url': 'http://server4.stream2k.com/playerjw/vConfig56.php?vkey=1d8dc00940da661ffba9'},
+                         {'title': 'stream2k url'})
+    addon.add_video_item({'host': 'stream2k', 'media_id': '1d8dc00940da661ffba9'},
+                         {'title': 'stream2k media id'})
     addon.add_video_item({'url': 'http://www.tubeplus.me/player/1962655/Entourage/season_8/episode_2/Out_With_a_Bang_/'},
                          {'title': 'tubeplus url'})
     addon.add_video_item({'host': 'tubeplus.me', 'media_id': '1962655'},
