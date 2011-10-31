@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://skyload.net/File/a25454887fd8cce41bac2e316d9d0a51.flv'},
+        {'title': 'skyload url'})
+    addon.add_video_item({'host': 'skyload', 'media_id': 'a25454887fd8cce41bac2e316d9d0a51'},
+        {'title': 'skyload media id'})
     addon.add_video_item({'url': 'http://server4.stream2k.com/playerjw/vConfig56.php?vkey=1d8dc00940da661ffba9'},
         {'title': 'stream2k url'})
     addon.add_video_item({'host': 'stream2k', 'media_id': '1d8dc00940da661ffba9'},
