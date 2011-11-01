@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://vidstream.us/video/7XK5WMYBAM5R/RAONE'},
+                         {'title': 'vidstream url'})
+    addon.add_video_item({'host': 'vidstream', 'media_id': '7XK5WMYBAM5R/RAONE'},
+                         {'title': 'vidstream media id'})
     addon.add_video_item({'url': 'http://www.ufliq.com/embed-rw52re7f5aul.html'},
                          {'title': 'ufliq url'})
     addon.add_video_item({'host': 'ufliq', 'media_id': 'rw52re7f5aul'},
