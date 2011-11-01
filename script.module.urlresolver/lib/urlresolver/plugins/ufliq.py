@@ -20,21 +20,25 @@ from t0mm0.common.net import Net
 from urlresolver.plugnplay.interfaces import UrlResolver
 from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
-import re
-import random
 import urllib2
 from urlresolver import common
+from lib import jsunpack
 
-class Stream2kResolver(Plugin, UrlResolver, PluginSettings):
+# Custom imports
+import re
+
+
+class UfliqResolver(Plugin, UrlResolver, PluginSettings):
     implements = [UrlResolver, PluginSettings]
-    name = "stream2k"
+    name = "ufliq"
 
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
         self.net = Net()
-        # e.g. http://server4.stream2k.com/playerjw/vConfig56.php?vkey=1d8dc00940da661ffba9
-        self.pattern ='http://([^/]*stream2k.com)/[^"]+vkey=([0-9A-Za-z]+)'
+        #e.g. http://www.ufliq.com/embed-rw52re7f5aul.html
+        self.pattern = 'http://((?:www.)?ufliq.com)/embed-([0-9a-zA-Z]+).html'
+
 
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
@@ -43,21 +47,25 @@ class Stream2kResolver(Plugin, UrlResolver, PluginSettings):
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, web_url))
-        sPattern = "<file>(.*?)</file>"
+                                    (e.code, api_url))
+            return False
 
-        # get stream url
+        # get url from packed javascript
+        sPattern = "<script type='text/javascript'>eval.*?return p}\((.*?)\)\s*</script>"
         r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
         if r:
-             return r.group(1)
+            sJavascript = r.group(1)
+            sUnpacked = jsunpack.unpack(sJavascript)
+            print(sUnpacked)
+            sPattern = ".addVariable\(\s*'file'\s*,\s*'([^']+)'\s*\)"
+            r = re.search(sPattern, sUnpacked)
+            if r:
+                return r.group(1)
 
         return False
 
     def get_url(self, host, media_id):
-            serverNum = random.randint(2,15)
-            url = 'http://server' + str(serverNum) + \
-                '.stream2k.com/playerjw/vConfig56.php?vkey=%s' % (media_id)
-            return url
+            return 'http://www.ufliq.com/embed-%s.html' % (media_id)
 
     def get_host_and_id(self, url):
         r = re.search(self.pattern, url)
@@ -65,6 +73,7 @@ class Stream2kResolver(Plugin, UrlResolver, PluginSettings):
             return r.groups()
         else:
             return False
+
 
     def valid_url(self, url, host):
         return re.match(self.pattern, url) or self.name in host

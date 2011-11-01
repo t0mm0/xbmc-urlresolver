@@ -678,17 +678,23 @@ class Addon:
         Returns:
             Cleaned string.
         '''
-        text = self.decode(text)
-        rep = {'&lt;': '<',
-               '&gt;': '>',
-               '&quot': '"',
-               '&rsquo;': '\'',
-               '&acute;': '\'',
-               }
-        for s, r in rep.items():
-            text = text.replace(s, r)
-        # this has to be last:
-        text = text.replace("&amp;", "&")
+        try:
+            text = self.decode(text)
+            rep = {'&lt;': '<',
+                   '&gt;': '>',
+                   '&quot': '"',
+                   '&rsquo;': '\'',
+                   '&acute;': '\'',
+                   }
+            for s, r in rep.items():
+                text = text.replace(s, r)
+            # this has to be last:
+            text = text.replace("&amp;", "&")
+        
+        #we don't want to fiddle with non-string types
+        except TypeError:
+            pass
+
         return text
         
 

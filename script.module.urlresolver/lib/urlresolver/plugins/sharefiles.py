@@ -22,6 +22,7 @@ from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 import urllib2
 from urlresolver import common
+from lib import jsunpack
 
 # Custom imports
 import re
@@ -37,32 +38,6 @@ class SharefilesResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
         self.pattern = 'http://((?:www.)?sharefiles4u.com)/([0-9a-zA-Z]+)'
-
-    def unpackByString(self, sJavascript):
-        aSplit = sJavascript.split(";',")
-        p = str(aSplit[0])
-        aSplit = aSplit[1].split(",")
-        a = int(aSplit[0])
-        c = int(aSplit[1])
-        k = aSplit[2].split(".")[0].replace("'", '').split('|')
-        e = ''
-        d = ''
-        sUnpacked = str(self.__unpack(p, a, c, k, e, d))
-        return sUnpacked.replace('\\', '')
-
-    def __unpack(self, p, a, c, k, e, d):
-        while (c > 1):
-            c = c -1
-            if (k[c]):
-                p = re.sub('\\b' + str(self.__itoa(c, a)) +'\\b', k[c], p)
-        return p
-
-    def __itoa(self, num, radix):
-        result = ""
-        while num > 0:
-            result = "0123456789abcdefghijklmnopqrstuvwxyz"[num % radix] + result
-            num /= radix
-        return result
 
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
@@ -89,12 +64,13 @@ class SharefilesResolver(Plugin, UrlResolver, PluginSettings):
             common.addon.log_error(self.name + ': no fields found')
             return False
 
+
         # get url from packed javascript
-        r = re.findall("<script type='text/javascript'>eval.*?return p}" +
-            "\((.*?)\)\s*</script>", html, re.DOTALL + re.IGNORECASE)
+        sPattern = "<div id=\"player_code\">\s*<script type='text/javascript'>eval.*?return p}\((.*?)\)\s*</script>"
+        r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
         if r:
-            sJavascript = r[1]
-            sUnpacked = self.unpackByString(sJavascript)
+            sJavascript = r.group(1)
+            sUnpacked = jsunpack.unpack(sJavascript)
             sPattern = '<param name="src"0="(.*?)"'
             r = re.search(sPattern, sUnpacked)
             if r:
