@@ -46,6 +46,10 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
+    addon.add_video_item({'url': 'http://rapidvideo.com/view/hwksai28'},
+                         {'title': 'rapidvideo url'})
+    addon.add_video_item({'host': 'rapidvideo', 'media_id': 'hwksai28'},
+                         {'title': 'rapidvideo media id'})
     addon.add_video_item({'url': 'http://vidstream.us/video/7XK5WMYBAM5R/RAONE'},
                          {'title': 'vidstream url'})
     addon.add_video_item({'host': 'vidstream', 'media_id': '7XK5WMYBAM5R/RAONE'},
