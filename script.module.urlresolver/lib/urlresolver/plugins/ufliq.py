@@ -37,7 +37,7 @@ class UfliqResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
         #e.g. http://www.ufliq.com/embed-rw52re7f5aul.html
-        self.pattern = 'http://((?:www.)?ufliq.com)/embed-([0-9a-zA-Z]+).html'
+        self.pattern = 'http://((?:www.)?ufliq.com)/(?:embed-)?([0-9a-zA-Z]+)'
 
 
     def get_media_url(self, host, media_id):
@@ -47,7 +47,7 @@ class UfliqResolver(Plugin, UrlResolver, PluginSettings):
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, web_url))
             return False
 
         # get url from packed javascript

@@ -111,7 +111,7 @@ elif mode == 'test':
                          {'title': 'tubeplus url'})
     addon.add_video_item({'host': 'tubeplus.me', 'media_id': '1962655'},
                          {'title': 'tubeplus media id'})
-    addon.add_video_item({'url': 'http://www.ufliq.com/embed-rw52re7f5aul.html'},
+    addon.add_video_item({'url': 'http://www.ufliq.com/rw52re7f5aul'},
                          {'title': 'ufliq url'})
     addon.add_video_item({'host': 'ufliq', 'media_id': 'rw52re7f5aul'},
                          {'title': 'ufliq media id'})
