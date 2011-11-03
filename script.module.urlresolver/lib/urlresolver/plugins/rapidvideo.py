@@ -22,22 +22,22 @@ from urlresolver.plugnplay.interfaces import PluginSettings
 from urlresolver.plugnplay import Plugin
 import urllib2
 from urlresolver import common
-from lib import jsunpack
 
 # Custom imports
 import re
 
 
-
-class SharefilesResolver(Plugin, UrlResolver, PluginSettings):
+class RapidvideoResolver(Plugin, UrlResolver, PluginSettings):
     implements = [UrlResolver, PluginSettings]
-    name = "sharefiles"
+    name = "rapidvideo"
 
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
         self.net = Net()
-        self.pattern = 'http://((?:www.)?sharefiles4u.com)/([0-9a-zA-Z]+)'
+        #e.g. http://rapidvideo.com/view/hwksai28
+        self.pattern = 'http://((?:www.)?rapidvideo.com)/view/([0-9a-zA-Z]+)'
+
 
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
@@ -49,39 +49,16 @@ class SharefilesResolver(Plugin, UrlResolver, PluginSettings):
                                     (e.code, web_url))
             return False
 
-        #send all form values
-        sPattern = '<input.*?name="([^"]+)".*?value=([^>]+)>'
-        r = re.findall(sPattern, html)
-        data = {}
+        # get stream url
+        sPattern = "so.addVariable\(\s*'file'\s*,\s*'([^']+)'\s*\)"
+        r = re.search(sPattern, html)
         if r:
-            for match in r:
-                name = match[0]
-                value = match[1].replace('"','')
-                data[name] = value
-
-            html = self.net.http_POST(web_url, data).content
-        else:
-            common.addon.log_error(self.name + ': no fields found')
-            return False
-
-
-        # get url from packed javascript
-        sPattern = "<div id=\"player_code\">\s*<script type='text/javascript'>eval.*?return p}\((.*?)\)\s*</script>"
-        r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
-        if r:
-            sJavascript = r.group(1)
-            sUnpacked = jsunpack.unpack(sJavascript)
-            sPattern = '<param name="src"0="(.*?)"'
-            r = re.search(sPattern, sUnpacked)
-            if r:
-                return r.group(1)
-
+            return r.group(1)
 
         return False
 
-
     def get_url(self, host, media_id):
-            return 'http://www.sharefiles4u.com/%s' % (media_id)
+            return 'http://rapidvideo.com/view/%s' % (media_id)
 
     def get_host_and_id(self, url):
         r = re.search(self.pattern, url)

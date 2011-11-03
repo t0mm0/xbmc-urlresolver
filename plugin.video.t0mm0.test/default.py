@@ -87,6 +87,10 @@ elif mode == 'test':
                          {'title': 'putlocker url'})
     addon.add_video_item({'host': 'putlocker.com', 'media_id': 'DFE7599AE064911A'},
                          {'title': 'putlocker media id'})
+    addon.add_video_item({'url': 'http://rapidvideo.com/view/hwksai28'},
+                         {'title': 'rapidvideo url'})
+    addon.add_video_item({'host': 'rapidvideo', 'media_id': 'hwksai28'},
+                         {'title': 'rapidvideo media id'})
     addon.add_video_item({'url': 'http://www.seeon.tv/view/19412/CBS'},
                          {'title': 'seeon.tv url'})
     addon.add_video_item({'host': 'seeon.tv', 'media_id': '19412'},
@@ -107,6 +111,10 @@ elif mode == 'test':
                          {'title': 'tubeplus url'})
     addon.add_video_item({'host': 'tubeplus.me', 'media_id': '1962655'},
                          {'title': 'tubeplus media id'})
+    addon.add_video_item({'url': 'http://www.ufliq.com/embed-rw52re7f5aul.html'},
+                         {'title': 'ufliq url'})
+    addon.add_video_item({'host': 'ufliq', 'media_id': 'rw52re7f5aul'},
+                         {'title': 'ufliq media id'})
     addon.add_video_item({'url': 'http://www.uploadc.com/wheon4xa0sh6'},
                          {'title': 'uploadc url'})
     addon.add_video_item({'host': 'uploadc.com', 'media_id': 'wheon4xa0sh6'},
@@ -123,6 +131,10 @@ elif mode == 'test':
                          {'title': 'videozer url'})
     addon.add_video_item({'host': 'videozer', 'media_id': '3LsT'},
                          {'title': 'videozer media id'})
+    addon.add_video_item({'url': 'http://vidstream.us/video/7XK5WMYBAM5R/RAONE'},
+                         {'title': 'vidstream url'})
+    addon.add_video_item({'host': 'vidstream', 'media_id': '7XK5WMYBAM5R/RAONE'},
+                         {'title': 'vidstream media id'})
     addon.add_video_item({'url': 'http://www.vidxden.com/rn3h4gbh5se7/kdshn-4x4_watchseries-online.dot.com.avi.html'},
                          {'title': 'vidxden url'})
     addon.add_video_item({'host': 'vidxden.com', 'media_id': 'rn3h4gbh5se7'},

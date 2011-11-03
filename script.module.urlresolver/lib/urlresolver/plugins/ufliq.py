@@ -28,16 +28,17 @@ from lib import jsunpack
 import re
 
 
-
-class SharefilesResolver(Plugin, UrlResolver, PluginSettings):
+class UfliqResolver(Plugin, UrlResolver, PluginSettings):
     implements = [UrlResolver, PluginSettings]
-    name = "sharefiles"
+    name = "ufliq"
 
     def __init__(self):
         p = self.get_setting('priority') or 100
         self.priority = int(p)
         self.net = Net()
-        self.pattern = 'http://((?:www.)?sharefiles4u.com)/([0-9a-zA-Z]+)'
+        #e.g. http://www.ufliq.com/embed-rw52re7f5aul.html
+        self.pattern = 'http://((?:www.)?ufliq.com)/embed-([0-9a-zA-Z]+).html'
+
 
     def get_media_url(self, host, media_id):
         web_url = self.get_url(host, media_id)
@@ -46,42 +47,25 @@ class SharefilesResolver(Plugin, UrlResolver, PluginSettings):
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, web_url))
+                                    (e.code, api_url))
             return False
-
-        #send all form values
-        sPattern = '<input.*?name="([^"]+)".*?value=([^>]+)>'
-        r = re.findall(sPattern, html)
-        data = {}
-        if r:
-            for match in r:
-                name = match[0]
-                value = match[1].replace('"','')
-                data[name] = value
-
-            html = self.net.http_POST(web_url, data).content
-        else:
-            common.addon.log_error(self.name + ': no fields found')
-            return False
-
 
         # get url from packed javascript
-        sPattern = "<div id=\"player_code\">\s*<script type='text/javascript'>eval.*?return p}\((.*?)\)\s*</script>"
+        sPattern = "<script type='text/javascript'>eval.*?return p}\((.*?)\)\s*</script>"
         r = re.search(sPattern, html, re.DOTALL + re.IGNORECASE)
         if r:
             sJavascript = r.group(1)
             sUnpacked = jsunpack.unpack(sJavascript)
-            sPattern = '<param name="src"0="(.*?)"'
+            print(sUnpacked)
+            sPattern = ".addVariable\(\s*'file'\s*,\s*'([^']+)'\s*\)"
             r = re.search(sPattern, sUnpacked)
             if r:
                 return r.group(1)
 
-
         return False
 
-
     def get_url(self, host, media_id):
-            return 'http://www.sharefiles4u.com/%s' % (media_id)
+            return 'http://www.ufliq.com/embed-%s.html' % (media_id)
 
     def get_host_and_id(self, url):
         r = re.search(self.pattern, url)
