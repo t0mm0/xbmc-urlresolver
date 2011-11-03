@@ -36,7 +36,7 @@ class FlashxResolver(Plugin, UrlResolver, PluginSettings):
         self.priority = int(p)
         self.net = Net()
         #e.g. http://flashx.tv/player/embed_player.php?vid=1503&width=600&height=370&autoplay=no
-        self.pattern = 'http://((?:www.)?flashx.tv)/player/embed_player.php\?vid=([0-9]+)'
+        self.pattern = 'http://((?:www.)?flashx.tv)/(?:player/embed_player.php\?vid=|video/)([0-9A-Z]+)'
 
 
     def get_media_url(self, host, media_id):
@@ -46,7 +46,7 @@ class FlashxResolver(Plugin, UrlResolver, PluginSettings):
             html = self.net.http_GET(web_url).content
         except urllib2.URLError, e:
             common.addon.log_error(self.name + ': got http error %d fetching %s' %
-                                    (e.code, api_url))
+                                    (e.code, web_url))
             return False
 
         #grab stream url

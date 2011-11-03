@@ -46,10 +46,6 @@ elif mode == 'resolver_settings':
     urlresolver.display_settings()
 
 elif mode == 'test':
-    addon.add_video_item({'url': 'http://flashx.tv/player/embed_player.php?vid=1503&width=600&height=370&autoplay=no'},
-        {'title': 'flashx url'})
-    addon.add_video_item({'host': 'flashx','media_id': '1503'},
-        {'title': 'flashx media id'})
     addon.add_video_item({'url': 'http://www.2gb-hosting.com/v/94fb733db6e9f984b07da3cb238eb277/2074fe10f41c7e1.flv.html'},
                          {'title': '2gbhosting url'})
     addon.add_video_item({'host': '2gb-hosting.com', 'media_id': 'e1593e96e19f7ecced3778668e809c77/efc5d03968fbca6.avi.html'},
@@ -63,6 +59,10 @@ elif mode == 'test':
                          {'title': 'ecostream url'})
     addon.add_video_item({'host': 'ecostream', 'media_id': 'b83c3c5d07b1ab195fb8245576c27daa'},
                          {'title': 'ecostream media id'})
+    addon.add_video_item({'url': 'http://flashx.tv/video/OKY777MKOXGO/Contagion-TSMD'},
+                         {'title': 'flashx url'})
+    addon.add_video_item({'host': 'flashx','media_id': '1503'},
+                         {'title': 'flashx media id'})
     addon.add_video_item({'url': 'http://www.megaupload.com/?d=9T8NHCK4'},
                          {'title': 'megaupload url'})
     addon.add_video_item({'host': 'megaupload.com', 'media_id': '9T8NHCK4'},
